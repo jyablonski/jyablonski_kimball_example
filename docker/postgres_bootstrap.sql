@@ -1,0 +1,50 @@
+CREATE SCHEMA source;
+CREATE SCHEMA dbt_stg;
+CREATE SCHEMA dbt_prod;
+
+SET search_path TO source;
+
+-- Create the sales data tables
+CREATE TABLE customers (
+    customer_id serial PRIMARY KEY,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100),
+    created_at timestamp default current_timestamp
+);
+
+CREATE TABLE products (
+    product_id serial PRIMARY KEY,
+    product_name VARCHAR(100),
+    product_category VARCHAR(50),
+    product_price DECIMAL(10, 2),
+    created_at timestamp default current_timestamp
+);
+
+CREATE TABLE sales (
+    sale_id serial PRIMARY KEY,
+    sale_date DATE,
+    customer_id INT,
+    product_id INT,
+    quantity INT,
+    total_amount DECIMAL(10, 2),
+    created_at timestamp default current_timestamp
+);
+
+-- Insert some dummy data
+INSERT INTO customers (customer_name, customer_email)
+VALUES
+    ('Johnny Allstar', 'customer1@example.com'),
+    ('Aubrey Plaza', 'customer2@example.com'),
+    ('John Wick', 'customer3@example.com');
+
+INSERT INTO products (product_name, product_category, product_price)
+VALUES
+    ('Product A', 'Category 1', 10.99),
+    ('Product B', 'Category 2', 19.99),
+    ('Product C', 'Category 1', 15.99);
+
+INSERT INTO sales (sale_date, customer_id, product_id, quantity, total_amount)
+VALUES
+    ('2023-01-01', 1, 1, 3, 32.97),
+    ('2023-01-02', 2, 2, 2, 39.98),
+    ('2023-01-03', 1, 3, 4, 63.96);

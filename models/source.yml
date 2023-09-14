@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: source
+    database: postgres
+    schema: source
+    description: Landing Schema for Source Data
+    tables:
+      - name: customers
+      - name: products
+      - name: sales

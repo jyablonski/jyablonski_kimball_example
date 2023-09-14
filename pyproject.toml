@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "jyablonski-kimball-example"
+version = "0.0.1"
+description = "Example Kimball Modeling Project"
+authors = ["jyablonski9 <jyablonski9@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dbt-core = "^1.6.2"
+dbt-postgres = "^1.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
