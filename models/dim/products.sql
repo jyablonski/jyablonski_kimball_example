@@ -3,4 +3,4 @@ select
     product_name,
     product_category,
     product_price
-from {{ source('source', 'products')}}
+from {{ source('application_db', 'products')}}

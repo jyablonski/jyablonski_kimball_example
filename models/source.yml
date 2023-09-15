@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: source
+  - name: application_db
     database: postgres
     schema: source
     description: Landing Schema for Source Data
@@ -9,3 +9,4 @@ sources:
       - name: customers
       - name: products
       - name: sales
+      - name: integrations
