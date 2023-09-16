@@ -34,7 +34,7 @@ windowed as (
 final as (
     select
         windowed.customer_id,
-        windowed.integration_type,
+        windowed.integration_type::text,
         windowed.is_active,
         windowed.valid_from,
         windowed.valid_to,
