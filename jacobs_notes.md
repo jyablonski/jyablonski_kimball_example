@@ -5,3 +5,5 @@
 
 https://www.getdbt.com/blog/track-data-changes-with-dbt-snapshots
 https://github.com/dbt-labs/dbt-core/issues/3878
+
+use scd2 when you need to reflect historical truth at point in time.
