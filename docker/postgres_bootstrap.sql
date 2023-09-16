@@ -30,6 +30,16 @@ CREATE TABLE sales (
     created_at timestamp default current_timestamp
 );
 
+-- this basically acts as an audit table - will have multiple rows for each change per customer id / integration
+CREATE TYPE integration_enum AS ENUM ('Mailchimp', 'Salesforce', 'Hubspot');
+CREATE TABLE integrations (
+    integration_id serial PRIMARY KEY,
+    customer_id integer,
+    integration_type integration_enum,
+    is_active integer,
+    created_at timestamp default current_timestamp
+);
+
 -- Insert some dummy data
 INSERT INTO customers (customer_name, customer_email)
 VALUES
@@ -48,3 +58,21 @@ VALUES
     ('2023-01-01', 1, 1, 3, 32.97),
     ('2023-01-02', 2, 2, 2, 39.98),
     ('2023-01-03', 1, 3, 4, 63.96);
+
+INSERT INTO integrations (customer_id, integration_type, is_active)
+VALUES
+    (1, 'Mailchimp', 1),
+    (2, 'Salesforce', 1),
+    (3, 'Hubspot', 0);
+
+-- 
+INSERT INTO integrations (customer_id, integration_type, is_active, created_at)
+VALUES
+    (1, 'Mailchimp', 0, current_timestamp + interval '7 days'),
+    (1, 'Salesforce', 1, current_timestamp + interval '7 days'),
+    (2, 'Salesforce', 0, current_timestamp + interval '7 days'),
+    (3, 'Hubspot', 1, current_timestamp + interval '7 days'),
+    (1, 'Mailchimp', 1, current_timestamp + interval '14 days'),
+    (2, 'Salesforce', 1, current_timestamp + interval '14 days'),
+    (3, 'Hubspot', 0, current_timestamp + interval '14 days'),
+    (1, 'Salesforce', 0, current_timestamp + interval '21 days');

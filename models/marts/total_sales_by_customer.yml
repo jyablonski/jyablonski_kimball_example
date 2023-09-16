@@ -1,0 +1,9 @@
+version: 2
+
+models:
+    - name: total_sales_by_customer
+      columns:
+        - name: customer_key
+          tests:
+            - unique
+            - not_null

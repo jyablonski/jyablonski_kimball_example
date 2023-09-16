@@ -1,29 +1,10 @@
 # jyablonski Kimball Example
-Example Repo for Kimball Modeling Practice
+Example Repo for Kimball Modeling Practice w/ dbt
 
-```
-jyablonski_kimball_example:
-  outputs:
+## Local Dev
+Run `make start-postgres` to boot up a Postgres Database w/ some sample data set up.
 
-    dev:
-      type: postgres
-      threads: 1
-      host: localhost
-      port: 5432
-      user: postgres
-      pass: postgres
-      dbname: postgres
-      schema: dbt_stg
+When finished run `make stop-postgres` to spin the resources down.
 
-    prod:
-      type: postgres
-      threads: 1
-      host: localhost
-      port: 5432
-      user: postgres
-      pass: postgres
-      dbname: postgres
-      schema: dbt_prod
-
-  target: dev
-```
+## Testing
+Run `make test` to build every resource in the project.  Resources are automatically spun back down.
