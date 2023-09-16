@@ -26,8 +26,19 @@ stop-postgres:
 
 .PHONY: up
 up:
-	@docker compose -f docker/docker-compose-local.yml up -d
+	@docker compose -f docker/docker-compose-postgres.yml up -d
 
 .PHONY: down
 down:
-	@docker compose -f docker/docker-compose-local.yml down
+	@docker compose -f docker/docker-compose-postgres.yml down
+
+.PHONY: dbt-ci-build
+dbt-ci-build:
+	@poetry run dbt build --target dev --profiles-dir profiles/
+
+.PHONY: test
+test:
+	@make down
+	@make up
+	@make dbt-ci-build
+	@make down

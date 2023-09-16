@@ -22,7 +22,6 @@ windowed as (
         customer_id,
         integration_type,
         is_active,
-        created_at,
         created_at as valid_from,
         lag(created_at, 1) over (partition by customer_id, integration_type order by created_at desc) as valid_to
     from customer_records

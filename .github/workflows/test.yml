@@ -1,0 +1,28 @@
+name: dbt CI
+
+on: [pull_request]
+
+jobs:
+  test_pipeline:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
+
+      - name: Install Requirements
+        run: |
+          pip install poetry
+          poetry install
+
+      - name: Install dbt Dependencies
+        run: |
+          poetry run dbt deps --target dev --profiles-dir profiles/
+
+      - name: Build dbt Models
+        run: |
+          make test
