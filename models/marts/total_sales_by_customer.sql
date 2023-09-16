@@ -4,4 +4,4 @@ select
     sales.total_amount,
     customers.customer_email
 from {{ ref('sales') }}
-inner join {{ ref('customers') }} on sales.customer_key = customers.customer_key
+    inner join {{ ref('customers') }} on sales.customer_key = customers.customer_key

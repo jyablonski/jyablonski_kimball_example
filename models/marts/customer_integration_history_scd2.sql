@@ -1,5 +1,9 @@
+-- SCD2 Table to track customer integation history
+-- typical use case is for billing, accounting, or for historical accuracy
+
 with customer_records as (
     select
+        integration_id,
         customer_id,
         integration_type,
         is_active,
@@ -10,32 +14,36 @@ with customer_records as (
 max_dates as (
     select
         customer_id,
-        max(created_at) as most_recent_record
+        integration_type,
+        max(created_at) as max_created_at
     from customer_records
-    group by customer_id
+    group by customer_id, integration_type
 ),
 
-customer_integration_effective_dates as (
+windowed as (
     select
         customer_id,
         integration_type,
         is_active,
-        min(created_at) as valid_from,
-        max(created_at) as max_created_date
+        created_at as valid_from,
+        lag(created_at, 1) over (partition by customer_id, integration_type order by created_at desc) as valid_to
     from customer_records
-    group by customer_id, integration_type, is_active
+
 ),
 
 final as (
     select
-        customer_integration_effective_dates.customer_id,
-        customer_integration_effective_dates.integration_type,
-        customer_integration_effective_dates.is_active,
-        valid_from,
-        case when max_created_date = most_recent_record then '9999-12-31' else most_recent_record end as valid_to,
-        case when max_created_date = most_recent_record then 1 else 0 end as is_current_record
-    from customer_integration_effective_dates
-    inner join max_dates on customer_integration_effective_dates.customer_id = max_dates.customer_id
+        windowed.customer_id,
+        windowed.integration_type,
+        windowed.is_active,
+        windowed.valid_from,
+        windowed.valid_to,
+        case when windowed.valid_from = max_dates.max_created_at then 1 else 0 end as is_current_integration_record
+    from windowed
+        inner join max_dates
+            on
+                windowed.customer_id = max_dates.customer_id
+                and windowed.integration_type = max_dates.integration_type
 )
 
 select *

@@ -69,8 +69,10 @@ VALUES
 INSERT INTO integrations (customer_id, integration_type, is_active, created_at)
 VALUES
     (1, 'Mailchimp', 0, current_timestamp + interval '7 days'),
+    (1, 'Salesforce', 1, current_timestamp + interval '7 days'),
     (2, 'Salesforce', 0, current_timestamp + interval '7 days'),
     (3, 'Hubspot', 1, current_timestamp + interval '7 days'),
     (1, 'Mailchimp', 1, current_timestamp + interval '14 days'),
     (2, 'Salesforce', 1, current_timestamp + interval '14 days'),
-    (3, 'Hubspot', 0, current_timestamp + interval '14 days');
+    (3, 'Hubspot', 0, current_timestamp + interval '14 days'),
+    (1, 'Salesforce', 0, current_timestamp + interval '21 days');
