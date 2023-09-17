@@ -9,6 +9,7 @@ sources:
       - name: customers
       - name: integrations
       - name: invoices
+      - name: orders
       - name: payments
       - name: products
       - name: sales

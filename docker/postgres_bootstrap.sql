@@ -63,6 +63,12 @@ CREATE TABLE integrations (
     created_at timestamp default current_timestamp
 );
 
+CREATE TABLE orders (
+    order_id serial PRIMARY KEY,
+    external_data json not null,
+    created_at timestamp default current_timestamp
+);
+
 -- Insert some dummy data
 INSERT INTO customers (customer_name, customer_email)
 VALUES
@@ -112,3 +118,7 @@ VALUES
     (39.98, 'Credit Card', '4436', 2),
     (3.96, 'Gift Card', 'G42423241', 3),
     (60, 'Cash', NULL, 3);
+
+INSERT INTO orders (external_data)
+VALUES
+    ('{"id": 1, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
