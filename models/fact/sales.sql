@@ -1,9 +1,19 @@
 select
+    sales.sale_id,
     sales.sale_date,
-    customers.customer_key,
-    products.product_key,
+    sales.customer_id,
+    sales.product_id,
     sales.quantity,
-    sales.total_amount
+    sales.total_amount,
+    sales.created_at,
+    invoices.invoice_id,
+    invoices.is_voided,
+    invoices.created_at as invoice_created_at,
+    payments.payment_id,
+    payments.amount,
+    payments.payment_type,
+    payments.payment_type_info,
+    payments.created_at as payment_created_at
 from {{ source('application_db', 'sales') }}
-    inner join {{ ref('customers') }} on sales.customer_id = customers.customer_key
-    inner join {{ ref('products') }} on sales.product_id = products.product_key
+    inner join {{ source('application_db', 'invoices') }} on sales.sale_id = invoices.sale_id
+    inner join {{ source('application_db', 'payments') }} on invoices.invoice_id = payments.invoice_id

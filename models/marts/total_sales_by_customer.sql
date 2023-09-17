@@ -1,6 +1,6 @@
 select
-    customers.customer_key,
+    customers.customer_id,
     sum(sales.total_amount) as total_sales
-from {{ ref('sales') }}
-    inner join {{ ref('customers') }} on sales.customer_key = customers.customer_key
-group by customers.customer_key
+from {{ source('application_db', 'sales') }}
+    inner join {{ source('application_db', 'customers') }} on sales.customer_id = customers.customer_id
+group by customers.customer_id
