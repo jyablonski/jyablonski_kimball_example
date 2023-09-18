@@ -31,11 +31,11 @@ jobs:
       - name: Write Results to PR 
         uses: actions/github-script@0.9.0
         env:
-          PLAN: "dbt\n${{ steps.dbt.outputs.stdout }}"
+          PLAN: "${{ steps.dbt.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.dbt.outcome }}\`
+            const output = `#### dbt🖌\`${{ steps.dbt.outcome }}\`
             <details><summary>Show Results</summary>
             \`\`\`\n
             ${process.env.PLAN}
