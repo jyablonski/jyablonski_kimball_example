@@ -30,7 +30,7 @@ jobs:
       - name: Build dbt Models
         id: dbt
         run: |
-          make dbt-ci-build
+          poetry run dbt build --target dev --profiles-dir profiles/
 
       - run: echo ${{ steps.dbt.outputs.stdout }}
 
