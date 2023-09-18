@@ -10,7 +10,7 @@ models:
             tests:
               - dbt_expectations.expect_column_values_to_be_between:
                   min_value: 0
-                  max_value: 2
+                  max_value: 1
           - name: is_current_integration_record
             tests:
               - dbt_expectations.expect_column_values_to_be_between:

@@ -29,11 +29,7 @@ jobs:
       - name: Build dbt Models
         id: dbt
         run: |
-          out="$(make test)"
-          out="${out//'%'/'%25'}"
-          out="${out//$'\n'/'%0A'}"
-          out="${out//$'\r'/'%0D'}"
-          echo "::set-output name=plan::$out"
+          make test
         continue-on-error: true
 
       - name: Write Results to PR 
@@ -44,7 +40,7 @@ jobs:
             const output = `#### dbt 🖌\`${{ steps.dbt.outcome }}\`
             <details><summary>Show Plan</summary>
             \`\`\`\n
-            ${{ steps.dbt.outputs.plan }}
+            ${{ steps.dbt.outputs.stdout }}
             \`\`\`
             </details>
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
