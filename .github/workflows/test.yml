@@ -29,7 +29,7 @@ jobs:
       - name: Build dbt Models
         id: dbt
         run: |
-          make test
+          echo "make test" >> $GITHUB_OUTPUT
         continue-on-error: true
 
       - name: Write Results to PR 
