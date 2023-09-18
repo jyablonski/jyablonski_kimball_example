@@ -30,7 +30,7 @@ jobs:
       - name: Build dbt Models
         id: dbt
         run: |
-          make dbt-ci-buld
+          make dbt-ci-build
 
       - name: Stop Postgres
         run: |
