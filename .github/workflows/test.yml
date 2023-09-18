@@ -32,6 +32,8 @@ jobs:
         run: |
           make dbt-ci-build
 
+      - run: echo ${{ steps.dbt.outputs.stdout }}
+
       - name: Stop Postgres
         run: |
           make stop-postgres
