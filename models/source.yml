@@ -7,6 +7,9 @@ sources:
     description: Landing Schema for Source Data
     tables:
       - name: customers
+      - name: integrations
+      - name: invoices
+      - name: orders
+      - name: payments
       - name: products
       - name: sales
-      - name: integrations

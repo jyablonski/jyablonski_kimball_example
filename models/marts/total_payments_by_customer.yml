@@ -1,9 +1,9 @@
 version: 2
 
 models:
-    - name: total_sales_by_customer
+    - name: total_payments_by_customer
       columns:
-        - name: customer_id
+        - name: payment_id
           tests:
             - unique
             - not_null
