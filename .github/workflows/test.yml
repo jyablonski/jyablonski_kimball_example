@@ -24,6 +24,8 @@ jobs:
         run: |
           poetry run dbt deps --target dev --profiles-dir profiles/
 
+        # code below makes set-output keeps the multiline
+        # refer to this https://github.community/t/set-output-truncates-multiline-strings/16852/3
       - name: Build dbt Models
         id: dbt
         run: |
@@ -32,9 +34,8 @@ jobs:
           out="${out//$'\n'/'%0A'}"
           out="${out//$'\r'/'%0D'}"
           echo "::set-output name=plan::$out"
-          
-        # code below makes set-output keeps the multiline
-        # refer to this https://github.community/t/set-output-truncates-multiline-strings/16852/3
+        continue-on-error: true
+
       - name: Write Results to PR 
         uses: actions/github-script@0.9.0
         with:
