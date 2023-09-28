@@ -8,6 +8,8 @@ on:
 
 env:
   S3_BUCKET: ${{ secrets.S3_BUCKET }}
+  IAM_ROLE: ${{ secrets.IAM_ROLE }}
+  AWS_REGION : "us-east-1"
 
 permissions:
       id-token: write
@@ -25,14 +27,17 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Configure Aws Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.IAM_ROLE }}
+          role-session-name: kimball-dbt-cd
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Set Env Vars
         id: set_env_vars
         run: |
           if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
-            echo "DBT_ENV=ci" >> "$GITHUB_ENV"
-            fi
-
-          if [[ "${{github.base_ref}}" == "development" || "${{github.ref}}" == "refs/heads/development" ]]; then
             echo "DBT_ENV=dev" >> "$GITHUB_ENV"
             fi
 
