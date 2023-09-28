@@ -5,6 +5,8 @@ on:
 
 env:
   S3_BUCKET: ${{ secrets.S3_BUCKET }}
+  IAM_ROLE: ${{ secrets.IAM_ROLE }}
+  AWS_REGION : "us-east-1"
 
 permissions:
       id-token: write
@@ -26,6 +28,13 @@ jobs:
         run: |
           pip install poetry
           poetry install
+
+      - name: Configure Aws Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.IAM_ROLE }}
+          role-session-name: kimball-dbt-ci
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install dbt Dependencies
         run: |
