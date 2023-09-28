@@ -1,6 +1,16 @@
 name: dbt CI
 
-on: [pull_request]
+on: 
+  [pull_request]
+
+env:
+  S3_BUCKET: ${{ secrets.S3_BUCKET }}
+  IAM_ROLE: ${{ secrets.IAM_ROLE }}
+  AWS_REGION : "us-east-1"
+
+permissions:
+      id-token: write
+      contents: read
 
 jobs:
   test_pipeline:
@@ -19,10 +29,27 @@ jobs:
           pip install poetry
           poetry install
 
+      - name: Configure Aws Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.IAM_ROLE }}
+          role-session-name: kimball-dbt-ci
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Install dbt Dependencies
         run: |
           poetry run dbt deps --target dev --profiles-dir profiles/
 
-      - name: Build dbt Models
+      - name: Get Manifest File
         run: |
-          make test
+          aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
+
+      - name: Build changed dbt Models
+        run: |
+          make up
+          poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select state:modified+ --state ./
+          make down
+
+      - name: Upload Manifest to S3
+        run: |
+          aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json

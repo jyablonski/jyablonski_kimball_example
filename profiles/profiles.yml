@@ -22,3 +22,18 @@ jyablonski_kimball_example:
       schema: dbt_prod
 
   target: dev
+
+dbt_ci:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 1
+      host: localhost
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: postgres
+      schema: dbt_stg
+      
+  target: dev
