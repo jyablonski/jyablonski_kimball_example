@@ -1,0 +1,70 @@
+name: dbt CI
+
+on: 
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+env:
+  S3_BUCKET: ${{ secrets.S3_BUCKET }}
+
+permissions:
+      id-token: write
+      contents: read
+
+jobs:
+  test_pipeline:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
+
+      - name: Set Env Vars
+        id: set_env_vars
+        run: |
+          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
+            echo "DBT_ENV=ci" >> "$GITHUB_ENV"
+            fi
+
+          if [[ "${{github.base_ref}}" == "development" || "${{github.ref}}" == "refs/heads/development" ]]; then
+            echo "DBT_ENV=dev" >> "$GITHUB_ENV"
+            fi
+
+          if [[ "${{github.base_ref}}" == "production" || "${{github.ref}}" == "refs/heads/production" ]]; then
+            echo "DBT_ENV=prod" >> "$GITHUB_ENV"
+            fi
+
+      - name: Install Requirements
+        run: |
+          pip install poetry
+          poetry install
+
+      - name: Install dbt Dependencies
+        run: |
+          poetry run dbt deps --target dev --profiles-dir profiles/
+
+      - name: Get Manifest File
+        env:
+          DBT_ENV: ${{ env.DBT_ENV}}
+        run: |
+          aws s3 cp s3://${{ env.S3_BUCKET }}/${{ env.DBT_ENV }}/manifest.json manifest.json
+
+      - name: Build changed dbt Models
+        env:
+          DBT_ENV: ${{ env.DBT_ENV}}
+        run: |
+          make up
+          poetry run dbt build --target ${{ env.DBT_ENV }} --profiles-dir profiles/ --profile dbt_ci --select state:modified+ --state ./
+          make down
+
+      - name: Upload Manifest to S3
+        env:
+          DBT_ENV: ${{ env.DBT_ENV}}
+        run: |
+          aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/${{ env.DBT_ENV }}/manifest.json
