@@ -1,4 +1,4 @@
-name: dbt CI
+name: dbt CD
 
 on: 
   pull_request:
@@ -10,6 +10,11 @@ env:
   S3_BUCKET: ${{ secrets.S3_BUCKET }}
   IAM_ROLE: ${{ secrets.IAM_ROLE }}
   AWS_REGION : "us-east-1"
+  DBT_USER_STG: hi
+  DBT_PASS_STG: hiv2
+  DBT_USER_PROD: aa
+  DBT_PASS_PROD: aav2
+
 
 permissions:
       id-token: write
@@ -39,10 +44,14 @@ jobs:
         run: |
           if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
             echo "DBT_ENV=dev" >> "$GITHUB_ENV"
+            echo "DBT_USER=$DBT_USER_STG" >> "$GITHUB_ENV"
+            echo "DBT_PASS=$DBT_PASS_STG" >> "$GITHUB_ENV"
             fi
 
           if [[ "${{github.base_ref}}" == "production" || "${{github.ref}}" == "refs/heads/production" ]]; then
-            echo "DBT_ENV=prod" >> "$GITHUB_ENV"
+            echo "DBT_ENV=dev" >> "$GITHUB_ENV"
+            echo "DBT_USER=$DBT_USER_PROD" >> "$GITHUB_ENV"
+            echo "DBT_PASS=$DBT_PASS_PROD" >> "$GITHUB_ENV"
             fi
 
       - name: Install Requirements
@@ -58,6 +67,7 @@ jobs:
         env:
           DBT_ENV: ${{ env.DBT_ENV}}
         run: |
+          echo $DBT_ENV $DBT_USER $DBT_PASS $DBT_USER_PROD
           aws s3 cp s3://${{ env.S3_BUCKET }}/${{ env.DBT_ENV }}/manifest.json manifest.json
 
       - name: Build changed dbt Models
@@ -65,7 +75,7 @@ jobs:
           DBT_ENV: ${{ env.DBT_ENV}}
         run: |
           make up
-          poetry run dbt build --target ${{ env.DBT_ENV }} --profiles-dir profiles/ --profile dbt_ci --select state:modified+ --state ./
+          poetry run dbt build --target ${{ env.DBT_ENV }} --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
           make down
 
       - name: Upload Manifest to S3
