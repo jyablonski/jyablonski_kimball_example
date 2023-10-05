@@ -44,6 +44,8 @@ jobs:
         run: |
           aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
 
+      # this should be `state:modified+` with a remote db
+      # with a docker db you have to do `+state:modified+` to build the parent data first
       - name: Build changed dbt Models
         run: |
           make up
