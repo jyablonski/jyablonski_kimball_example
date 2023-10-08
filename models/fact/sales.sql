@@ -17,3 +17,4 @@ select
 from {{ source('application_db', 'sales') }}
     inner join {{ source('application_db', 'invoices') }} on sales.sale_id = invoices.sale_id
     inner join {{ source('application_db', 'payments') }} on invoices.invoice_id = payments.invoice_id
+{{ env_limit(2) }}
