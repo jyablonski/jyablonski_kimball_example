@@ -26,7 +26,9 @@ windowed as (
         integration_type,
         is_active,
         created_at as valid_from,
-        lag(created_at, 1) over (partition by customer_id, integration_type order by created_at desc) as valid_to
+        lag(created_at, 1) over (
+            partition by customer_id, integration_type order by created_at desc
+        ) as valid_to
     from customer_records
 
 ),
@@ -46,5 +48,6 @@ final as (
                 and windowed.integration_type = max_dates.integration_type
 )
 
+-- test 123
 select *
 from final
