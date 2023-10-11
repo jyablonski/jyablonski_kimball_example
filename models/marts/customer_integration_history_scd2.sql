@@ -48,5 +48,6 @@ final as (
                 and windowed.integration_type = max_dates.integration_type
 )
 
+-- test 123
 select *
 from final
