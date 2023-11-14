@@ -41,4 +41,3 @@ use scd2 when you need to reflect historical truth at point in time.
 
 `edr report`
 `edr send-report --slack-token <SLACK_TOKEN> --slack-channel-name <CHANNEL_NAME>`
-`edr send-report --profiles-dir profiles/ --slack-token xoxb-2745695201682-6192422951700-6UgrFEfJlz3RVqn8OXmIAIQ9 --slack-channel-name random`
