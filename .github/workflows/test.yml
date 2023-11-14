@@ -44,7 +44,7 @@ jobs:
         run: |
           aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
 
-      - name: Build changed dbt Models
+      - name: Build dbt Models
         run: |
           make up
           poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./

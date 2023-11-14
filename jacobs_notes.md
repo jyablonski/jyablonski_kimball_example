@@ -31,3 +31,13 @@ https://www.getdbt.com/blog/track-data-changes-with-dbt-snapshots
 https://github.com/dbt-labs/dbt-core/issues/3878
 
 use scd2 when you need to reflect historical truth at point in time.
+
+## Elementary
+[Quickstart](https://docs.elementary-data.com/quickstart)
+[Docs](https://docs.elementary-data.com/quickstart-cli)
+`dbt run-operation elementary.generate_elementary_cli_profile`
+- Copy & Paste this to Profiles.yml
+
+
+`edr report`
+`edr send-report --slack-token <SLACK_TOKEN> --slack-channel-name <CHANNEL_NAME>`

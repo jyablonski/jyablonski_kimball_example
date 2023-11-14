@@ -37,3 +37,16 @@ dbt_ci:
       schema: dbt_stg
       
   target: dev
+
+
+elementary:
+  outputs:
+    default:
+      type: "postgres"
+      host: "localhost"
+      port: 5432
+      user: "postgres"
+      password: postgres
+      dbname: "postgres"
+      schema: "dbt_stg"
+      threads: 1
