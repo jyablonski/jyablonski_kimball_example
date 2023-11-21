@@ -21,7 +21,8 @@ permissions:
       contents: read
 
 jobs:
-  test_deploy_pipeline:
+  deploy_pipeline:
+    name: Deploy Pipeline
     runs-on: ubuntu-20.04
 
     steps:
