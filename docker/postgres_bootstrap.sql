@@ -10,7 +10,8 @@ CREATE TABLE customers (
     customer_id serial PRIMARY KEY,
     customer_name VARCHAR(100),
     customer_email VARCHAR(100),
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 CREATE TABLE products (
@@ -18,7 +19,8 @@ CREATE TABLE products (
     product_name VARCHAR(100),
     product_category VARCHAR(50),
     product_price DECIMAL(10, 2),
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 CREATE TABLE sales (
@@ -28,7 +30,8 @@ CREATE TABLE sales (
     product_id INT,
     quantity INT,
     total_amount DECIMAL(10, 2),
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 CREATE TABLE invoices (
@@ -36,7 +39,8 @@ CREATE TABLE invoices (
     customer_id integer,
     sale_id integer,
     is_voided boolean default FALSE,
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 
 );
 
@@ -50,7 +54,8 @@ CREATE TABLE payments (
     payment_type payment_enum,
     payment_type_info text,
     invoice_id integer,
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 -- this basically acts as an audit table - will have multiple rows for each change per customer id / integration
@@ -60,13 +65,15 @@ CREATE TABLE integrations (
     customer_id integer,
     integration_type integration_enum,
     is_active integer,
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 CREATE TABLE orders (
     order_id serial PRIMARY KEY,
     external_data json not null,
-    created_at timestamp default current_timestamp
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
 );
 
 -- Insert some dummy data
