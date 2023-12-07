@@ -41,3 +41,10 @@ use scd2 when you need to reflect historical truth at point in time.
 
 `edr report`
 `edr send-report --slack-token <SLACK_TOKEN> --slack-channel-name <CHANNEL_NAME>`
+
+
+`dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select state:modified --state ./target/`
+`dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select state:modified --state ./target/`
+`dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./`
+`dbt build --select incremental_pk_tester --target dev --profiles-dir profiles/`
+`dbt build --select incremental_pk_tester_merge_only --target dev --profiles-dir profiles/`
