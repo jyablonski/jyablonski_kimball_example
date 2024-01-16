@@ -60,3 +60,15 @@ State Deferred is for building dbt Resources in one environment while telling it
 State modified is for building only changed dbt Resources based on the last known dbt Manifest file.
 
 [Link](https://paulfry999.medium.com/v0-4-pre-chatgpt-how-to-create-ci-cd-pipelines-for-dbt-core-88e68ab506dd)
+
+`dbt ls --select state:modified+ --defer --state=prod-run-artifacts`  # list the modified dbt models
+        
+`dbt run --select state:modified+ --defer --state=prod-run-artifacts` # run modified dbt models only
+
+``` sh
+# list the modified dbt models
+dbt ls --select state:modified+ --defer --state=prod-run-artifacts
+
+# run modified dbt models only
+dbt run --select state:modified+ --defer --state=prod-run-artifacts
+```
