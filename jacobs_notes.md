@@ -71,4 +71,10 @@ dbt ls --select state:modified+ --defer --state=prod-run-artifacts
 
 # run modified dbt models only
 dbt run --select state:modified+ --defer --state=prod-run-artifacts
+
+dbt run --select state:modified+ --target prod --defer --state=./
+
+dbt run --select state:modified+ --target prod --state=./
+
+dbt ls --select state:modified+ --state=./
 ```
