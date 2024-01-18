@@ -8,7 +8,9 @@ env:
   IAM_ROLE: ${{ secrets.IAM_ROLE }}
   AWS_REGION : "us-east-1"
 
-permissions: write-all
+permissions:
+      id-token: write
+      contents: read
 
 jobs:
   test_pipeline:
