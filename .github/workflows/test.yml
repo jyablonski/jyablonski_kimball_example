@@ -47,8 +47,9 @@ jobs:
         id: build_dbt
         run: |
           make up
-          poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
+          RESULT=$(poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./)
           make down
+          echo "DBT_OUTPUT=$RESULT" >> $GITHUB_ENV
 
       - name: Upload Manifest to S3
         run: |
@@ -57,7 +58,7 @@ jobs:
       - name: Comment Results on PR
         uses: actions/github-script@0.9.0
         env:
-          DBT_OUTPUT: "terraform\n${{ steps.build_dbt.outputs.stdout }}"
+          dbt_output: ${{ env.DBT_OUTPUT }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -67,6 +68,11 @@ jobs:
             ${process.env.DBT_OUTPUT}
             \`\`\`
             </details>
+            ${process.env.message}
+            </details>
+            ${process.env.MESSAGE}
+            </details>
+            ${process.env.dbt_output}
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
             github.issues.createComment({
               issue_number: context.issue.number,
