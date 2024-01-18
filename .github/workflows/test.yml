@@ -10,7 +10,7 @@ env:
 
 permissions:
       id-token: write
-      contents: read
+      contents: write
 
 jobs:
   test_pipeline:
@@ -56,7 +56,8 @@ jobs:
         run: |
           aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json
 
-      - uses: actions/github-script@0.9.0
+      - name: Comment Results on PR
+        uses: actions/github-script@0.9.0
         env:
           DBT_BUILD_STATUS: ${{ job.status }}
         with:
