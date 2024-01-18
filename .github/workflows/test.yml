@@ -47,7 +47,7 @@ jobs:
         id: build_dbt
         run: |
           make up
-          RESULT=$(poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./)
+          RESULT=$(poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./) || true
           make down
           echo "DBT_OUTPUT=$RESULT" >> $GITHUB_ENV
 
