@@ -46,6 +46,7 @@ jobs:
           aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
 
       - name: Build dbt Models
+        id: build_dbt
         run: |
           make up
           poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
@@ -54,3 +55,23 @@ jobs:
       - name: Upload Manifest to S3
         run: |
           aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json
+
+      - uses: actions/github-script@0.9.0
+        env:
+          DBT_BUILD_STATUS: ${{ job.status }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### dbt Models Build Status 🚀\`${process.env.DBT_BUILD_STATUS}\`
+            <details><summary>Show Details</summary>
+            \`\`\`\n
+            Insert your details here, e.g., build logs or specific information about the dbt models.
+            \`\`\`
+            </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
