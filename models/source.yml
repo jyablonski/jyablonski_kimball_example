@@ -10,6 +10,11 @@ sources:
       - name: integration
       - name: invoice
       - name: order
+      - name: order_detail
+      - name: order_json
       - name: payment
+      - name: payment_type
       - name: product
+      - name: product_category
+      - name: product_price
       - name: sale

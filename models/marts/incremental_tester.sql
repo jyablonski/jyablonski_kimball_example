@@ -7,7 +7,7 @@
 
 select *
 
-from {{ source('application_db', 'sale') }}
+from {{ source('application_db', 'order') }}
 
 {% if is_incremental() %}
 

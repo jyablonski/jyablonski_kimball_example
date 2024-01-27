@@ -14,4 +14,4 @@ select
     external_data -> 'source' ->> 'state' as source_state,
     external_data -> 'source' ->> 'store' as source_store,
     created_at
-from {{ source('application_db', 'order') }}
+from {{ source('application_db', 'order_json') }}

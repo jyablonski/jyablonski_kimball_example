@@ -2,5 +2,6 @@ select
     id as product_id,
     product_name,
     product_category_id,
-    product_price
+    created_at,
+    modified_at
 from {{ source('application_db', 'product') }}
