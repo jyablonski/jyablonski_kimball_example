@@ -5,7 +5,7 @@ The operator ->> returns JSON object field by text.
 */
 
 select
-    order_id,
+    id as order_id,
     cast(external_data ->> 'id' as integer) as external_data_id,
     cast(external_data ->> 'sale_id' as integer) as sale_id,
     cast(external_data -> 'source' ->> 'transaction_timestamp' as timestamp) as source_timestamp,
@@ -14,4 +14,4 @@ select
     external_data -> 'source' ->> 'state' as source_state,
     external_data -> 'source' ->> 'store' as source_store,
     created_at
-from {{ source('application_db', 'orders') }}
+from {{ source('application_db', 'order') }}

@@ -1,13 +1,13 @@
 {{
     config(
         materialized='incremental',
-        unique_key="sale_id",
+        unique_key="id",
     )
 }}
 
 select *
 
-from {{ source('application_db', 'sales') }}
+from {{ source('application_db', 'sale') }}
 
 {% if is_incremental() %}
 

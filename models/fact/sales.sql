@@ -1,22 +1,22 @@
 select
-    sales.sale_id,
-    sales.sale_date,
-    sales.customer_id,
-    sales.product_id,
-    sales.quantity,
-    sales.total_amount,
-    sales.created_at,
-    invoices.invoice_id,
-    invoices.is_voided,
-    invoices.created_at as invoice_created_at,
-    invoices.modified_at as invoice_modified_at,
-    payments.payment_id,
-    payments.amount,
-    payments.payment_type,
-    payments.payment_type_info,
-    payments.created_at as payment_created_at,
-    payments.modified_at as payment_modified_at
-from {{ source('application_db', 'sales') }}
-    inner join {{ source('application_db', 'invoices') }} on sales.sale_id = invoices.sale_id
-    inner join {{ source('application_db', 'payments') }} on invoices.invoice_id = payments.invoice_id
+    sale.id as sale_id,
+    sale.sale_date,
+    sale.customer_id,
+    sale.product_id,
+    sale.quantity,
+    sale.total_amount,
+    sale.created_at,
+    invoice.id as invoice_id,
+    invoice.is_voided,
+    invoice.created_at as invoice_created_at,
+    invoice.modified_at as invoice_modified_at,
+    payment.id as payment_id,
+    payment.amount,
+    payment.payment_type,
+    payment.payment_type_info,
+    payment.created_at as payment_created_at,
+    payment.modified_at as payment_modified_at
+from {{ source('application_db', 'sale') }}
+    inner join {{ source('application_db', 'invoice') }} on sale.id = invoice.sale_id
+    inner join {{ source('application_db', 'payment') }} on invoice.id = payment.invoice_id
 {{ env_limit(2) }}

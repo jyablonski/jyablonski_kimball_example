@@ -3,12 +3,12 @@
 
 with customer_records as (
     select
-        integration_id,
+        id,
         customer_id,
         integration_type,
         is_active,
         created_at
-    from {{ source('application_db', 'integrations') }}
+    from {{ source('application_db', 'integration') }}
 ),
 
 max_dates as (
