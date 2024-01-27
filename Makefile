@@ -16,29 +16,25 @@ bump-major:
 	@git push --tags
 	@git push
 
-.PHONY: start-postgres
-start-postgres:
-	@docker compose -f docker/docker-compose-postgres.yml up --build -d
-
-.PHONY: stop-postgres
-stop-postgres:
-	@docker compose -f docker/docker-compose-postgres.yml down
-
 .PHONY: up
 up:
-	@docker compose -f docker/docker-compose-postgres.yml up -d
-
-.PHONY: down
-down:
-	@docker compose -f docker/docker-compose-postgres.yml down
+	@docker compose -f docker/docker-compose-postgres.yml up --build -d
 
 .PHONY: dbt-ci-build
 dbt-ci-build:
 	@poetry run dbt build --target dev --profiles-dir profiles/
 
+.PHONY: docker-build
+docker-build:
+	@docker-compose -f docker/docker-compose-local.yml build
+
+# exit as soon as dbt finsihes
+# only see logs from dbt
 .PHONY: test
 test:
-	@make down
-	@make up
-	@make dbt-ci-build
-	@make down
+	@docker compose -f docker/docker-compose-local.yml down
+	@docker compose -f docker/docker-compose-local.yml up --exit-code-from dbt_runner --attach dbt_runner
+
+.PHONY: down
+down:
+	@docker compose -f docker/docker-compose-local.yml down

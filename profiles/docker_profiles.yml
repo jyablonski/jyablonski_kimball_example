@@ -1,0 +1,52 @@
+jyablonski_kimball_example:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 1
+      host: postgres
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: postgres
+      schema: dbt_stg
+
+    prod:
+      type: postgres
+      threads: 1
+      host: postgres
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: postgres
+      schema: dbt_prod
+
+  target: dev
+
+dbt_ci:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 1
+      host: postgres
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: postgres
+      schema: dbt_stg
+      
+  target: dev
+
+
+elementary:
+  outputs:
+    default:
+      type: "postgres"
+      host: "postgres"
+      port: 5432
+      user: "postgres"
+      password: postgres
+      dbname: "postgres"
+      schema: "dbt_stg"
+      threads: 1
