@@ -1,0 +1,11 @@
+version: 2
+
+models:
+    - name: pending_invoices
+      columns:
+          - name: order_id
+            tests:
+              - unique
+          - name: invoice_id
+            tests:
+              - unique

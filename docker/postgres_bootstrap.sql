@@ -225,4 +225,4 @@ VALUES
 
 INSERT INTO source.order_json (external_data)
 VALUES
-    ('{"id": 1, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
+    ('{"id": 1000, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
