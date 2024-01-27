@@ -166,14 +166,16 @@ INSERT INTO product (product_name, product_category_id)
 VALUES
     ('Apples', 1),
     ('Gameboy', 2),
-    ('Paper', 3);
+    ('Paper', 3),
+    ('Blueberries', 1);
 
 INSERT INTO product_price (id, product_id, price, is_active, valid_from, valid_to)
 VALUES
     (1, 1, 12.99, false, '2023-01-01 00:00:00', current_timestamp),
     (2, 1, 15.99, true, current_timestamp, '2039-12-31 23:59:59'),
     (3, 2, 45.99, true, current_timestamp, '2039-12-31 23:59:59'),
-    (4, 3, 5.99, true, current_timestamp, '2039-12-31 23:59:59'); 
+    (4, 3, 5.99, true, current_timestamp, '2039-12-31 23:59:59'),
+    (5, 4, 3.99, true, current_timestamp, '2039-12-31 23:59:59'); 
 
 INSERT INTO integration (customer_id, integration_type, is_active)
 VALUES
@@ -203,23 +205,23 @@ VALUES
 INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity)
 VALUES
     (1, 1, 1, 1, 1),
-    (2, 2, 1, 1, 1),
-    (3, 2, 2, 2, 1),
-    (4, 3, 1, 1, 1),
-    (5, 3, 3, 3, 1);
+    (2, 2, 1, 2, 1),
+    (3, 2, 2, 3, 1),
+    (4, 3, 4, 5, 1),
+    (5, 4, 3, 4, 1);
 
 INSERT INTO invoice (order_id, total_amount)
 VALUES 
     (1, 15.99),
     (2, 61.98),
-    (3, 21.98);
+    (3, 21.98),
+    (4, 3.99);
 
 INSERT INTO payment (amount, payment_type_id, payment_type_detail, invoice_id, financial_account_id)
 VALUES 
     (15.99, 1, NULL, 1, 3),
     (61.98, 2, '4436', 2, 3),
-    (10.00, 3, 'G42423241', 3, 3),
-    (11.98, 4, NULL, 3, 3);
+    (10.00, 3, 'G42423241', 3, 3);
 
 INSERT INTO source.order_json (external_data)
 VALUES
