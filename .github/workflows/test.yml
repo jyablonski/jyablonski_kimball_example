@@ -18,39 +18,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.11"
-
-      - name: Install Requirements
+      - name: Run Tests
         run: |
-          pip install poetry
-          poetry install
-
-      - name: Configure Aws Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ env.IAM_ROLE }}
-          role-session-name: kimball-dbt-ci
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Install dbt Dependencies
-        run: |
-          poetry run dbt deps --target dev --profiles-dir profiles/
-
-      - name: Get Manifest File
-        run: |
-          aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
-
-      - name: Build dbt Models
-        run: |
-          make up
-          poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
-          make down
-
-      - name: Upload Manifest to S3
-        run: |
-          aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json
+          make test

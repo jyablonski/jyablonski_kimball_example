@@ -1,9 +1,9 @@
 {{
     config(
         materialized='incremental',
-        unique_key="sale_id",
-        post_hook="delete from {{ this }} where sale_id not in (select sale_id from {{ source('application_db', 'sales') }} )",
-        merge_update_columns = ['customer_id', 'product_id', 'total_amount', 'created_at', 'modified_at'],
+        unique_key="id",
+        post_hook="delete from {{ this }} where id not in (select id from {{ source('application_db', 'order') }} )",
+        merge_update_columns = ['customer_id'],
     )
 }}
 -- post hook - after running, delete any record in this table that has been deleted in the source table
@@ -11,7 +11,7 @@
 
 select *
 
-from {{ source('application_db', 'sales') }}
+from {{ source('application_db', 'order') }}
 
 {% if is_incremental() %}
 

@@ -8,7 +8,7 @@
     config(
       target_database='postgres',
       target_schema='dbt_stg',
-      unique_key='payment_id',
+      unique_key='id',
 
       strategy='timestamp',
       updated_at='modified_at',
@@ -16,6 +16,6 @@
     )
 }}
 
-    select * from {{ source('application_db', 'payments') }}
+    select * from {{ source('application_db', 'payment') }}
 
 {% endsnapshot %}

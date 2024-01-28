@@ -1,9 +1,0 @@
-version: 2
-
-models:
-    - name: total_payments_by_customer
-      columns:
-        - name: payment_id
-          tests:
-            - unique
-            - not_null

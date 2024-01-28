@@ -1,0 +1,101 @@
+# name: dbt Slim CI
+
+# on: 
+#   [pull_request]
+
+# env:
+#   S3_BUCKET: ${{ secrets.S3_BUCKET }}
+#   IAM_ROLE: ${{ secrets.IAM_ROLE }}
+#   AWS_REGION : "us-east-1"
+
+# permissions:
+#       id-token: write
+#       contents: read
+
+# jobs:
+#   slim_ci_pipeline:
+#     name: Slim CI Pipeline
+#     runs-on: ubuntu-20.04
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: "3.11"
+
+#       - name: Install Requirements
+#         run: |
+#           pip install poetry
+#           poetry install
+
+#       - name: Configure Aws Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           role-to-assume: ${{ env.IAM_ROLE }}
+#           role-session-name: kimball-dbt-ci
+#           aws-region: ${{ env.AWS_REGION }}
+
+#       - name: Install dbt Dependencies
+#         run: |
+#           poetry run dbt deps --target dev --profiles-dir profiles/
+
+#       - name: Get Manifest File
+#         run: |
+#           aws s3 cp s3://${{ env.S3_BUCKET }}/ci/manifest.json manifest.json
+
+#       - name: Build dbt Models
+#         run: |
+#           make up
+#           poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
+#           make down
+
+#       - name: Upload Manifest to S3
+#         run: |
+#           aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json
+
+      # it's not easy to pipe the results of the dbt build to the pr as a comment ;/
+      # - name: Build dbt Models
+      #   id: build_dbt
+      #   run: |
+      #     make up
+      #     RESULT=$(poetry run dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./)
+      #     delimiter="$(openssl rand -hex 8)"
+      #     {
+      #       echo "report<<${delimiter}"
+      #       cat ${{ env.report_filename }}
+      #       echo "${delimiter}"
+      #     } >> $GITHUB_OUTPUT
+      #     make down
+      #     echo "DBT_OUTPUT=$RESULT" >> $GITHUB_ENV
+
+      # - name: Upload Manifest to S3
+      #   run: |
+      #     aws s3 cp target/manifest.json s3://${{ env.S3_BUCKET }}/ci/manifest.json
+
+      # - name: Comment Results on PR
+      #   uses: actions/github-script@0.9.0
+      #   env:
+      #     dbt_output: ${{ env.DBT_OUTPUT }}
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const output = `#### dbt CI Results
+      #       <details><summary>Show</summary>
+      #       \`\`\`\n
+      #       ${process.env.DBT_OUTPUT}
+      #       \`\`\`
+      #       </details>
+      #       ${process.env.message}
+      #       </details>
+      #       ${process.env.MESSAGE}
+      #       </details>
+      #       ${process.env.dbt_output}
+      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })

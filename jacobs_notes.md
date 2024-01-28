@@ -48,3 +48,33 @@ use scd2 when you need to reflect historical truth at point in time.
 `dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./`
 `dbt build --select incremental_pk_tester --target dev --profiles-dir profiles/`
 `dbt build --select incremental_pk_tester_merge_only --target dev --profiles-dir profiles/`
+
+
+dbt state modified vs state deferred
+
+State Deferred is for building dbt Resources in one environment while telling it to use parent models from another environment
+- The purpose of this is to save time and computational resources.
+- `dbt run --select my_model+ --defer --state my_stg_state_file`
+- [More Complex Documentation](https://docs.getdbt.com/reference/node-selection/defer)
+
+State modified is for building only changed dbt Resources based on the last known dbt Manifest file.
+
+[Link](https://paulfry999.medium.com/v0-4-pre-chatgpt-how-to-create-ci-cd-pipelines-for-dbt-core-88e68ab506dd)
+
+`dbt ls --select state:modified+ --defer --state=prod-run-artifacts`  # list the modified dbt models
+        
+`dbt run --select state:modified+ --defer --state=prod-run-artifacts` # run modified dbt models only
+
+``` sh
+# list the modified dbt models
+dbt ls --select state:modified+ --defer --state=prod-run-artifacts
+
+# run modified dbt models only
+dbt run --select state:modified+ --defer --state=prod-run-artifacts
+
+dbt run --select state:modified+ --target prod --defer --state=./
+
+dbt run --select state:modified+ --target prod --state=./
+
+dbt ls --select state:modified+ --state=./
+```
