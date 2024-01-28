@@ -6,7 +6,7 @@ with orders as (
         order_detail.id as order_detail_id,
         invoice.id as invoice_id,
         "order".customer_id,
-        customer.customer_name,
+        customers.customer_name,
         order_detail.product_id,
         order_detail.product_price_id,
         product.product_name,
@@ -16,8 +16,8 @@ with orders as (
         "order".created_at,
         "order".modified_at
     from {{ source('application_db', 'order') }}
-        inner join {{ source('application_db', 'customer') }}
-            on "order".customer_id = customer.id
+        inner join {{ ref('customers') }}
+            on "order".customer_id = customers.customer_id
         inner join {{ source('application_db', 'order_detail') }}
             on "order".id = order_detail.order_id
         inner join {{ source('application_db', 'product') }}

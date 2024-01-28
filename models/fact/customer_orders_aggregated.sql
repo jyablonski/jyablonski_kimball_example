@@ -4,13 +4,13 @@ with orders as (
         "order".id as order_id,
         invoice.id as invoice_id,
         "order".customer_id,
-        customer.customer_name,
+        customers.customer_name,
         invoice.total_amount as order_total_amount,
         "order".created_at as order_created_at,
         "order".modified_at as order_modified_at
     from {{ source('application_db', 'order') }}
-        inner join {{ source('application_db', 'customer') }}
-            on "order".customer_id = customer.id
+        inner join {{ ref('customers') }}
+            on "order".customer_id = customers.customer_id
         inner join {{ source('application_db', 'invoice') }}
             on "order".id = invoice.order_id
 )

@@ -5,8 +5,8 @@ with payments as (
         payment.payment_type_detail,
         payment.invoice_id,
         payment.financial_account_id,
-        customer.id as customer_id,
-        customer.customer_name,
+        customers.customer_id,
+        customers.customer_name,
         financial_account.financial_account_name,
         payment_type.payment_type,
         payment.created_at,
@@ -20,8 +20,8 @@ with payments as (
             on payment.invoice_id = invoice.id
         inner join {{ source('application_db', 'order') }}
             on invoice.order_id = "order".id
-        inner join {{ source('application_db', 'customer') }}
-            on "order".customer_id = customer.id
+        inner join {{ ref('customers') }}
+            on "order".customer_id = customers.customer_id
 )
 
 select *
