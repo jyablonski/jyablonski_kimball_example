@@ -10,7 +10,6 @@ python = "^3.11"
 dbt-core = "^1.6.2"
 dbt-postgres = "^1.6.2"
 elementary-data = "^0.12.0"
-psycopg2 = "^2.9.9"
 
 
 [tool.poetry.group.dev.dependencies]
