@@ -204,7 +204,7 @@ VALUES
     (1, 1, current_timestamp, current_timestamp),
     (2, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
     (3, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
-    (4, 3, current_timestamp, current_timestamp);
+    (4, 3, current_timestamp + interval '1 day', current_timestamp + interval '1 day');
 
 
 INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity, created_at, modified_at)
