@@ -1,10 +1,6 @@
 with customer_payment_invoice_sum as (
-    select
-        customer_id,
-        invoice_id,
-        sum(amount) as total_amount_paid
-    from {{ ref('customer_payment_history') }}
-    group by customer_id, invoice_id
+    select *
+    from {{ ref('customer_payment_invoice_sum') }}
 ),
 
 pending_invoices as (
@@ -15,7 +11,8 @@ pending_invoices as (
         customer_orders_aggregated.order_total_amount,
         coalesce(customer_payment_invoice_sum.total_amount_paid, 0) as total_amount_paid,
         order_total_amount - coalesce(customer_payment_invoice_sum.total_amount_paid, 0) as total_amount_remaining,
-        date_part('day', order_created_at - current_date) as days_outstanding,
+        -- calculate difference between 2 dates, divide by number of seconds in a day, and round it up using the ceil function
+        ceil(extract(epoch from (current_date - order_created_at)) / 86400) as days_outstanding,
         order_created_at,
         order_modified_at
     from {{ ref('customer_orders_aggregated') }}

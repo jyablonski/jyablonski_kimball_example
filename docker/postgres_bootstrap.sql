@@ -1,3 +1,8 @@
+ALTER SYSTEM SET wal_level = logical;
+ALTER ROLE postgres WITH REPLICATION;
+
+BEGIN;
+
 CREATE SCHEMA source;
 CREATE SCHEMA dbt_stg;
 CREATE SCHEMA dbt_prod;
@@ -194,21 +199,21 @@ VALUES
     (3, 'Hubspot', 0, current_timestamp + interval '14 days'),
     (1, 'Salesforce', 0, current_timestamp + interval '21 days');
 
-INSERT INTO source.order (id, customer_id)
+INSERT INTO source.order (id, customer_id, created_at, modified_at)
 VALUES 
-    (1, 1),
-    (2, 2),
-    (3, 2),
-    (4, 3);
+    (1, 1, current_timestamp, current_timestamp),
+    (2, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (3, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (4, 3, current_timestamp, current_timestamp);
 
 
-INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity)
+INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity, created_at, modified_at)
 VALUES
-    (1, 1, 1, 1, 1),
-    (2, 2, 1, 2, 1),
-    (3, 2, 2, 3, 1),
-    (4, 3, 4, 5, 1),
-    (5, 4, 3, 4, 1);
+    (1, 1, 1, 1, 1, current_timestamp, current_timestamp),
+    (2, 2, 1, 2, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (3, 2, 2, 3, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (4, 3, 4, 5, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (5, 4, 3, 4, 1, current_timestamp, current_timestamp);
 
 INSERT INTO invoice (order_id, total_amount)
 VALUES 
@@ -226,3 +231,5 @@ VALUES
 INSERT INTO source.order_json (external_data)
 VALUES
     ('{"id": 1000, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
+
+COMMIT;

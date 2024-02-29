@@ -78,3 +78,6 @@ dbt run --select state:modified+ --target prod --state=./
 
 dbt ls --select state:modified+ --state=./
 ```
+
+
+`SELECT slot_name, plugin, slot_type, database, active, restart_lsn, confirmed_flush_lsn FROM pg_replication_slots;`
