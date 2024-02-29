@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: orders_json_tester
+    - name: orders_json
       columns:
           - name: order_id
             tests:
