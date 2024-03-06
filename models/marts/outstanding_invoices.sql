@@ -1,7 +1,7 @@
 with outstanding_invoices as (
     select
         *,
-        invoice_total_amount - invoice_amount_paid as invoice_remaining_balance
+        invoice_total_amount - invoice_paid_amount as invoice_remaining_balance
     from {{ ref('customer_payments_by_invoice') }}
     where is_invoice_closed = 0
 ),
@@ -24,7 +24,7 @@ final as (
         customers.customer_name,
         customers.customer_email,
         outstanding_invoices.invoice_total_amount,
-        outstanding_invoices.invoice_amount_paid,
+        outstanding_invoices.invoice_paid_amount,
         outstanding_invoices.invoice_remaining_balance,
         outstanding_invoices.invoice_created_at,
         latest_payment_made
