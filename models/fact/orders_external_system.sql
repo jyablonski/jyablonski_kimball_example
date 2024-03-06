@@ -4,6 +4,8 @@ The operator -> returns JSON object field by key.
 The operator ->> returns JSON object field by text.
 */
 
+-- ill fuq with this later.  maybe make this online orders or some shit
+
 with orders_external as (
     select
         cast(external_data ->> 'id' as integer) as order_id,
