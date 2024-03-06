@@ -28,12 +28,26 @@ CREATE TABLE customer (
     modified_at timestamp default current_timestamp
 );
 
+CREATE TABLE store (
+    id serial PRIMARY KEY,
+    store_name varchar(100),
+    street varchar(100),
+    city varchar(100),
+    state varchar(2),
+    zip_code integer,
+    country varchar(50),
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
+);
+
 CREATE TABLE source.order (
     id serial primary key,
     customer_id integer,
+    store_id integer,
     created_at timestamp default current_timestamp,
     modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customer(id)
+    CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customer(id),
+    CONSTRAINT fk_store_id FOREIGN KEY (store_id) REFERENCES store(id)
 );
 
 
@@ -145,6 +159,11 @@ VALUES
     ('Gift Card', 'General Goods'),
     ('Debit Card', 'z');
 
+INSERT INTO store (id, store_name, street, city, state, zip_code, country)
+VALUES
+    (1, 'Johnny Allstar Allparts', '123 Milky Way', 'Los Angeles', 'CA', 92679, 'USA'),
+    (2, 'Barneys Autoparts', '342 Rivers Walk', 'Las Vegas', 'NV', 43342, 'USA'),
+    (10, 'Makers Mark', '4443 Hoozier Boulevard', 'Chicago', 'IL', 60601, 'USA');
 
 INSERT INTO financial_account (financial_account_name, financial_account_type, financial_account_description)
 VALUES 
@@ -199,12 +218,12 @@ VALUES
     (3, 'Hubspot', 0, current_timestamp + interval '14 days'),
     (1, 'Salesforce', 0, current_timestamp + interval '21 days');
 
-INSERT INTO source.order (id, customer_id, created_at, modified_at)
+INSERT INTO source.order (id, customer_id, store_id, created_at, modified_at)
 VALUES 
-    (1, 1, current_timestamp, current_timestamp),
-    (2, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
-    (3, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
-    (4, 3, current_timestamp + interval '1 day', current_timestamp + interval '1 day');
+    (1, 1, 1, current_timestamp, current_timestamp),
+    (2, 2, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (3, 2, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (4, 3, 10, current_timestamp + interval '1 day', current_timestamp + interval '1 day');
 
 
 INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity, created_at, modified_at)
