@@ -1,0 +1,19 @@
+version: 2
+
+models:
+    - name: customer_payments_by_invoice
+      columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
+          - name: invoice_id
+            tests:
+              - unique
+              - not_null
+          - name: invoice_paid_amount
+            tests:
+              - not_null
+          - name: is_invoice_closed
+            tests:
+              - not_null
