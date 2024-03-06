@@ -1,0 +1,23 @@
+version: 2
+
+models:
+    - name: outstanding_invoices
+      tests:
+        # either the total amount = remaining balance,
+        # or the total amount < paid amount
+        - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+            column_A: invoice_total_amount
+            column_B: invoice_paid_amount
+            or_equal: false
+        - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+            column_A: invoice_total_amount
+            column_B: invoice_remaining_balance
+            or_equal: true
+      columns:
+          - name: invoice_id
+            tests:
+              - unique
+              - not_null
+          - name: invoice_remaining_balance
+            tests:
+              - not_null

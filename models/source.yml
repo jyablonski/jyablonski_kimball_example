@@ -19,3 +19,4 @@ sources:
       - name: product_category
       - name: product_price
       - name: sale
+      - name: store
