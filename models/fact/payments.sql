@@ -15,8 +15,6 @@ with payments as (
         "order".customer_id as customer_id,
         financial_account.id as financial_account_id,
         payment.amount as payment_amount,
-        invoice.total_amount as invoice_total_amount,
-        case when payment.amount = invoice.total_amount then 1 else 0 end as is_invoice_closed,
         payment.created_at as payment_created_at,
         payment.modified_at as payment_modified_at
     from {{ source('application_db', 'payment') }}

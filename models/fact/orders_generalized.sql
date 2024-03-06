@@ -12,6 +12,8 @@ with orders_generalized as (
         "order".store_id as store_id,
         "order".customer_id,
         invoice.total_amount as invoice_total_amount,
+        invoice.created_at as invoice_created_at,
+        invoice.modified_at as invoice_modified_at,
         "order".created_at as order_created_at,
         "order".modified_at as order_modified_at
     from {{ source('application_db', 'order') }}
