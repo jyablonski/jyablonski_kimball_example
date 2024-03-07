@@ -1,5 +1,5 @@
 select
-    id,
+    id as financial_account_id,
     financial_account_name,
     financial_account_description,
     financial_account_type,

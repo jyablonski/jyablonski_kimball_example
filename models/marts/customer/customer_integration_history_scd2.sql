@@ -17,7 +17,9 @@ max_dates as (
         integration_type,
         max(created_at) as max_created_at
     from customer_records
-    group by customer_id, integration_type
+    group by
+        customer_id,
+        integration_type
 ),
 
 windowed as (
