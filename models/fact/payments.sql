@@ -21,7 +21,7 @@ with payments as (
         inner join {{ source('application_db', 'payment_type') }} on payment.payment_type_id = payment_type.id
         inner join {{ source('application_db', 'invoice') }} on payment.invoice_id = invoice.id
         inner join {{ source('application_db', 'order') }} on invoice.order_id = "order".id
-        inner join {{ source('application_db', 'financial_account') }} on payment.financial_account_id = financial_account.id
+        inner join {{ source('application_db', 'financial_account') }} on payment_type.financial_account_id = financial_account.id
     {% if is_incremental() %}
 
         where "payment".modified_at > (select max(payment_created_at) from {{ this }})
