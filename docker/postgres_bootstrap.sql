@@ -14,6 +14,7 @@ CREATE TYPE payment_enum AS ENUM ('Cash', 'Credit Card', 'Debit Card', 'Gift Car
 CREATE TABLE payment_type (
     id serial PRIMARY KEY,
     payment_type payment_enum,
+    financial_account_id integer not null,
     payment_type_description varchar(100),
     created_at timestamp default current_timestamp,
     modified_at timestamp default current_timestamp
@@ -98,7 +99,6 @@ CREATE TABLE order_detail (
 CREATE TABLE invoice (
     id serial PRIMARY KEY,
     order_id integer,
-    invoice_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10, 2) NOT NULL,
     currency varchar(3) default 'USD',
     is_voided boolean default FALSE,
@@ -125,10 +125,8 @@ CREATE TABLE payment (
     payment_type_id integer,
     payment_type_detail varchar(100),
     invoice_id integer,
-    financial_account_id integer,
     created_at timestamp default current_timestamp,
     modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_financial_account_id FOREIGN KEY (financial_account_id) REFERENCES financial_account(id),
     CONSTRAINT fk_invoice_id FOREIGN KEY (invoice_id) REFERENCES invoice(id),
     CONSTRAINT fk_payment_type_id FOREIGN KEY (payment_type_id) REFERENCES payment_type(id)
 );
@@ -152,23 +150,24 @@ CREATE TABLE source.order_json (
     modified_at timestamp default current_timestamp
 );
 
-INSERT INTO payment_type (payment_type, payment_type_description)
+INSERT INTO payment_type (payment_type, financial_account_id, payment_type_description)
 VALUES
-    ('Cash', 'zz'),
-    ('Credit Card', 'Electronics'),
-    ('Gift Card', 'General Goods'),
-    ('Debit Card', 'z');
+    ('Cash', 1, 'Cash Transaction'),
+    ('Credit Card', 2, 'Credit Card Transaction'),
+    ('Gift Card', 1, 'Gift Card Transaction'),
+    ('Debit Card', 3, 'Debit Card Transaction');
 
 INSERT INTO store (id, store_name, street, city, state, zip_code, country)
 VALUES
     (1, 'Johnny Allstar Allparts', '123 Milky Way', 'Los Angeles', 'CA', 92679, 'USA'),
     (2, 'Barneys Autoparts', '342 Rivers Walk', 'Las Vegas', 'NV', 43342, 'USA'),
-    (10, 'Makers Mark', '4443 Hoozier Boulevard', 'Chicago', 'IL', 60601, 'USA');
+    (10, 'Minneys Emporium', '4443 Hoozier Boulevard', 'Chicago', 'IL', 60601, 'USA');
 
 INSERT INTO financial_account (financial_account_name, financial_account_type, financial_account_description)
 VALUES 
     ('Cash', 'Asset', 'Account for Cash'),
     ('Accounts Receivable', 'Asset', 'Account for AR'),
+    ('Bank Account', 'Asset', 'Account for Bank Balance'),
     ('Sales Revenue', 'Revenue', 'Account for all Store Revenue'),
     ('Cost of Goods Sold', 'Expense', 'Account for COGS'),
     ('Operating Expenses', 'Expense', 'Account for General Expenses');
@@ -191,7 +190,12 @@ VALUES
     ('Apples', 1),
     ('Gameboy', 2),
     ('Paper', 3),
-    ('Blueberries', 1);
+    ('Blueberries', 1),
+    ('Raspberries', 1),
+    ('Nintendo DS', 2),
+    ('Staples', 3),
+    ('Office Chair', 3),
+    ('HDMI Cable', 2);
 
 INSERT INTO product_price (id, product_id, price, is_active, valid_from, valid_to)
 VALUES
@@ -220,32 +224,32 @@ VALUES
 
 INSERT INTO source.order (id, customer_id, store_id, created_at, modified_at)
 VALUES 
-    (1, 1, 1, current_timestamp, current_timestamp),
+    (1, 1, 1, current_timestamp - interval '38 day', current_timestamp - interval '38 day'),
     (2, 2, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
     (3, 2, 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
-    (4, 3, 10, current_timestamp + interval '1 day', current_timestamp + interval '1 day');
+    (4, 3, 10, current_timestamp, current_timestamp);
 
 
 INSERT INTO order_detail (id, order_id, product_id, product_price_id, quantity, created_at, modified_at)
 VALUES
-    (1, 1, 1, 1, 1, current_timestamp, current_timestamp),
+    (1, 1, 1, 1, 1, current_timestamp - interval '38 day', current_timestamp - interval '38 day'),
     (2, 2, 1, 2, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
     (3, 2, 2, 3, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
     (4, 3, 4, 5, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
     (5, 4, 3, 4, 1, current_timestamp, current_timestamp);
 
-INSERT INTO invoice (order_id, total_amount)
+INSERT INTO invoice (order_id, total_amount, created_at, modified_at)
 VALUES 
-    (1, 15.99),
-    (2, 61.98),
-    (3, 21.98),
-    (4, 3.99);
+    (1, 15.99, current_timestamp - interval '38 day', current_timestamp - interval '38 day'),
+    (2, 61.98, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (3, 21.98, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (4, 3.99, current_timestamp, current_timestamp);
 
-INSERT INTO payment (amount, payment_type_id, payment_type_detail, invoice_id, financial_account_id)
+INSERT INTO payment (amount, payment_type_id, payment_type_detail, invoice_id, created_at, modified_at)
 VALUES 
-    (15.99, 1, NULL, 1, 3),
-    (61.98, 2, '4436', 2, 3),
-    (10.00, 3, 'G42423241', 3, 3);
+    (15.99, 1, NULL, 1, current_timestamp - interval '38 day', current_timestamp - interval '38 day'),
+    (61.98, 2, '4436', 2, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
+    (10.00, 3, 'G42423241', 3, current_timestamp - interval '14 day', current_timestamp - interval '14 day');
 
 INSERT INTO source.order_json (external_data)
 VALUES
