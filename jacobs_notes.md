@@ -81,3 +81,7 @@ dbt ls --select state:modified+ --state=./
 
 
 `SELECT slot_name, plugin, slot_type, database, active, restart_lsn, confirmed_flush_lsn FROM pg_replication_slots;`
+
+## SCD2
+
+Example in `/models/dim/dim_customers.sql`

@@ -7,6 +7,17 @@ CREATE SCHEMA source;
 CREATE SCHEMA dbt_stg;
 CREATE SCHEMA dbt_prod;
 
+-- **** AUDIT DATA HEADS UP ****
+-- `audit_type` key
+-- 0 = insert
+-- 1 = update
+-- 2 = delete
+
+-- for audit tables - on updates and deletes to existing records, keep thje `created_at`
+--  timestamp the same, but update the `modified_at` timestamp to the current timestamp
+
+-- **** AUDIT DATA HEADS UP ****
+
 -- default directory for every statement in this bootstrap
 SET search_path TO source;
 
@@ -25,6 +36,28 @@ CREATE TABLE customer (
     id serial PRIMARY KEY,
     customer_name VARCHAR(100),
     customer_email VARCHAR(100),
+    address varchar(100),
+    address_2 varchar(100),
+    city varchar(50),
+    zip_code integer,
+    state varchar(3),
+    country varchar(50),
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
+);
+
+CREATE TABLE customer_audit (
+    id serial PRIMARY KEY,
+    audit_type integer,
+    customer_id integer,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100),
+    address varchar(100),
+    address_2 varchar(100),
+    city varchar(50),
+    zip_code integer,
+    state varchar(3),
+    country varchar(50),
     created_at timestamp default current_timestamp,
     modified_at timestamp default current_timestamp
 );
@@ -172,12 +205,23 @@ VALUES
     ('Cost of Goods Sold', 'Expense', 'Account for COGS'),
     ('Operating Expenses', 'Expense', 'Account for General Expenses');
 
--- Insert some dummy data
-INSERT INTO customer (customer_name, customer_email)
+INSERT INTO customer (customer_name, customer_email, address, address_2, city, zip_code, state, country, created_at, modified_at)
 VALUES
-    ('Johnny Allstar', 'customer1@example.com'),
-    ('Aubrey Plaza', 'customer2@example.com'),
-    ('John Wick', 'customer3@example.com');
+    ('Johnny Allstar', 'johnny@allstar.com', '15 Sagefoot', null, 'Los Angeles', 44433, 'CA', 'USA', '2024-01-01 00:30:00', current_timestamp),
+    ('Aubrey Plaza', 'fake@nobody.com', '456 Elm St', null, 'Metropolis', 54321, 'NY', 'USA', current_timestamp, current_timestamp),
+    ('John Wick', 'customer3@example.com', '789 Oak St', 'Apt 1615', 'Los Angeles', 67890, 'CA', 'USA', current_timestamp, current_timestamp);
+
+INSERT INTO customer_audit (id, audit_type, customer_id, customer_name, customer_email, address, address_2, city, zip_code, state, country, created_at, modified_at)
+VALUES
+    (1, 0, 1, 'Johnny Allstar', 'customer1@example.com', '123 Main St', 'Apt 4B', 'Springfield', 12345, 'IL', 'USA', '2024-01-01 00:30:00', '2024-01-01 00:30:00'),
+    (2, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '13 Peak Trail', null, 'Las Vegas', 11112, 'NV', 'USA', '2024-01-01 00:30:00', '2024-03-01 12:00:00'),
+    (3, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '6 Moccasin', null, 'Trabuco Canyon', 92679, 'CA', 'USA', '2024-01-01 00:30:00', '2024-06-01 09:00:00'),
+    (4, 0, 1, 'Bobby Newport', 'newportb@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-01-01 04:30:00'),
+    (5, 1, 1, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-05-01 15:30:00'),
+    (6, 2, 1, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-06-15 00:30:00'),
+    (7, 0, 2, 'Aubrey Plaza', 'fake@nobody.com', '456 Elm St', null, 'Metropolis', 54321, 'NY', 'USA', current_timestamp, current_timestamp),
+    (8, 0, 3, 'John Wick', 'customer3@example.com', '789 Oak St', 'Apt 1615', 'Los Angeles', 67890, 'CA', 'USA', current_timestamp, current_timestamp),
+    (9, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '15 Sagefoot', null, 'Los Angeles', 44433, 'CA', 'USA', '2024-01-01 00:30:00', current_timestamp);
 
 INSERT INTO product_category (id, product_category_name)
 VALUES

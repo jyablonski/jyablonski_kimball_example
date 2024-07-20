@@ -7,6 +7,7 @@ sources:
     description: Landing Schema for Source Data
     tables:
       - name: customer
+      - name: customer_audit
       - name: financial_account
       - name: integration
       - name: invoice

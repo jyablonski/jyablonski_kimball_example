@@ -3,17 +3,17 @@
 
 with past_customer_orders as (
     select
-        orders_detailed.order_detail_id,
-        customers.customer_name,
-        customers.customer_email,
-        products.product_name,
-        products.product_category_name
-    from {{ ref('orders_detailed') }}
-        inner join {{ ref('customers') }} on orders_detailed.customer_id = customers.customer_id
-        inner join {{ ref('products') }} on orders_detailed.product_id = products.product_id
+        fact_orders_detailed.order_detail_id,
+        dim_customers.customer_name,
+        dim_customers.customer_email,
+        dim_products.product_name,
+        dim_products.product_category_name
+    from {{ ref('fact_orders_detailed') }}
+        inner join {{ ref('dim_customers') }} on fact_orders_detailed.customer_id = dim_customers.customer_id
+        inner join {{ ref('dim_products') }} on fact_orders_detailed.product_id = dim_products.product_id
     where
-        orders_detailed.order_detail_created_at < current_date - interval '30 days'
-        and orders_detailed.order_detail_created_at >= current_date - interval '1 year'
+        fact_orders_detailed.order_detail_created_at < current_date - interval '30 days'
+        and fact_orders_detailed.order_detail_created_at >= current_date - interval '1 year'
 )
 
 select *

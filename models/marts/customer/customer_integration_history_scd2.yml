@@ -7,16 +7,16 @@ models:
             column_list: ["customer_id", "integration_type", "valid_from"]
       columns:
           - name: is_active
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
                   min_value: 0
                   max_value: 1
           - name: is_current_integration_record
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_values_to_be_between:
                   min_value: 0
                   max_value: 1
           - name: integration_type
-            tests:
+            data_tests:
               - dbt_expectations.expect_column_values_to_be_in_set:
                   value_set: ["Hubspot", "Mailchimp", "Salesforce"]

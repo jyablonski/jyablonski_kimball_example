@@ -15,9 +15,9 @@ models:
             or_equal: true
       columns:
           - name: invoice_id
-            tests:
+            data_tests:
               - unique
               - not_null
           - name: invoice_remaining_balance
-            tests:
+            data_tests:
               - not_null
