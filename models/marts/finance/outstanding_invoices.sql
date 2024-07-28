@@ -9,11 +9,11 @@ with outstanding_invoices as (
 customer_last_payment_on_invoice as (
     -- start with outstanding invoices to limit the fk out of the data passed into here
     select
-        payments.invoice_id,
-        max(payments.payment_created_at) as latest_payment_made
+        fact_payments.invoice_id,
+        max(fact_payments.payment_created_at) as latest_payment_made
     from outstanding_invoices
-        left join {{ ref('payments') }} on outstanding_invoices.invoice_id = payments.invoice_id
-    group by payments.invoice_id
+        left join {{ ref('fact_payments') }} on outstanding_invoices.invoice_id = fact_payments.invoice_id
+    group by fact_payments.invoice_id
 
 
 ),
@@ -21,16 +21,17 @@ customer_last_payment_on_invoice as (
 final as (
     select
         outstanding_invoices.invoice_id,
-        customers.customer_name,
-        customers.customer_email,
+        dim_customers.customer_name,
+        dim_customers.customer_email,
         outstanding_invoices.invoice_total_amount,
         outstanding_invoices.invoice_paid_amount,
         outstanding_invoices.invoice_remaining_balance,
         outstanding_invoices.invoice_created_at,
         latest_payment_made
     from outstanding_invoices
-        inner join {{ ref('customers') }} on outstanding_invoices.customer_id = customers.customer_id
+        inner join {{ ref('dim_customers') }} on outstanding_invoices.customer_id = dim_customers.customer_id
         left join customer_last_payment_on_invoice on outstanding_invoices.invoice_id = customer_last_payment_on_invoice.invoice_id
+    where dim_customers.is_latest_record = 1
 )
 
 select *

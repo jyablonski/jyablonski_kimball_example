@@ -1,13 +1,13 @@
 with aggregate_products as (
     select
-        products.product_name,
-        products.product_category_name,
+        dim_products.product_name,
+        dim_products.product_category_name,
         sum(quantity) as units_sold
-    from {{ ref('orders_detailed') }}
-        inner join {{ ref('products') }} on orders_detailed.product_id = products.product_id
+    from {{ ref('fact_orders_detailed') }}
+        inner join {{ ref('dim_products') }} on fact_orders_detailed.product_id = dim_products.product_id
     group by
-        products.product_name,
-        products.product_category_name
+        dim_products.product_name,
+        dim_products.product_category_name
 )
 
 select *

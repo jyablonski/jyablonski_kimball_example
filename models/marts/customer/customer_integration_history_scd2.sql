@@ -1,6 +1,7 @@
 -- SCD2 Table to track customer integation history
 -- typical use case is for billing, accounting, or for historical accuracy
 
+-- 2024-07-20: UPDATE this is not the right place to do this, should be a dim
 with customer_records as (
     select
         id,

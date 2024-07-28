@@ -1,16 +1,16 @@
 version: 2
 
 models:
-    - name: stores
+    - name: dim_stores
       columns:
           - name: store_id
-            tests:
+            data_tests:
               - unique
           - name: store_name
-            tests:
+            data_tests:
               - not_null
           - name: state
-            tests:
+            data_tests:
               - not_null
               - dbt_expectations.expect_column_value_lengths_to_equal:
                   value: 2

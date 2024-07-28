@@ -6,7 +6,7 @@ with customer_payments as (
         customer_id,
         invoice_id,
         count(payment_type_id) as payment_type_count
-    from {{ ref('payments') }}
+    from {{ ref('fact_payments') }}
     group by
         customer_id,
         invoice_id
