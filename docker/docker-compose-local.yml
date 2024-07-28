@@ -25,6 +25,8 @@ services:
     links:
       - postgres:postgres
     command: dbt build
+    volumes:
+      - ${PWD}/models/:/home/appuser/models
 
 networks:
   api_network:
