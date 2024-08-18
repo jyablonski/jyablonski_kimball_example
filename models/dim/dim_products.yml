@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: dim_products
+    meta:
+      owner: "@jacob"
+      model_maturity: in de
+      pii: true
+    columns:
+      - name: product_id
+        data_tests:
+          - unique
+      - name: product_name
+        data_tests:
+          - not_null
