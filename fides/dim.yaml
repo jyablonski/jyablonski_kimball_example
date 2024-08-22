@@ -1,0 +1,11 @@
+dim_products:
+  data_categories:
+  - user.contact.email
+  fides_meta:
+    references: null
+    identity: email
+    primary_key: null
+    data_type: string
+    length: null
+    return_all_elements: null
+    read_only: null

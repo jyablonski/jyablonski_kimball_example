@@ -6,6 +6,45 @@ models:
       owner: "@jacob"
       model_maturity: in de
       pii: true
+      example_dict:
+        try1: val1 # this gets dumped to a dictionary of key value pairs under the col1 column name
+        try2: val2
+        try3: val3
+        try4: val4
+        try5:
+          - val1
+          - val2
+          - val3
+      fides:
+        data_categories:
+          - user.contact.email
+        fides_meta:
+          references: null
+          identity: email
+          primary_key: null
+          data_type: string
+          length: null
+          return_all_elements: null
+          read_only: null
+      col2: test2
+      col3: test3
+      col4: test4
+      col5: test5
+      col6: test6
+      col7: test7
+      col8: test8
+      col9: test9
+      col10: test10
+      col11: test11
+      is_valid: null # this just shows an empty value in that slot
+      date_started: 2024-06-11
+      profit: 43.43
+      col15: test15
+      col16: test16
+      col17: test17
+      col18: test18
+      col19: test19
+      col20: test20
     columns:
       - name: product_id
         data_tests:

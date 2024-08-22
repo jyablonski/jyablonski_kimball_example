@@ -85,3 +85,10 @@ dbt ls --select state:modified+ --state=./
 ## SCD2
 
 Example in `/models/dim/dim_customers.sql`
+
+
+## General
+
+`sudo ss --all sport = 8080 -K`
+
+- This command will kill any leftover resources used on port 8000 when running dbt docs serve
