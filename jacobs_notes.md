@@ -92,3 +92,78 @@ Example in `/models/dim/dim_customers.sql`
 `sudo ss --all sport = 8080 -K`
 
 - This command will kill any leftover resources used on port 8000 when running dbt docs serve
+
+
+## dbt Coverage
+
+[Example Repo](https://github.com/pgoslatara/dbt-beyond-the-basics)
+
+``` sh
+c
+```
+
+``` sh
+$ cd jaffle_shop
+$ dbt run  # Materialize models
+$ dbt docs generate  # Generate catalog.json and manifest.json
+$ dbt-coverage compute doc --cov-report coverage-doc.json  # Compute doc coverage, print it and write it to coverage-doc.json file
+$ dbt-coverage compute test --cov-report coverage-doc.json
+
+dbt-coverage compute test --cov-report coverage-doc.json --model-path-filter models/marts/
+
+Coverage report
+=====================================================================
+jaffle_shop.customers                                  6/7      85.7%
+jaffle_shop.orders                                     9/9     100.0%
+jaffle_shop.raw_customers                              0/3       0.0%
+jaffle_shop.raw_orders                                 0/4       0.0%
+jaffle_shop.raw_payments                               0/4       0.0%
+jaffle_shop.stg_customers                              0/3       0.0%
+jaffle_shop.stg_orders                                 0/4       0.0%
+jaffle_shop.stg_payments                               0/4       0.0%
+=====================================================================
+Total                                                 15/38     39.5%
+
+$ dbt-coverage compute test --cov-report coverage-test.json  # Compute test coverage, print it and write it to coverage-test.json file
+
+Coverage report
+=====================================================================
+jaffle_shop.customers                                  1/7      14.3%
+jaffle_shop.orders                                     8/9      88.9%
+jaffle_shop.raw_customers                              0/3       0.0%
+jaffle_shop.raw_orders                                 0/4       0.0%
+jaffle_shop.raw_payments                               0/4       0.0%
+jaffle_shop.stg_customers                              1/3      33.3%
+jaffle_shop.stg_orders                                 2/4      50.0%
+jaffle_shop.stg_payments                               2/4      50.0%
+=====================================================================
+Total                                                 14/38     36.8%
+
+```
+
+Comparison
+
+``` sh
+$ dbt-coverage compare coverage-after.json coverage-before.json
+
+# Coverage delta summary
+              before     after            +/-
+=============================================
+Coverage      39.47%    38.46%         -1.01%
+=============================================
+Tables             8         8          +0/+0
+Columns           38        39          +1/+0
+=============================================
+Hits              15        15          +0/+0
+Misses            23        24          +1/+0
+=============================================
+
+# New misses
+=========================================================================
+Catalog                         15/38   (39.47%)  ->    15/39   (38.46%)
+=========================================================================
+- jaffle_shop.customers          6/7    (85.71%)  ->     6/8    (75.00%)
+-- new_col                       -/-       (-)    ->     0/1     (0.00%)
+=========================================================================
+
+```

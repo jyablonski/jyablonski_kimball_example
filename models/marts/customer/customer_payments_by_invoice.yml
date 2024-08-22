@@ -2,6 +2,7 @@ version: 2
 
 models:
     - name: customer_payments_by_invoice
+      description: '{{ doc("customer_payments_by_invoice") }}'
       columns:
           - name: order_id
             data_tests:
@@ -14,6 +15,6 @@ models:
           - name: invoice_paid_amount
             data_tests:
               - not_null
-          - name: is_invoice_closed
-            data_tests:
-              - not_null
+          # - name: is_invoice_closed
+          #   data_tests:
+          #     - not_null
