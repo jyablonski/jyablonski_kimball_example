@@ -81,6 +81,7 @@ for model_name, model_data in manifest["nodes"].items():
         fides_data = meta_dict.get("fides")
 
         if fides_data:
+            print(model_data)
             fides_model = model_name.split(".")[-1]
             fides_data["schema"] = model_data["schema"]
             fides_dicts[fides_model] = fides_data

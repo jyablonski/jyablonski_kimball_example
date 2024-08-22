@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: dim_payment_types
+    meta:
+      owner: "@jacob"
+      model_maturity: in de
+      pii: true
+      fides:
+        skip_processing: true
+      fides_meta2: null
+    columns:
+      - name: product_id
+        meta:
+          contains_pii: true
+          # description: this could be generated in the script
+          # description: 'Fides Generated Description for Column: delinquent' # example
+          # data_categories:
+          #   - user.contact.email
+          fides:
+            data_categories:
+              - user.contact.email
+            fides_meta:
+              references: null
+              identity: email
+              primary_key: null
+              data_type: string
+              length: null
+              return_all_elements: null
+              read_only: null
