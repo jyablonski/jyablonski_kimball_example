@@ -1,18 +1,18 @@
 name: dbt Doc Coverage
 
-on: 
-  [pull_request]
+on: [pull_request]
 
 env:
   S3_BUCKET: ${{ secrets.S3_BUCKET }}
   IAM_ROLE: ${{ secrets.IAM_ROLE }}
-  AWS_REGION : "us-east-1"
+  AWS_REGION: "us-east-1"
   POETRY_VERSION: "1.8.3"
   PYTHON_VERSION: "3.11"
 
 permissions:
-      id-token: write
-      contents: read
+  id-token: write
+  contents: read
+  pull-requests: write
 
 jobs:
   dbt_coverage:
@@ -53,4 +53,21 @@ jobs:
 
       - name: Print Coverage
         run: |
-          make compare-coverage
+          make compare-coverage | tee coverage_output.txt
+
+      - name: Extract and Post Coverage Summary
+        run: |
+          # Extract the last part of the output
+          coverage_summary=$(awk '/^==============================================================================================/{f=1} f' coverage_output.txt)
+
+          # Format it as a comment for the PR
+          echo "## DBT Doc Coverage Summary" > comment.txt
+          echo "\`\`\`" >> comment.txt
+          echo "$coverage_summary" >> comment.txt
+          echo "\`\`\`" >> comment.txt
+
+          # Post the comment to the PR
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
