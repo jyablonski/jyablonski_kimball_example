@@ -44,7 +44,7 @@ compare-coverage:
 	@make up
 	@poetry run dbt deps
 	@poetry run dbt build --target dev --profiles-dir profiles/
-	@poetry run dbt docs generate
+	@poetry run dbt docs generate --target dev --profiles-dir profiles/
 	@poetry run dbt-coverage compute doc --cov-report coverage-doc.json
 	@poetry run dbt-coverage compare coverage-doc.json coverage-prod.json
 	@make down
