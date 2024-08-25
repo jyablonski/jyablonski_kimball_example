@@ -51,37 +51,23 @@ jobs:
         run: |
           aws s3 cp s3://${{ env.S3_BUCKET }}/kimball/coverage-prod.json coverage-prod.json
 
-      - name: Run dbt doc coverage
+      - name: Print Coverage
         run: |
-          coverage_output=$(make compare-coverage) 
-          echo "$coverage_output" | sed -n '/Coverage/,/Catalog/p'
+          make compare-coverage | tee coverage_output.txt
 
-      - name: Post Coverage Comment
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const coverageOutput = `$(echo "$coverage_output" | sed -n '/Coverage/,/Catalog/p')`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              body: `**dbt Doc Coverage**\n\`\`\`\n${coverageOutput}\n\`\`\``
-            })
-      # - name: Print Coverage
-      #   run: |
-      #     make compare-coverage | tee coverage_output.txt
+      - name: Extract and Post Coverage Summary
+        run: |
+          # Extract the part of the output starting with the section containing "before after +/-"
+          coverage_summary=$(awk '/before *after *\+\-/{f=1} f' coverage_output.txt)
 
-      # - name: Extract and Post Coverage Summary
-      #   run: |
-      #     # Extract the last part of the output
-      #     coverage_summary=$(awk '/^==============================================================================================/{f=1} f' coverage_output.txt)
+          # Format it as a comment for the PR
+          echo "## dbt Doc Coverage Summary" > comment.txt
+          echo "\`\`\`" >> comment.txt
+          echo "$coverage_summary" >> comment.txt
+          echo "\`\`\`" >> comment.txt
 
-      #     # Format it as a comment for the PR
-      #     echo "## dbt Doc Coverage Summary" > comment.txt
-      #     echo "\`\`\`" >> comment.txt
-      #     echo "$coverage_summary" >> comment.txt
-      #     echo "\`\`\`" >> comment.txt
+          # Post the comment to the PR
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
 
-      #     # Post the comment to the PR
-      #     gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
-
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
