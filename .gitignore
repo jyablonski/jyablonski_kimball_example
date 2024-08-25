@@ -5,3 +5,4 @@ logs/
 profiles/.user.yml
 edr_target/
 **manifest.json
+coverage-*.json
