@@ -42,7 +42,7 @@ down:
 .PHONY: compare-coverage
 compare-coverage:
 	@make up
-	@poetry run dbt build --target dev
+	@poetry run dbt build --target dev --profiles-dir profiles/
 	@poetry run dbt docs generate
 	@poetry run dbt-coverage compute doc --cov-report coverage-doc.json
 	@poetry run dbt-coverage compare coverage-doc.json coverage-prod.json
