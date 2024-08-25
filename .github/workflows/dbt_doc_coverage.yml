@@ -1,0 +1,79 @@
+name: dbt Doc Coverage
+
+on: [pull_request]
+
+env:
+  S3_BUCKET: ${{ secrets.S3_BUCKET }}
+  IAM_ROLE: ${{ secrets.IAM_ROLE }}
+  AWS_REGION: "us-east-1"
+  POETRY_VERSION: "1.8.3"
+  PYTHON_VERSION: "3.11"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  dbt_coverage:
+    name: dbt Doc Coverage
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout the Repo
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry==${{ env.POETRY_VERSION }}
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        id: setup_python
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+          cache-dependency-path: poetry.lock
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Configure Aws Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.IAM_ROLE }}
+          role-session-name: kimball-dbt-doc-coverage
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get Coverage File
+        run: |
+          aws s3 cp s3://${{ env.S3_BUCKET }}/kimball/coverage-prod.json coverage-prod.json
+
+      - name: Print Coverage
+        run: |
+          make compare-coverage | tee coverage_output.txt
+
+      - name: Extract and Post Coverage Summary
+        run: |
+          # Extract everything below and including "Coverage report (doc)"
+          coverage_summary=$(awk '/^Coverage report \(doc\)/{f=1} f' coverage_output.txt)
+
+          # Save the extracted content to a file
+          echo "$coverage_summary" > extracted_coverage.txt
+
+          # Remove the last 3 lines from the file
+          head -n -3 extracted_coverage.txt > trimmed_coverage.txt
+
+          # Format it as a comment for the PR
+          echo "## dbt Doc Coverage Summary" > comment.txt
+          echo "\`\`\`" >> comment.txt
+          cat trimmed_coverage.txt >> comment.txt
+          echo "\`\`\`" >> comment.txt
+
+          # Post the comment to the PR
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: ohshit
+    description: '{{ doc("ohshit") }}'
+    columns:
+      - name: id
+        description: abc
+        data_tests:
+          - unique
+      - name: start_date
+        description: abc
+        data_tests:
+          - not_null
+      - name: end_date
+        description: abc
+        data_tests:
+          - not_null
