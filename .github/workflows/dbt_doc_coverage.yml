@@ -61,10 +61,16 @@ jobs:
           # coverage_summary=$(awk '/^==============================================================================================/{f=1} f' coverage_output.txt)
           coverage_summary=$(awk '/^Coverage report \(doc\)/{f=1} f' coverage_output.txt)
 
+          # Save the extracted content to a file
+          echo "$coverage_summary" > comment.txt
+
+          # Remove the last 3 lines from the file
+          head -n -3 comment.txt > temp.txt && mv temp.txt comment.txt
+
           # Format it as a comment for the PR
-          echo "## dbt Doc Coverage Summary" > comment.txt
+          echo "## dbt Doc Coverage Summary" >> comment.txt
           echo "\`\`\`" >> comment.txt
-          echo "$coverage_summary" >> comment.txt
+          cat comment.txt >> comment.txt
           echo "\`\`\`" >> comment.txt
 
           # Post the comment to the PR
