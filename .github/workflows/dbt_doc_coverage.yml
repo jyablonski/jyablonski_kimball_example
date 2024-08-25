@@ -36,6 +36,10 @@ jobs:
           cache: poetry
           cache-dependency-path: poetry.lock
 
+      - name: Install dependencies
+        run: |
+          poetry install
+
       - name: Configure Aws Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
