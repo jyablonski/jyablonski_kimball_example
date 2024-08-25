@@ -57,20 +57,19 @@ jobs:
 
       - name: Extract and Post Coverage Summary
         run: |
-          # Extract the last part of the output
-          # coverage_summary=$(awk '/^==============================================================================================/{f=1} f' coverage_output.txt)
+          # Extract everything below and including "Coverage report (doc)"
           coverage_summary=$(awk '/^Coverage report \(doc\)/{f=1} f' coverage_output.txt)
 
           # Save the extracted content to a file
-          echo "$coverage_summary" > comment.txt
+          echo "$coverage_summary" > extracted_coverage.txt
 
           # Remove the last 3 lines from the file
-          head -n -3 comment.txt > temp.txt && mv temp.txt comment.txt
+          head -n -3 extracted_coverage.txt > trimmed_coverage.txt
 
           # Format it as a comment for the PR
-          echo "## dbt Doc Coverage Summary" >> comment.txt
+          echo "## dbt Doc Coverage Summary" > comment.txt
           echo "\`\`\`" >> comment.txt
-          cat comment.txt >> comment.txt
+          cat trimmed_coverage.txt >> comment.txt
           echo "\`\`\`" >> comment.txt
 
           # Post the comment to the PR
