@@ -53,7 +53,7 @@ jobs:
 
       - name: Run dbt doc coverage
         run: |
-          coverage_output=$(make coverage) 
+          coverage_output=$(make compare-coverage) 
           echo "$coverage_output" | sed -n '/Coverage/,/Catalog/p'
 
       - name: Post Coverage Comment
