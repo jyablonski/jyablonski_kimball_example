@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: country_codes
+    columns:
+      - name: country_code
+        tests:
+          - unique
+          - not_null
+      - name: country_name
+        tests:
+          - unique
+          - not_null
