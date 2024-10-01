@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: incremental_pk_tester_merge_only
+    columns:
+      - name: id
+        data_tests:
+          - unique

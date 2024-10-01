@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: accounting_by_state_agg
+    columns:
+      - name: state
+        data_tests:
+          - not_null

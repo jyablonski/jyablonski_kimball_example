@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: fact_product_prices
+    columns:
+      - name: product_price_id
+        data_tests:
+          - unique

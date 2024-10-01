@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: fact_orders_detailed
+    columns:
+      - name: order_detail_id
+        data_tests:
+          - unique

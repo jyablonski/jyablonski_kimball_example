@@ -1,16 +1,26 @@
 repos:
-- repo: https://github.com/sqlfluff/sqlfluff
-  rev: 2.3.0
-  hooks:
-    - id: sqlfluff-lint
-      entry: env DBT_PRAC_KEY=hooks sqlfluff lint --processes 0
-      additional_dependencies: ['dbt-postgres', 'sqlfluff-templater-dbt']
-    - id: sqlfluff-fix
-      # Set a couple of default flags:
-      #  - `--force` to disable confirmation
-      #  - `--show-lint-violations` shows issues to not require running `sqlfluff lint`
-      #  - `--processes 0` to use maximum parallelism
-      # By default, this hook applies all rules.
-      # stages: [manual]  # this command is available only to run manually
-      entry: env DBT_PRAC_KEY=hooks sqlfluff fix --force --show-lint-violations --processes 0
-      additional_dependencies: ['dbt-postgres', 'sqlfluff-templater-dbt']
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 2.3.0
+    hooks:
+      - id: sqlfluff-lint
+        entry: env DBT_PRAC_KEY=hooks sqlfluff lint --processes 0
+        additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
+      - id: sqlfluff-fix
+        # Set a couple of default flags:
+        #  - `--force` to disable confirmation
+        #  - `--show-lint-violations` shows issues to not require running `sqlfluff lint`
+        #  - `--processes 0` to use maximum parallelism
+        # By default, this hook applies all rules.
+        # stages: [manual]  # this command is available only to run manually
+        entry: env DBT_PRAC_KEY=hooks sqlfluff fix --force --show-lint-violations --processes 0
+        additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
+    # can add more hooks here https://github.com/dbt-checkpoint/dbt-checkpoint/blob/main/HOOKS.md
+  - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+    rev: v2.0.4
+    hooks:
+      - id: dbt-parse
+      - id: dbt-docs-generate
+        args: ["--cmd-flags", "++no-compile"]
+      - id: check-column-desc-are-same
+      - id: check-model-has-tests
+        args: ["--test-cnt", "1", "--"]

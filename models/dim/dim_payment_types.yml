@@ -28,3 +28,6 @@ models:
               length: null
               return_all_elements: null
               read_only: null
+      - name: payment_type_id
+        data_tests:
+          - unique

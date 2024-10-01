@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: fact_orders_generalized
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
