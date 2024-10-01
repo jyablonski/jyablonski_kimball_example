@@ -19,9 +19,17 @@ jobs:
         with:
           output: " "
 
+      - name: Start Postgres
+        run: |
+          make up
+
       - name: Run dbt checkpoint
         uses: dbt-checkpoint/action@v0.1
         with:
           extra_args: --files ${{ steps.get_file_changes.outputs.files}}
           dbt_version: 1.8.6
           dbt_adapter: dbt-postgres
+
+      - name: Stop Postgres
+        run: |
+          make down
