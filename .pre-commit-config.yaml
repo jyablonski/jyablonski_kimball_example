@@ -22,4 +22,5 @@ repos:
       - id: dbt-docs-generate
         args: ["--cmd-flags", "++no-compile"]
       - id: check-column-desc-are-same
-
+      - id: check-model-has-tests
+        args: ["--test-cnt", "1", "--"]

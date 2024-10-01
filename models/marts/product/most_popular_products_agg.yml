@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: most_popular_products_agg
+    columns:
+      - name: product_name
+        data_tests:
+          - unique

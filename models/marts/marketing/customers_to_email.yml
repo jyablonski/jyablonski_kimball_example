@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: customers_to_email
+    columns:
+      - name: customer_email
+        data_tests:
+          - not_null

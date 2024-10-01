@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: dim_financial_accounts
+    columns:
+      - name: financial_account_id
+        data_tests:
+          - unique

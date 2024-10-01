@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: most_popular_products_by_store_agg
+    columns:
+      - name: store_name
+        data_tests:
+          - not_null
