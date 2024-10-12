@@ -49,6 +49,20 @@ models:
       - name: product_id
         data_tests:
           - unique
+        meta:
+          fides:
+            - data_categories:
+                - user.unique_id
       - name: product_name
         data_tests:
           - not_null
+        meta:
+          fides:
+          - data_categories:
+              - user.contact.email
+          - fides_meta:
+              references:
+                - dataset: fact_32482384
+                  field: table_a.product_id
+              identity: email
+              data_type: string

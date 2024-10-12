@@ -12,6 +12,7 @@ elementary-data = "^0.12.1"
 dbt-core = "^1.8.4"
 dbt-postgres = "^1.8.2"
 dbt-coverage = "^0.3.8"
+dbt-snowflake = "^1.8.3"
 
 
 

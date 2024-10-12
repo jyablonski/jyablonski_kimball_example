@@ -2,7 +2,11 @@ version: 2
 
 sources:
   - name: application_db
-    database: postgres
+    database: |
+      {%- if  target.name == "snowflake" -%} production
+      {%- elif target.name == "target_2" -%} test_database_2
+      {%- else -%} postgres
+      {%- endif -%}
     schema: source
     description: Landing Schema for Source Data
     tables:

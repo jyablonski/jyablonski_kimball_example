@@ -168,3 +168,9 @@ Catalog                         15/38   (39.47%)  ->    15/39   (38.46%)
 
 dbt-coverage compare coverage-doc.json coverage-prod.json
 ```
+
+
+[Profiles YAML example](https://github.com/RealSelf/dbt-source/blob/development/sample.profiles.yml)
+
+
+[dbt Unit Tests Snowflake Fail Thread](https://github.com/dbt-labs/dbt-snowflake/issues/1160)
