@@ -1,201 +1,161 @@
-ALTER SYSTEM SET wal_level = logical;
-ALTER ROLE postgres WITH REPLICATION;
+USE DATABASE production;  -- Use your Snowflake database
+USE SCHEMA source;  -- Set the schema to 'source'
 
-BEGIN;
-
-CREATE SCHEMA source;
-CREATE SCHEMA dbt_stg;
-CREATE SCHEMA dbt_prod;
-
--- **** AUDIT DATA HEADS UP ****
--- `audit_type` key
--- 0 = insert
--- 1 = update
--- 2 = delete
-
--- for audit tables - on updates and deletes to existing records, keep thje `created_at`
---  timestamp the same, but update the `modified_at` timestamp to the current timestamp
-
--- **** AUDIT DATA HEADS UP ****
-
--- default directory for every statement in this bootstrap
-SET search_path TO source;
-
-CREATE TYPE payment_enum AS ENUM ('Cash', 'Credit Card', 'Debit Card', 'Gift Card');
+-- Payment type table
 CREATE TABLE payment_type (
-    id serial PRIMARY KEY,
-    payment_type payment_enum,
-    financial_account_id integer not null,
-    payment_type_description varchar(100),
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    payment_type STRING,
+    financial_account_id INTEGER NOT NULL,
+    payment_type_description STRING,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create the sales data tables
+-- Customer table
 CREATE TABLE customer (
-    id serial PRIMARY KEY,
-    customer_name VARCHAR(100),
-    customer_email VARCHAR(100),
-    address varchar(100),
-    address_2 varchar(100),
-    city varchar(50),
-    zip_code integer,
-    state varchar(3),
-    country varchar(50),
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    customer_name STRING,
+    customer_email STRING,
+    address STRING,
+    address_2 STRING,
+    city STRING,
+    zip_code INTEGER,
+    state STRING,
+    country STRING,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Customer audit table
 CREATE TABLE customer_audit (
-    id serial PRIMARY KEY,
-    audit_type integer,
-    customer_id integer,
-    customer_name VARCHAR(100),
-    customer_email VARCHAR(100),
-    address varchar(100),
-    address_2 varchar(100),
-    city varchar(50),
-    zip_code integer,
-    state varchar(3),
-    country varchar(50),
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    audit_type INTEGER,
+    customer_id INTEGER,
+    customer_name STRING,
+    customer_email STRING,
+    address STRING,
+    address_2 STRING,
+    city STRING,
+    zip_code INTEGER,
+    state STRING,
+    country STRING,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Store table
 CREATE TABLE store (
-    id serial PRIMARY KEY,
-    store_name varchar(100),
-    street varchar(100),
-    city varchar(100),
-    state varchar(2),
-    zip_code integer,
-    country varchar(50),
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    store_name STRING,
+    street STRING,
+    city STRING,
+    state STRING,
+    zip_code INTEGER,
+    country STRING,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE source.order (
-    id serial primary key,
-    customer_id integer,
-    store_id integer,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES customer(id),
-    CONSTRAINT fk_store_id FOREIGN KEY (store_id) REFERENCES store(id)
+-- Order table
+CREATE TABLE "order" (
+    id INTEGER AUTOINCREMENT, 
+    customer_id INTEGER,
+    store_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
+-- Product category table
 CREATE TABLE product_category (
-    id serial PRIMARY KEY,
-    product_category_name varchar(100),
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    product_category_name STRING,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Product table
 CREATE TABLE product (
-    id serial PRIMARY KEY,
-    product_name VARCHAR(100),
-    product_category_id integer,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_category(id)
-
+    id INTEGER AUTOINCREMENT, 
+    product_name STRING,
+    product_category_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- new records make it really easy to make scd2 tables
+-- Product price table
 CREATE TABLE product_price (
-    id serial PRIMARY KEY,
-    product_id integer,
+    id INTEGER AUTOINCREMENT, 
+    product_id INTEGER,
     price DECIMAL(10, 2),
-    is_active boolean default TRUE,
-    valid_from timestamp default current_timestamp,
-    valid_to timestamp,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES product(id)
+    is_active BOOLEAN DEFAULT TRUE,
+    valid_from TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valid_to TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- one-> many relationship between order and order_details 
+-- Order detail table
 CREATE TABLE order_detail (
-    id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    product_price_id integer NOT NULL,
-    quantity INT NOT NULL,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES source.order(id),
-    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES product(id),
-    CONSTRAINT fk_product_price_id FOREIGN KEY (product_price_id) REFERENCES product_price(id)
+    id INTEGER AUTOINCREMENT, 
+    order_id INTEGER,
+    product_id INTEGER,
+    product_price_id INTEGER,
+    quantity INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Invoice table
 CREATE TABLE invoice (
-    id serial PRIMARY KEY,
-    order_id integer,
+    id INTEGER AUTOINCREMENT, 
+    order_id INTEGER,
     total_amount DECIMAL(10, 2) NOT NULL,
-    currency varchar(3) default 'USD',
-    is_voided boolean default FALSE,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES source.order(id)
-
+    currency STRING DEFAULT 'USD',
+    is_voided BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE financial_account_enum AS ENUM ('Asset', 'Equity', 'Expense', 'Liability', 'Revenue');
+-- Financial account table
 CREATE TABLE financial_account (
-    id serial PRIMARY KEY,
-    financial_account_name varchar(100) NOT NULL,
-    financial_account_type financial_account_enum,
-    financial_account_description text,
-    is_active boolean DEFAULT true,
-    created_at timestamp DEFAULT current_timestamp,
-    modified_at timestamp DEFAULT current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    financial_account_name STRING NOT NULL,
+    financial_account_type STRING,
+    financial_account_description STRING,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Payment table
 CREATE TABLE payment (
-    id serial PRIMARY KEY,
-    amount decimal(10, 2),
-    payment_type_id integer,
-    payment_type_detail varchar(100),
-    invoice_id integer,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp,
-    CONSTRAINT fk_invoice_id FOREIGN KEY (invoice_id) REFERENCES invoice(id),
-    CONSTRAINT fk_payment_type_id FOREIGN KEY (payment_type_id) REFERENCES payment_type(id)
+    id INTEGER AUTOINCREMENT, 
+    amount DECIMAL(10, 2),
+    payment_type_id INTEGER,
+    payment_type_detail STRING,
+    invoice_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- this basically acts as an audit table - will have multiple rows for each change per customer id / integration
-CREATE TYPE integration_enum AS ENUM ('Mailchimp', 'Salesforce', 'Hubspot');
+-- Integration table
 CREATE TABLE integration (
-    id serial PRIMARY KEY,
-    customer_id integer,
-    integration_type integration_enum,
-    is_active integer,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    customer_id INTEGER,
+    integration_type STRING,
+    is_active INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Order JSON table
 CREATE TABLE source.order_json (
-    id serial PRIMARY KEY,
-    external_data json not null,
-    created_at timestamp default current_timestamp,
-    modified_at timestamp default current_timestamp
+    id INTEGER AUTOINCREMENT, 
+    external_data VARIANT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE source.sales_data (
-    id serial primary key,
-    name varchar(100),
-    address varchar(100),
-    username varchar(100),
-    email varchar(100),
-    hire_date date,
-    status varchar(100),
-    color varchar(100),
-    salary decimal(10, 2),
-    store_id integer,
-    created_at timestamp default current_timestamp
-);
 
 INSERT INTO payment_type (payment_type, financial_account_id, payment_type_description)
 VALUES
@@ -280,7 +240,7 @@ VALUES
     (3, 'Hubspot', 0, current_timestamp + interval '14 days'),
     (1, 'Salesforce', 0, current_timestamp + interval '21 days');
 
-INSERT INTO source.order (id, customer_id, store_id, created_at, modified_at)
+INSERT INTO source."order" (id, customer_id, store_id, created_at, modified_at)
 VALUES 
     (1, 1, 1, current_timestamp - interval '38 day', current_timestamp - interval '38 day'),
     (2, 2, 1, current_timestamp - interval '14 day', current_timestamp - interval '14 day'),
@@ -310,7 +270,4 @@ VALUES
     (10.00, 3, 'G42423241', 3, current_timestamp - interval '14 day', current_timestamp - interval '14 day');
 
 INSERT INTO source.order_json (external_data)
-VALUES
-    ('{"id": 1000, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
-
-COMMIT;
+SELECT PARSE_JSON('{"id": 1000, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');

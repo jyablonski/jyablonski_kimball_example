@@ -48,7 +48,28 @@ models:
     columns:
       - name: product_id
         data_tests:
-          - unique
+          - unique:
+              config:
+                where: "modified_at >= current_date - interval '1 day'"
+        meta:
+          fides:
+            - data_categories:
+                - user.unique_id
       - name: product_name
         data_tests:
           - not_null
+        # DON'T DO THIS
+        # coalesce talk suggested adding filter onto not null actually slows down the query
+        # because it has to check for the filter and it cant use the metadata on the properietary files
+        # config:
+        #   where: "modified_at >= current_date - interval '1 day'"
+        meta:
+          fides:
+          - data_categories:
+              - user.contact.email
+          - fides_meta:
+              references:
+                - dataset: fact_32482384
+                  field: table_a.product_id
+              identity: email
+              data_type: string

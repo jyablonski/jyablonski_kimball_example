@@ -21,6 +21,18 @@ jyablonski_kimball_example:
       dbname: postgres
       schema: dbt_prod
 
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('DBT_SNOWFLAKE_HOST') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role: DBT_ROLE_PROD
+      database: production
+      warehouse: DBT_ROLE_PROD_WAREHOUSE
+      schema: TEST_SCHEMA
+      threads: 8
+      query_tag: "dbt"  # Optional
+
   target: dev
 
 dbt_ci:
