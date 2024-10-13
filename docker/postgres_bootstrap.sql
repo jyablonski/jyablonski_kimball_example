@@ -183,6 +183,20 @@ CREATE TABLE source.order_json (
     modified_at timestamp default current_timestamp
 );
 
+CREATE TABLE source.sales_data (
+    id serial primary key,
+    name varchar(100),
+    address varchar(100),
+    username varchar(100),
+    email varchar(100),
+    hire_date date,
+    status varchar(100),
+    color varchar(100),
+    salary decimal(10, 2),
+    store_id integer,
+    created_at timestamp default current_timestamp
+);
+
 INSERT INTO payment_type (payment_type, financial_account_id, payment_type_description)
 VALUES
     ('Cash', 1, 'Cash Transaction'),

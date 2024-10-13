@@ -24,4 +24,5 @@ sources:
       - name: product_category
       - name: product_price
       - name: sale
+      - name: sales_data
       - name: store

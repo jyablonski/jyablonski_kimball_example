@@ -1,6 +1,6 @@
 version: 2
 
-models:
+seeds:
   - name: country_codes
     columns:
       - name: country_code

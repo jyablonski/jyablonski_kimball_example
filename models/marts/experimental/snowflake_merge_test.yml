@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: snowflake_merge_test
+    +enabled: false
+    columns:
+      - name: id
+        data_tests:
+          - unique:
+              config:
+                where: "__dbt_loaded_at >= current_timestamp - interval '1 hour'"
