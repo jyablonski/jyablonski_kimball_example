@@ -1,0 +1,20 @@
+version: 2
+
+exposures:
+
+  - name: outstanding_invoices
+    label: Outstanding Invoices
+    type: dashboard
+    maturity: high
+    url: https://nbadashboard.jyablonski.dev
+    description: >
+      This dashboard shows the outstanding invoices for the current month.
+
+    depends_on:
+      - ref('customer_payments_by_invoice')
+      - ref('fact_payments')
+      - ref('dim_customers')
+
+    owner:
+      name: jacob yablonski
+      email: jyablonski9@gmail.com

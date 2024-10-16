@@ -1,23 +1,43 @@
 version: 2
 
 models:
-    - name: outstanding_invoices
-      data_tests:
-        # either the total amount = remaining balance,
-        # or the total amount < paid amount
-        - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
-            column_A: invoice_total_amount
-            column_B: invoice_paid_amount
-            or_equal: false
-        - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
-            column_A: invoice_total_amount
-            column_B: invoice_remaining_balance
-            or_equal: true
-      columns:
-          - name: invoice_id
-            data_tests:
-              - unique
-              - not_null
-          - name: invoice_remaining_balance
-            data_tests:
-              - not_null
+  - name: outstanding_invoices
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      # either the total amount = remaining balance,
+      # or the total amount < paid amount
+      - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+          column_A: invoice_total_amount
+          column_B: invoice_paid_amount
+          or_equal: false
+      - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+          column_A: invoice_total_amount
+          column_B: invoice_remaining_balance
+          or_equal: true
+    columns:
+      - name: invoice_id
+        data_type: int
+        data_tests:
+          - unique
+          - not_null
+      - name: invoice_remaining_balance
+        data_type: numeric
+        data_tests:
+          - not_null
+      - name: customer_name
+        data_type: varchar
+      - name: customer_email
+        data_type: varchar
+      - name: invoice_total_amount
+        data_type: numeric
+      - name: invoice_paid_amount
+        data_type: numeric
+      - name: invoice_remaining_balance
+        data_type: numeric
+      - name: invoice_created_at
+        data_type: timestamp
+      - name: latest_payment_made
+        data_type: timestamp
+
