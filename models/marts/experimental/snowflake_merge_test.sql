@@ -5,6 +5,14 @@
     )
 }}
 
+-- you could do something like on certain incremental tables, don't use the default
+-- x-small warehouse and use a large for the incremental runs, and a 4xl for the full refresh ones.
+
+{% if is_incremental() %}
+{% else %}
+{{ swap_warehouse('DBT_4XL_WH') }} --full refresh
+{% endif %}
+
 select
     id,
     row_number() over (partition by id order by created_at desc) as row_num,

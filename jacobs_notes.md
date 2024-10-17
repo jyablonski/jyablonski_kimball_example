@@ -174,3 +174,14 @@ dbt-coverage compare coverage-doc.json coverage-prod.json
 
 
 [dbt Unit Tests Snowflake Fail Thread](https://github.com/dbt-labs/dbt-snowflake/issues/1160)
+
+
+``` sql
+-- by default, every mdoel uses an x small
+{% if is_incremental() %}
+{{ swap_warehouse('DBT_L_WH') }} -- incremental
+{% else %}
+{{ swap_warehouse('DBT_4XL_WH') }} -- full refresh
+{% endif %}
+
+```
