@@ -3,6 +3,10 @@ packages:
     version: 0.9.0
   - package: dbt-labs/dbt_utils
     version: 1.1.1
+  - package: get-select/dbt_snowflake_monitoring
+    version: 5.3.1
   - package: calogica/dbt_date
     version: 0.8.1
-sha1_hash: b45a8e08f1ba937c6f4eecced9bba90ec235f5e8
+  - package: get-select/dbt_snowflake_query_tags
+    version: 2.5.0
+sha1_hash: 4b208c95264313bd81c95eacfc3609c7bb146adc
