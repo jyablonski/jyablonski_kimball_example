@@ -12,6 +12,18 @@ config-version: 2
 vars:
   run_date: "{{ (modules.datetime.date.today() - modules.datetime.timedelta(1)).isoformat() }}"
 
+# lines 16 - 25 are for the dbt_snowflake_monitoring package
+# dispatch:
+#   - macro_namespace: dbt
+#     search_order:
+#       - jyablonski_kimball_example
+#       - dbt_snowflake_monitoring
+#       - dbt
+
+# query-comment:
+#   comment: '{{ dbt_snowflake_monitoring.get_query_comment(node) }}'
+#   append: true # Snowflake removes prefixed comments.
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'jyablonski_kimball_example'
 
