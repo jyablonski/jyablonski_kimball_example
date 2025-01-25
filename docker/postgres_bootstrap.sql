@@ -7,6 +7,9 @@ CREATE SCHEMA source;
 CREATE SCHEMA dbt_stg;
 CREATE SCHEMA dbt_prod;
 
+create user test_user with password 'password';
+grant all privileges on database postgres to test_user;
+
 -- **** AUDIT DATA HEADS UP ****
 -- `audit_type` key
 -- 0 = insert
@@ -58,6 +61,14 @@ CREATE TABLE customer_audit (
     zip_code integer,
     state varchar(3),
     country varchar(50),
+    created_at timestamp default current_timestamp,
+    modified_at timestamp default current_timestamp
+);
+
+CREATE TABLE emails (
+    id serial PRIMARY KEY,
+    email_name varchar(100),
+    messages json,
     created_at timestamp default current_timestamp,
     modified_at timestamp default current_timestamp
 );
@@ -196,6 +207,44 @@ CREATE TABLE source.sales_data (
     store_id integer,
     created_at timestamp default current_timestamp
 );
+
+INSERT INTO emails (email_name, messages)
+VALUES 
+    (
+        'Newsletter Campaign', 
+        '{
+            "550e8400-e29b-41d4-a716-446655440000": { "subject": "Welcome to our service!" },
+            "550e8400-e29b-41d4-a716-446655440001": {}
+        }'
+    ),
+    (
+        'Follow-up Emails', 
+        '{
+            "660f8501-f39c-51e5-b827-557766550002": { "subject": "We miss you!" },
+            "660f8501-f39c-51e5-b827-557766550003": { "subject": "Special Offer Inside" }
+        }'
+    ),
+    (
+        'Transactional Emails', 
+        '{
+            "770a9602-g49d-62f6-c928-668877660004": {},
+            "770a9602-g49d-62f6-c928-668877660005": { "subject": "Your receipt is ready" }
+        }'
+    ),
+    (
+        'Promotional Emails', 
+        '{
+            "880b0703-h50e-73g7-d039-779988770006": { "subject": "Limited-Time Discount!" },
+            "880b0703-h50e-73g7-d039-779988770007": {}
+        }'
+    ),
+    (
+        'Marketing Emails', 
+        '{
+            "880b0703-h50e-73g7-d039-779988770011": {},
+            "880b0703-h50e-73g7-d039-779988770012": {}
+        }'
+    );
 
 INSERT INTO payment_type (payment_type, financial_account_id, payment_type_description)
 VALUES

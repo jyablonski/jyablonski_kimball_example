@@ -1,7 +1,8 @@
 {{
     config(
         materialized='incremental',
-        merge_strategy="append"
+        merge_strategy="append",
+        enabled=false
     )
 }}
 
