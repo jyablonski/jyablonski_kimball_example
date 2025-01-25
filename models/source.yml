@@ -15,6 +15,7 @@ sources:
       - name: financial_account
       - name: integration
       - name: invoice
+      - name: emails
       - name: order
       - name: order_detail
       - name: order_json

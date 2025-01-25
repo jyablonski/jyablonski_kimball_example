@@ -10,9 +10,9 @@ with orders_detailed as (
     select
         order_detail.id as order_detail_id,
         "order".id as order_id,
-        "order".store_id as store_id,
+        "order".store_id,
         product.id as product_id,
-        "order".customer_id as customer_id,
+        "order".customer_id,
         product_category.id as product_category_id,
         order_detail.quantity,
         product_price.id as product_price_id,
@@ -26,7 +26,7 @@ with orders_detailed as (
         inner join {{ source('application_db', 'product_price') }} on order_detail.product_price_id = product_price.id
     {% if is_incremental() %}
 
-        where "order_detail".modified_at > (select max(order_detail_modified_at) from {{ this }})
+        where order_detail.modified_at > (select max(order_detail_modified_at) from {{ this }})
 
     {% endif %}
 

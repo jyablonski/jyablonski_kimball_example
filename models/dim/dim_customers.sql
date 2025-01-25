@@ -73,10 +73,16 @@ validity_periods as (
                 -- if the record is deleted, then set valid_to = valid_from for new record
                 audit_type = 2 then modified_at
             else
-                coalesce(lead(modified_at) over (partition by customer_id order by modified_at), '9999-12-31')
+                coalesce(lead(modified_at) over (
+                    partition by customer_id
+                    order by modified_at
+                ), '9999-12-31')
         end
         as valid_to,
-        row_number() over (partition by customer_id order by modified_at desc) as most_recent_record
+        row_number() over (
+            partition by customer_id
+            order by modified_at desc
+        ) as most_recent_record
     from {% if is_incremental() %}new_and_prev_audits {% else %} new_audits {% endif %}
     -- this is needed during incremental runs to update the previous record as well as to insert the new one
 ),
@@ -97,7 +103,7 @@ final as (
         validity_periods.valid_to,
         case
             when
-                valid_from = valid_from and audit_type = 2 then 1
+                audit_type = 2 then 1
             else 0
         end as is_deleted,
         case
@@ -111,7 +117,8 @@ final as (
         end as is_latest_record,
         current_timestamp as dbt_updated_at
     from validity_periods
-        inner join {{ source('application_db', 'customer_audit') }} as customer_audit
+        inner join
+            {{ source('application_db', 'customer_audit') }} as customer_audit
             on validity_periods.audit_id = customer_audit.id
 )
 

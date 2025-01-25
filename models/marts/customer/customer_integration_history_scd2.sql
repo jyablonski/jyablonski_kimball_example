@@ -30,7 +30,8 @@ windowed as (
         is_active,
         created_at as valid_from,
         lag(created_at, 1) over (
-            partition by customer_id, integration_type order by created_at desc
+            partition by customer_id, integration_type
+            order by created_at desc
         ) as valid_to
     from customer_records
 
@@ -43,7 +44,9 @@ final as (
         windowed.is_active,
         windowed.valid_from,
         windowed.valid_to,
-        case when windowed.valid_from = max_dates.max_created_at then 1 else 0 end as is_current_integration_record
+        case
+            when windowed.valid_from = max_dates.max_created_at then 1 else 0
+        end as is_current_integration_record
     from windowed
         inner join max_dates
             on

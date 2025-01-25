@@ -9,7 +9,7 @@ with orders_generalized as (
     select
         "order".id as order_id,
         invoice.id as invoice_id,
-        "order".store_id as store_id,
+        "order".store_id,
         "order".customer_id,
         invoice.total_amount as invoice_total_amount,
         invoice.created_at as invoice_created_at,
