@@ -6,3 +6,6 @@ models:
       - name: country_code
         data_tests:
           - unique
+      - name: test_fail
+        # data_tests:
+        #   - unique

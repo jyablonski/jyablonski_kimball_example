@@ -5,5 +5,5 @@ packages:
     version: 1.1.1
   # - package: get-select/dbt_snowflake_monitoring
   #   version: [">=5.0.0", "<6.0.0"]
-  # - package: elementary-data/elementary
-  #   version: 0.12.1
+  - package: elementary-data/elementary
+    version: 0.16.1
