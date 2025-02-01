@@ -13,5 +13,6 @@ select
             when country_code like '{{ country_code }}' then '{{ rank }}'::int
         {% endfor %}
         else -1
-    end as country_rank
+    end as country_rank,
+    1 as test_fail
 from {{ ref('country_codes') }}

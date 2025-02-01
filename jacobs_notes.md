@@ -185,3 +185,15 @@ dbt-coverage compare coverage-doc.json coverage-prod.json
 {% endif %}
 
 ```
+
+# Troubleshooting
+
+``` sh
+dbt build --debug
+dbt run-operation send_alert_on_failure --debug
+
+# by default, unit tests run during dbt build
+# so in slim ci just run dbt build and let it do its thing
+# in prod run this with the exclude unit test flag
+dbt build --exclude-resource-type unit_test
+```
