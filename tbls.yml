@@ -1,0 +1,7 @@
+
+# DSN (Database Source Name) to connect database
+dsn: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
+
+# Path to generate document
+# Default is `dbdoc`
+docPath: tbls

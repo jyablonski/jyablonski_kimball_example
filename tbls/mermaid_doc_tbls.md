@@ -1,0 +1,1005 @@
+```mermaid
+---
+title: Sample ERD
+---
+erDiagram
+
+
+"source.order" }o--o| "source.customer" : "FOREIGN KEY (customer_id) REFERENCES source.customer(id)"
+"source.order" }o--o| "source.store" : "FOREIGN KEY (store_id) REFERENCES source.store(id)"
+"source.product" }o--o| "source.product_category" : "FOREIGN KEY (product_category_id) REFERENCES source.product_category(id)"
+"source.product_price" }o--o| "source.product" : "FOREIGN KEY (product_id) REFERENCES source.product(id)"
+"source.order_detail" }o--|| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+"source.order_detail" }o--|| "source.product" : "FOREIGN KEY (product_id) REFERENCES source.product(id)"
+"source.order_detail" }o--|| "source.product_price" : "FOREIGN KEY (product_price_id) REFERENCES source.product_price(id)"
+"source.invoice" }o--o| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+"source.payment" }o--o| "source.payment_type" : "FOREIGN KEY (payment_type_id) REFERENCES source.payment_type(id)"
+"source.payment" }o--o| "source.invoice" : "FOREIGN KEY (invoice_id) REFERENCES source.invoice(id)"
+
+"source.payment_type" {
+  integer id
+  source_payment_enum payment_type
+  integer financial_account_id
+  varchar_100_ payment_type_description
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.customer" {
+  integer id
+  varchar_100_ customer_name
+  varchar_100_ customer_email
+  varchar_100_ address
+  varchar_100_ address_2
+  varchar_50_ city
+  integer zip_code
+  varchar_3_ state
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.customer_audit" {
+  integer id
+  integer audit_type
+  integer customer_id
+  varchar_100_ customer_name
+  varchar_100_ customer_email
+  varchar_100_ address
+  varchar_100_ address_2
+  varchar_50_ city
+  integer zip_code
+  varchar_3_ state
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.emails" {
+  integer id
+  varchar_100_ email_name
+  json messages
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.store" {
+  integer id
+  varchar_100_ store_name
+  varchar_100_ street
+  varchar_100_ city
+  varchar_2_ state
+  integer zip_code
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.order" {
+  integer id
+  integer customer_id
+  integer store_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.product_category" {
+  integer id
+  varchar_100_ product_category_name
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.product" {
+  integer id
+  varchar_100_ product_name
+  integer product_category_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.product_price" {
+  integer id
+  integer product_id
+  numeric_10_2_ price
+  boolean is_active
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.order_detail" {
+  integer id
+  integer order_id
+  integer product_id
+  integer product_price_id
+  integer quantity
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.invoice" {
+  integer id
+  integer order_id
+  numeric_10_2_ total_amount
+  varchar_3_ currency
+  boolean is_voided
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.financial_account" {
+  integer id
+  varchar_100_ financial_account_name
+  source_financial_account_enum financial_account_type
+  text financial_account_description
+  boolean is_active
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.payment" {
+  integer id
+  numeric_10_2_ amount
+  integer payment_type_id
+  varchar_100_ payment_type_detail
+  integer invoice_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.integration" {
+  integer id
+  integer customer_id
+  source_integration_enum integration_type
+  integer is_active
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.order_json" {
+  integer id
+  json external_data
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"source.sales_data" {
+  integer id
+  varchar_100_ name
+  varchar_100_ address
+  varchar_100_ username
+  varchar_100_ email
+  date hire_date
+  varchar_100_ status
+  varchar_100_ color
+  numeric_10_2_ salary
+  integer store_id
+  timestamp_without_time_zone created_at
+}
+"dbt_stg.data_monitoring_metrics" {
+  varchar_4096_ id
+  varchar_4096_ full_table_name
+  varchar_4096_ column_name
+  varchar_4096_ metric_name
+  varchar_4096_ metric_type
+  double_precision metric_value
+  varchar_4096_ source_value
+  timestamp_without_time_zone bucket_start
+  timestamp_without_time_zone bucket_end
+  integer bucket_duration_hours
+  timestamp_without_time_zone updated_at
+  varchar_4096_ dimension
+  varchar_4096_ dimension_value
+  varchar_4096_ metric_properties
+  timestamp_without_time_zone created_at
+}
+"dbt_stg.dbt_columns" {
+  varchar_4096_ unique_id
+  varchar_4096_ parent_unique_id
+  varchar_4096_ name
+  varchar_4096_ data_type
+  text tags
+  text meta
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  text description
+  varchar_4096_ resource_type
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_exposures" {
+  varchar_4096_ unique_id
+  varchar_4096_ name
+  varchar_4096_ maturity
+  varchar_4096_ type
+  varchar_4096_ owner_email
+  varchar_4096_ owner_name
+  text url
+  text depends_on_macros
+  text depends_on_nodes
+  text depends_on_columns
+  text description
+  text tags
+  text meta
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+  varchar_4096_ label
+  text raw_queries
+}
+"dbt_stg.dbt_invocations" {
+  text invocation_id
+  text job_id
+  text job_name
+  text job_run_id
+  varchar_4096_ run_started_at
+  varchar_4096_ run_completed_at
+  varchar_4096_ generated_at
+  timestamp_without_time_zone created_at
+  varchar_4096_ command
+  varchar_4096_ dbt_version
+  varchar_4096_ elementary_version
+  boolean full_refresh
+  text invocation_vars
+  text vars
+  varchar_4096_ target_name
+  varchar_4096_ target_database
+  varchar_4096_ target_schema
+  varchar_4096_ target_profile_name
+  integer threads
+  text selected
+  text yaml_selector
+  varchar_4096_ project_id
+  varchar_4096_ project_name
+  varchar_4096_ env
+  varchar_4096_ env_id
+  varchar_4096_ cause_category
+  text cause
+  varchar_4096_ pull_request_id
+  varchar_4096_ git_sha
+  varchar_4096_ orchestrator
+  varchar_4096_ dbt_user
+  varchar_4096_ job_url
+  varchar_4096_ job_run_url
+  varchar_4096_ account_id
+  text target_adapter_specific_fields
+}
+"dbt_stg.dbt_metrics" {
+  varchar_4096_ unique_id
+  varchar_4096_ name
+  varchar_4096_ label
+  varchar_4096_ model
+  varchar_4096_ type
+  text sql
+  varchar_4096_ timestamp
+  text filters
+  text time_grains
+  text dimensions
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  text tags
+  text meta
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_models" {
+  varchar_4096_ unique_id
+  varchar_4096_ alias
+  varchar_4096_ checksum
+  varchar_4096_ materialization
+  text tags
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  varchar_4096_ name
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ patch_path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_run_results" {
+  text model_execution_id
+  text unique_id
+  varchar_4096_ invocation_id
+  varchar_4096_ generated_at
+  timestamp_without_time_zone created_at
+  text name
+  text message
+  varchar_4096_ status
+  varchar_4096_ resource_type
+  double_precision execution_time
+  varchar_4096_ execute_started_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ compile_started_at
+  varchar_4096_ compile_completed_at
+  bigint rows_affected
+  boolean full_refresh
+  text compiled_code
+  bigint failures
+  varchar_4096_ query_id
+  varchar_4096_ thread_id
+  varchar_4096_ materialization
+  varchar_4096_ adapter_response
+}
+"dbt_stg.dbt_seeds" {
+  varchar_4096_ unique_id
+  varchar_4096_ alias
+  varchar_4096_ checksum
+  text tags
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  text description
+  varchar_4096_ name
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_snapshots" {
+  varchar_4096_ unique_id
+  varchar_4096_ alias
+  varchar_4096_ checksum
+  varchar_4096_ materialization
+  text tags
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  varchar_4096_ name
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ patch_path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_source_freshness_results" {
+  varchar_4096_ source_freshness_execution_id
+  varchar_4096_ unique_id
+  varchar_4096_ max_loaded_at
+  varchar_4096_ snapshotted_at
+  varchar_4096_ generated_at
+  timestamp_without_time_zone created_at
+  double_precision max_loaded_at_time_ago_in_s
+  varchar_4096_ status
+  varchar_4096_ error
+  varchar_4096_ compile_started_at
+  varchar_4096_ compile_completed_at
+  varchar_4096_ execute_started_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ invocation_id
+  varchar_4096_ warn_after
+  varchar_4096_ error_after
+  text filter
+}
+"dbt_stg.dbt_sources" {
+  varchar_4096_ unique_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ source_name
+  varchar_4096_ name
+  varchar_4096_ identifier
+  varchar_4096_ loaded_at_field
+  varchar_4096_ freshness_warn_after
+  varchar_4096_ freshness_error_after
+  text freshness_filter
+  text freshness_description
+  varchar_4096_ relation_name
+  text tags
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  text original_path
+  varchar_4096_ path
+  text source_description
+  text description
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.dbt_tests" {
+  varchar_4096_ unique_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ name
+  varchar_4096_ short_name
+  varchar_4096_ alias
+  varchar_4096_ test_column_name
+  varchar_4096_ severity
+  varchar_4096_ warn_if
+  varchar_4096_ error_if
+  text test_params
+  varchar_4096_ test_namespace
+  varchar_4096_ test_original_name
+  text tags
+  text model_tags
+  text model_owners
+  text meta
+  text depends_on_macros
+  text depends_on_nodes
+  varchar_4096_ parent_model_unique_id
+  text description
+  varchar_4096_ package_name
+  varchar_4096_ type
+  text original_path
+  varchar_4096_ path
+  varchar_4096_ generated_at
+  varchar_4096_ metadata_hash
+  varchar_4096_ quality_dimension
+}
+"dbt_stg.elementary_test_results" {
+  text id
+  varchar_4096_ data_issue_id
+  text test_execution_id
+  text test_unique_id
+  text model_unique_id
+  varchar_4096_ invocation_id
+  timestamp_without_time_zone detected_at
+  timestamp_without_time_zone created_at
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  varchar_4096_ column_name
+  varchar_4096_ test_type
+  varchar_4096_ test_sub_type
+  text test_results_description
+  varchar_4096_ owners
+  varchar_4096_ tags
+  text test_results_query
+  varchar_4096_ other
+  text test_name
+  text test_params
+  varchar_4096_ severity
+  varchar_4096_ status
+  bigint failures
+  varchar_4096_ test_short_name
+  varchar_4096_ test_alias
+  text result_rows
+  bigint failed_row_count
+}
+"dbt_stg.metadata" {
+  text dbt_pkg_version
+}
+"dbt_stg.schema_columns_snapshot" {
+  varchar_4096_ column_state_id
+  varchar_4096_ full_column_name
+  varchar_4096_ full_table_name
+  varchar_4096_ column_name
+  varchar_4096_ data_type
+  boolean is_new
+  timestamp_without_time_zone detected_at
+  timestamp_without_time_zone created_at
+}
+"marts.customer_integration_history_scd2" {
+  integer customer_id
+  text integration_type
+  integer is_active
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+  integer is_current_integration_record
+}
+"dim.dim_customers" {
+  integer audit_id
+  integer customer_id
+  varchar_100_ customer_name
+  varchar_100_ customer_email
+  varchar_100_ address
+  varchar_100_ address_2
+  varchar_50_ city
+  integer zip_code
+  varchar_3_ state
+  varchar_50_ country
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+  integer is_deleted
+  integer is_current_record
+  integer is_latest_record
+  timestamp_with_time_zone dbt_updated_at
+}
+"dim.dim_financial_accounts" {
+  integer financial_account_id
+  varchar_100_ financial_account_name
+  text financial_account_description
+  source_financial_account_enum financial_account_type
+  boolean is_active
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"dim.dim_payment_types" {
+  integer payment_type_id
+  integer financial_account_id
+  source_payment_enum payment_type
+  varchar_100_ payment_type_description
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"dim.dim_products" {
+  integer product_id
+  varchar_100_ product_name
+  varchar_100_ product_category_name
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"dim.dim_stores" {
+  integer store_id
+  varchar_100_ store_name
+  varchar_100_ street
+  varchar_100_ city
+  varchar_2_ state
+  integer zip_code
+  integer is_shipping_enabled_state
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"fact.fact_emails" {
+  integer email_id
+  varchar_100_ email_name
+  json messages
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+  timestamp_with_time_zone dbt_created_at
+}
+"fact.fact_orders_external_system" {
+  integer order_id
+  integer sale_id
+  timestamp_without_time_zone source_timestamp
+  text source_address
+  integer source_zip_code
+  text source_state
+  text source_store
+  timestamp_without_time_zone created_at
+}
+"fact.fact_orders_generalized" {
+  integer order_id
+  integer invoice_id
+  integer store_id
+  integer customer_id
+  numeric_10_2_ invoice_total_amount
+  timestamp_without_time_zone invoice_created_at
+  timestamp_without_time_zone invoice_modified_at
+  timestamp_without_time_zone order_created_at
+  timestamp_without_time_zone order_modified_at
+}
+"fact.fact_payments" {
+  integer payment_id
+  integer payment_type_id
+  integer invoice_id
+  integer order_id
+  integer customer_id
+  integer financial_account_id
+  numeric_10_2_ payment_amount
+  timestamp_without_time_zone payment_created_at
+  timestamp_without_time_zone payment_modified_at
+}
+"marts.incremental_pk_tester" {
+  integer id
+  integer c_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+  timestamp_with_time_zone added_at
+}
+"marts.incremental_pk_tester_merge_only" {
+  integer id
+  integer customer_id
+  integer store_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"marts.incremental_tester" {
+  integer id
+  integer customer_id
+  integer store_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"dbt_stg.ohshit" {
+  integer id
+  date start_date
+  date end_date
+  timestamp_without_time_zone modified_at
+}
+"dbt_stg.country_codes" {
+  text country_code
+  text country_name
+}
+"dbt_stg.orders_snapshot" {
+  integer id
+  numeric_10_2_ amount
+  integer payment_type_id
+  varchar_100_ payment_type_detail
+  integer invoice_id
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+  text dbt_scd_id
+  timestamp_without_time_zone dbt_updated_at
+  timestamp_without_time_zone dbt_valid_from
+  timestamp_without_time_zone dbt_valid_to
+}
+"dbt_stg.metrics_anomaly_score" {
+  varchar_4096_ id
+  varchar_4096_ full_table_name
+  varchar_4096_ column_name
+  varchar_4096_ dimension
+  varchar_4096_ dimension_value
+  varchar_4096_ metric_name
+  double_precision anomaly_score
+  double_precision latest_metric_value
+  timestamp_without_time_zone bucket_start
+  timestamp_without_time_zone bucket_end
+  double_precision training_avg
+  double_precision training_stddev
+  timestamp_without_time_zone training_start
+  timestamp_without_time_zone training_end
+  bigint training_set_size
+  timestamp_without_time_zone updated_at
+  boolean is_anomaly
+}
+"dbt_stg.monitors_runs" {
+  varchar_4096_ full_table_name
+  varchar_4096_ column_name
+  varchar_4096_ metric_name
+  varchar_4096_ metric_properties
+  timestamp_without_time_zone last_bucket_end
+  timestamp_without_time_zone first_bucket_end
+}
+"dbt_stg.job_run_results" {
+  text name
+  text id
+  text run_id
+  timestamp_without_time_zone run_started_at
+  timestamp_without_time_zone run_completed_at
+  double_precision run_execution_time
+}
+"dbt_stg.model_run_results" {
+  text model_execution_id
+  text unique_id
+  varchar_4096_ invocation_id
+  varchar_4096_ query_id
+  text name
+  varchar_4096_ generated_at
+  varchar_4096_ status
+  boolean full_refresh
+  text message
+  double_precision execution_time
+  varchar_4096_ execute_started_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ compile_started_at
+  varchar_4096_ compile_completed_at
+  text compiled_code
+  varchar_4096_ adapter_response
+  varchar_4096_ thread_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ materialization
+  text tags
+  varchar_4096_ package_name
+  varchar_4096_ path
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ alias
+  bigint model_invocation_reverse_index
+  boolean is_the_first_invocation_of_the_day
+  boolean is_the_last_invocation_of_the_day
+}
+"dbt_stg.seed_run_results" {
+  text model_execution_id
+  text unique_id
+  varchar_4096_ invocation_id
+  varchar_4096_ query_id
+  text name
+  varchar_4096_ generated_at
+  varchar_4096_ status
+  boolean full_refresh
+  text message
+  double_precision execution_time
+  varchar_4096_ execute_started_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ compile_started_at
+  varchar_4096_ compile_completed_at
+  text compiled_code
+  varchar_4096_ adapter_response
+  varchar_4096_ thread_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ materialization
+  text tags
+  varchar_4096_ package_name
+  varchar_4096_ path
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ alias
+}
+"dbt_stg.snapshot_run_results" {
+  text model_execution_id
+  text unique_id
+  varchar_4096_ invocation_id
+  varchar_4096_ query_id
+  text name
+  varchar_4096_ generated_at
+  varchar_4096_ status
+  boolean full_refresh
+  text message
+  double_precision execution_time
+  varchar_4096_ execute_started_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ compile_started_at
+  varchar_4096_ compile_completed_at
+  text compiled_code
+  varchar_4096_ adapter_response
+  varchar_4096_ thread_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ materialization
+  text tags
+  varchar_4096_ package_name
+  varchar_4096_ path
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ alias
+}
+"dbt_stg.alerts_dbt_source_freshness" {
+  varchar_4096_ alert_id
+  varchar_4096_ max_loaded_at
+  varchar_4096_ snapshotted_at
+  timestamp_without_time_zone detected_at
+  double_precision max_loaded_at_time_ago_in_s
+  varchar_4096_ status
+  varchar_4096_ error
+  varchar_4096_ warn_after
+  varchar_4096_ error_after
+  text filter
+  varchar_4096_ unique_id
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ source_name
+  varchar_4096_ identifier
+  text tags
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ path
+  varchar_4096_ freshness_error_after
+  varchar_4096_ freshness_warn_after
+  text freshness_filter
+}
+"dbt_stg.dbt_artifacts_hashes" {
+  text artifacts_model
+  varchar_4096_ metadata_hash
+}
+"dbt_stg.alerts_anomaly_detection" {
+  text alert_id
+  varchar_4096_ data_issue_id
+  text test_execution_id
+  text test_unique_id
+  text model_unique_id
+  timestamp_without_time_zone detected_at
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  varchar_4096_ column_name
+  varchar_4096_ alert_type
+  varchar_4096_ sub_type
+  text alert_description
+  varchar_4096_ owners
+  varchar_4096_ tags
+  text alert_results_query
+  varchar_4096_ other
+  text test_name
+  varchar_4096_ test_short_name
+  text test_params
+  varchar_4096_ severity
+  varchar_4096_ status
+  text result_rows
+}
+"dbt_stg.alerts_dbt_tests" {
+  text alert_id
+  varchar_4096_ data_issue_id
+  text test_execution_id
+  text test_unique_id
+  text model_unique_id
+  timestamp_without_time_zone detected_at
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  varchar_4096_ column_name
+  varchar_4096_ alert_type
+  varchar_4096_ sub_type
+  text alert_description
+  varchar_4096_ owners
+  varchar_4096_ tags
+  text alert_results_query
+  varchar_4096_ other
+  text test_name
+  varchar_4096_ test_short_name
+  text test_params
+  varchar_4096_ severity
+  varchar_4096_ status
+  text result_rows
+}
+"dbt_stg.alerts_schema_changes" {
+  text alert_id
+  varchar_4096_ data_issue_id
+  text test_execution_id
+  text test_unique_id
+  text model_unique_id
+  timestamp_without_time_zone detected_at
+  varchar_4096_ database_name
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  varchar_4096_ column_name
+  varchar_4096_ alert_type
+  varchar_4096_ sub_type
+  text alert_description
+  varchar_4096_ owners
+  varchar_4096_ tags
+  text alert_results_query
+  varchar_4096_ other
+  text test_name
+  varchar_4096_ test_short_name
+  text test_params
+  varchar_4096_ severity
+  varchar_4096_ status
+  text result_rows
+}
+"dbt_stg.test_result_rows" {
+  text elementary_test_results_id
+  text result_row
+  timestamp_without_time_zone detected_at
+  timestamp_without_time_zone created_at
+}
+"dbt_stg.failed_tests" {
+  text id
+  varchar_4096_ test_name
+  varchar_4096_ test_status
+  varchar_4096_ test_type
+  timestamp_without_time_zone generated_at
+}
+"marts.emails_subject_cols" {
+  integer email_id
+  varchar_100_ email_name
+  text subject_1
+  text subject_2
+  text subject_3
+  text subject_4
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+  timestamp_with_time_zone dbt_created_at
+}
+"marts.emails_subject_concat" {
+  integer email_id
+  varchar_100_ email_name
+  text subjects
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+  timestamp_without_time_zone dbt_created_at
+}
+"fact.fact_orders_detailed" {
+  integer order_detail_id
+  integer order_id
+  integer store_id
+  integer product_id
+  integer customer_id
+  integer product_category_id
+  integer quantity
+  integer product_price_id
+  numeric_10_2_ product_price
+  timestamp_without_time_zone order_detail_created_at
+  timestamp_without_time_zone order_detail_modified_at
+}
+"fact.fact_product_prices" {
+  integer product_price_id
+  integer product_id
+  numeric_10_2_ price
+  boolean is_active
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+  timestamp_without_time_zone product_price_created_at
+  timestamp_without_time_zone product_price_modified_at
+}
+"dbt_stg.anomaly_threshold_sensitivity" {
+  varchar_4096_ full_table_name
+  varchar_4096_ column_name
+  varchar_4096_ metric_name
+  double_precision latest_metric_value
+  double_precision metric_avg
+  double_precision metric_stddev
+  double_precision anomaly_score
+  boolean is_anomaly_1_5
+  boolean is_anomaly_2
+  boolean is_anomaly_2_5
+  boolean is_anomaly_3
+  boolean is_anomaly_3_5
+  boolean is_anomaly_4
+  boolean is_anomaly_4_5
+}
+"dbt_stg.alerts_dbt_models" {
+  text alert_id
+  text unique_id
+  timestamp_without_time_zone detected_at
+  varchar_4096_ database_name
+  varchar_4096_ materialization
+  varchar_4096_ path
+  text original_path
+  varchar_4096_ schema_name
+  text message
+  varchar_4096_ owners
+  text tags
+  varchar_4096_ alias
+  varchar_4096_ status
+  boolean full_refresh
+}
+"dim.dim_integrations" {
+  integer id
+  integer customer_id
+  varchar_100_ customer_email
+  source_integration_enum integration_type
+  integer is_active
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone modified_at
+}
+"marts.accounting_by_state_agg" {
+  varchar_2_ state
+  varchar_100_ financial_account_name
+  numeric total_account_amount
+  date as_of_date
+}
+"marts.accounting_by_store_agg" {
+  varchar_100_ store_name
+  varchar_100_ financial_account_name
+  numeric total_account_amount
+  date as_of_date
+}
+"marts.customer_payments_by_invoice" {
+  integer order_id
+  integer invoice_id
+  integer store_id
+  integer customer_id
+  numeric_10_2_ invoice_total_amount
+  timestamp_without_time_zone invoice_created_at
+  timestamp_without_time_zone invoice_modified_at
+  timestamp_without_time_zone order_created_at
+  timestamp_without_time_zone order_modified_at
+  numeric invoice_paid_amount
+  integer is_invoice_closed
+}
+"dbt_stg.countries" {
+  text country_code
+  text country_name
+  integer country_rank
+  integer test_fail
+}
+"marts.customers_to_email" {
+  integer order_detail_id
+  varchar_100_ customer_name
+  varchar_100_ customer_email
+  varchar_100_ product_name
+  varchar_100_ product_category_name
+}
+"marts.most_popular_products_agg" {
+  varchar_100_ product_name
+  varchar_100_ product_category_name
+  bigint units_sold
+}
+"marts.most_popular_products_by_store_agg" {
+  varchar_100_ store_name
+  varchar_100_ product_name
+  varchar_100_ product_category_name
+  bigint units_sold
+}
+"marts.outstanding_invoices" {
+  integer invoice_id
+  numeric invoice_remaining_balance
+  varchar customer_name
+  varchar customer_email
+  numeric invoice_total_amount
+  numeric invoice_paid_amount
+  timestamp_without_time_zone invoice_created_at
+  timestamp_without_time_zone latest_payment_made
+}
+
+```
