@@ -197,3 +197,36 @@ dbt run-operation send_alert_on_failure --debug
 # in prod run this with the exclude unit test flag
 dbt build --exclude-resource-type unit_test
 ```
+
+## dbterd
+
+- Works, but requires
+
+``` sh
+dbterd run
+
+dbterd run -t mermaid
+dbterd run -t mermaid -s schema:fact
+
+echo \`\`\`mermaid > ./erd/erd_output.md
+echo --- >> ./erd/erd_output.md
+echo title: Sample ERD >> ./erd/erd_output.md
+echo --- >> ./erd/erd_output.md
+cat ./target/output.md >> ./erd/erd_output.md
+echo \`\`\` >> ./erd/erd_output.md
+
+# it has problems with custom enums in the source schema,
+# and the numeric(10,2) data type in postgres. have to remove
+
+sed -i -E 's/source\.//g; s/numeric\([0-9]+,[0-9]+\)/numeric/g' ./erd/erd_output.md
+
+```
+
+## tbls
+
+``` sh
+
+tbls doc postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
+
+tbls doc --force
+```
