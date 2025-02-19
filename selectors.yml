@@ -1,0 +1,11 @@
+selectors:
+  - name: build_dim_models
+    definition:
+      method: tag
+      value: dim
+      exclude:
+        - tag:quality
+  - name: run_quality_tests
+    definition:
+      method: tag
+      value: quality

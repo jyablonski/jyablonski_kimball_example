@@ -67,6 +67,7 @@ models:
     dim:
       +materialized: table
       +schema: dim
+      +tags: dim
     marts:
       +materialized: table
       +schema: marts
