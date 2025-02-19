@@ -6,6 +6,13 @@ models:
         - dbt_expectations.expect_compound_columns_to_be_unique:
             column_list: ["customer_id", "integration_type", "valid_from"]
       columns:
+          - name: customer_id
+            data_tests:
+            - relationships: # dbterd looks for all kind of this test
+                to: ref('dim_customers')
+                field: customer_id
+                # this where clause isnt needed, but for performance purposes i think you want it in there
+                where: is_current_integration_record = 1
           - name: is_active
             data_tests:
               - dbt_expectations.expect_column_values_to_be_between:

@@ -279,9 +279,9 @@ VALUES
     (1, 0, 1, 'Johnny Allstar', 'customer1@example.com', '123 Main St', 'Apt 4B', 'Springfield', 12345, 'IL', 'USA', '2024-01-01 00:30:00', '2024-01-01 00:30:00'),
     (2, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '13 Peak Trail', null, 'Las Vegas', 11112, 'NV', 'USA', '2024-01-01 00:30:00', '2024-03-01 12:00:00'),
     (3, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '6 Moccasin', null, 'Trabuco Canyon', 92679, 'CA', 'USA', '2024-01-01 00:30:00', '2024-06-01 09:00:00'),
-    (4, 0, 1, 'Bobby Newport', 'newportb@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-01-01 04:30:00'),
-    (5, 1, 1, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-05-01 15:30:00'),
-    (6, 2, 1, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-06-15 00:30:00'),
+    (4, 0, 4, 'Bobby Newport', 'newportb@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-01-01 04:30:00'),
+    (5, 1, 4, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-05-01 15:30:00'),
+    (6, 2, 4, 'Bobby Newport', 'bobby999@gmail.com', '123 Yellowbrook Lane', null, 'Ridgewood', 75620, 'CA', 'USA', '2024-01-01 00:30:00', '2024-06-15 00:30:00'),
     (7, 0, 2, 'Aubrey Plaza', 'fake@nobody.com', '456 Elm St', null, 'Metropolis', 54321, 'NY', 'USA', current_timestamp, current_timestamp),
     (8, 0, 3, 'John Wick', 'customer3@example.com', '789 Oak St', 'Apt 1615', 'Los Angeles', 67890, 'CA', 'USA', current_timestamp, current_timestamp),
     (9, 1, 1, 'Johnny Allstar', 'johnny@allstar.com', '15 Sagefoot', null, 'Los Angeles', 44433, 'CA', 'USA', '2024-01-01 00:30:00', current_timestamp);
