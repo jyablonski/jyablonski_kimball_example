@@ -25,9 +25,9 @@
 
 ## Indexes
 
-| # | Name                             | Definition                                                                                   |
-| - | -------------------------------- | -------------------------------------------------------------------------------------------- |
-| 1 | fa783fc84513928bf79a816b6f20dde8 | CREATE INDEX fa783fc84513928bf79a816b6f20dde8 ON dim.dim_customers USING btree (customer_id) |
+| # | Name                             | Definition                                                                                     |
+| - | -------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 1 | 825c68c7e286676e960d6721a6378006 | CREATE INDEX "825c68c7e286676e960d6721a6378006" ON dim.dim_customers USING btree (customer_id) |
 
 ## Relations
 

@@ -15,7 +15,7 @@
 
 | # | Name                             | Definition                                                                                         |
 | - | -------------------------------- | -------------------------------------------------------------------------------------------------- |
-| 1 | e06a743cb6d56d5380b833093b7d7c01 | CREATE INDEX e06a743cb6d56d5380b833093b7d7c01 ON dbt_stg.test_result_rows USING btree (created_at) |
+| 1 | bc7fa4da89a3027473e4720e38a10fb9 | CREATE INDEX bc7fa4da89a3027473e4720e38a10fb9 ON dbt_stg.test_result_rows USING btree (created_at) |
 
 ## Relations
 

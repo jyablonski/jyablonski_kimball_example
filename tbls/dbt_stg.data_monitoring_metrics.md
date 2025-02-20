@@ -24,9 +24,9 @@
 
 ## Indexes
 
-| # | Name                             | Definition                                                                                                                               |
-| - | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 | b4b6a5ae62e13211a50b23551d76bfad | CREATE INDEX b4b6a5ae62e13211a50b23551d76bfad ON dbt_stg.data_monitoring_metrics USING btree (full_table_name, column_name, metric_name) |
+| # | Name                             | Definition                                                                                                                                 |
+| - | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1 | 2d5906283fd4eb6a9af266299871048f | CREATE INDEX "2d5906283fd4eb6a9af266299871048f" ON dbt_stg.data_monitoring_metrics USING btree (full_table_name, column_name, metric_name) |
 
 ## Relations
 

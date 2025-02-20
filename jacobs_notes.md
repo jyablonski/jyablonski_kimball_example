@@ -93,7 +93,6 @@ Example in `/models/dim/dim_customers.sql`
 
 - This command will kill any leftover resources used on port 8000 when running dbt docs serve
 
-
 ## dbt Coverage
 
 [Example Repo](https://github.com/pgoslatara/dbt-beyond-the-basics)
@@ -196,6 +195,9 @@ dbt run-operation send_alert_on_failure --debug
 # so in slim ci just run dbt build and let it do its thing
 # in prod run this with the exclude unit test flag
 dbt build --exclude-resource-type unit_test
+
+dbt docs serve --port 8000 --host 0.0.0.0
+
 ```
 
 ## dbterd
@@ -219,6 +221,14 @@ echo \`\`\` >> ./erd/erd_output.md
 # and the numeric(10,2) data type in postgres. have to remove
 
 sed -i -E 's/source\.//g; s/numeric\([0-9]+,[0-9]+\)/numeric/g' ./erd/erd_output.md
+
+# dbml route which is used in combination w/ a site called dbdocs
+dbterd run -t dbml
+dbdocs build "target/output.dbml"
+
+npm install -g dbdocs
+dbdocs login
+dbdocs build "target/output.dbml"
 
 ```
 
