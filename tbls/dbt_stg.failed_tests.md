@@ -4,17 +4,28 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | text |  | true |  |  |  |
-| test_name | varchar(4096) |  | true |  |  |  |
-| test_status | varchar(4096) |  | true |  |  |  |
-| test_type | varchar(4096) |  | true |  |  |  |
-| generated_at | timestamp without time zone |  | true |  |  |  |
+| # | Name         | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------ | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | generated_at | timestamp without time zone |         | true     |          |         |         |
+| 2 | id           | text                        |         | true     |          |         |         |
+| 3 | test_name    | varchar(4096)               |         | true     |          |         |         |
+| 4 | test_status  | varchar(4096)               |         | true     |          |         |         |
+| 5 | test_type    | varchar(4096)               |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.failed_tests.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.failed_tests" {
+  timestamp_without_time_zone generated_at
+  text id
+  varchar_4096_ test_name
+  varchar_4096_ test_status
+  varchar_4096_ test_type
+}
+```
 
 ---
 

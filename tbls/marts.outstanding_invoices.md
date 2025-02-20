@@ -4,20 +4,34 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| invoice_id | integer |  | true |  |  |  |
-| invoice_remaining_balance | numeric |  | true |  |  |  |
-| customer_name | varchar |  | true |  |  |  |
-| customer_email | varchar |  | true |  |  |  |
-| invoice_total_amount | numeric |  | true |  |  |  |
-| invoice_paid_amount | numeric |  | true |  |  |  |
-| invoice_created_at | timestamp without time zone |  | true |  |  |  |
-| latest_payment_made | timestamp without time zone |  | true |  |  |  |
+| # | Name                      | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | customer_email            | varchar                     |         | true     |          |         |         |
+| 2 | customer_name             | varchar                     |         | true     |          |         |         |
+| 3 | invoice_created_at        | timestamp without time zone |         | true     |          |         |         |
+| 4 | invoice_id                | integer                     |         | true     |          |         |         |
+| 5 | invoice_paid_amount       | numeric                     |         | true     |          |         |         |
+| 6 | invoice_remaining_balance | numeric                     |         | true     |          |         |         |
+| 7 | invoice_total_amount      | numeric                     |         | true     |          |         |         |
+| 8 | latest_payment_made       | timestamp without time zone |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.outstanding_invoices.svg)
+```mermaid
+erDiagram
+
+
+"marts.outstanding_invoices" {
+  varchar customer_email
+  varchar customer_name
+  timestamp_without_time_zone invoice_created_at
+  integer invoice_id
+  numeric invoice_paid_amount
+  numeric invoice_remaining_balance
+  numeric invoice_total_amount
+  timestamp_without_time_zone latest_payment_made
+}
+```
 
 ---
 

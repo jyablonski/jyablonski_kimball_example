@@ -4,32 +4,58 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| label | varchar(4096) |  | true |  |  |  |
-| model | varchar(4096) |  | true |  |  |  |
-| type | varchar(4096) |  | true |  |  |  |
-| sql | text |  | true |  |  |  |
-| timestamp | varchar(4096) |  | true |  |  |  |
-| filters | text |  | true |  |  |  |
-| time_grains | text |  | true |  |  |  |
-| dimensions | text |  | true |  |  |  |
-| depends_on_macros | text |  | true |  |  |  |
-| depends_on_nodes | text |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| #  | Name              | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ----------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | depends_on_macros | text          |         | true     |          |         |         |
+| 2  | depends_on_nodes  | text          |         | true     |          |         |         |
+| 3  | description       | text          |         | true     |          |         |         |
+| 4  | dimensions        | text          |         | true     |          |         |         |
+| 5  | filters           | text          |         | true     |          |         |         |
+| 6  | generated_at      | varchar(4096) |         | true     |          |         |         |
+| 7  | label             | varchar(4096) |         | true     |          |         |         |
+| 8  | meta              | text          |         | true     |          |         |         |
+| 9  | metadata_hash     | varchar(4096) |         | true     |          |         |         |
+| 10 | model             | varchar(4096) |         | true     |          |         |         |
+| 11 | name              | varchar(4096) |         | true     |          |         |         |
+| 12 | original_path     | text          |         | true     |          |         |         |
+| 13 | package_name      | varchar(4096) |         | true     |          |         |         |
+| 14 | path              | varchar(4096) |         | true     |          |         |         |
+| 15 | sql               | text          |         | true     |          |         |         |
+| 16 | tags              | text          |         | true     |          |         |         |
+| 17 | time_grains       | text          |         | true     |          |         |         |
+| 18 | timestamp         | varchar(4096) |         | true     |          |         |         |
+| 19 | type              | varchar(4096) |         | true     |          |         |         |
+| 20 | unique_id         | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_metrics.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_metrics" {
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  text dimensions
+  text filters
+  varchar_4096_ generated_at
+  varchar_4096_ label
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ model
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ package_name
+  varchar_4096_ path
+  text sql
+  text tags
+  text time_grains
+  varchar_4096_ timestamp
+  varchar_4096_ type
+  varchar_4096_ unique_id
+}
+```
 
 ---
 

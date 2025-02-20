@@ -4,21 +4,36 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| store_id | integer |  | true |  |  |  |
-| store_name | varchar(100) |  | true |  |  |  |
-| street | varchar(100) |  | true |  |  |  |
-| city | varchar(100) |  | true |  |  |  |
-| state | varchar(2) |  | true |  |  |  |
-| zip_code | integer |  | true |  |  |  |
-| is_shipping_enabled_state | integer |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                      | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | city                      | varchar(100)                |         | true     |          |         |         |
+| 2 | created_at                | timestamp without time zone |         | true     |          |         |         |
+| 3 | is_shipping_enabled_state | integer                     |         | true     |          |         |         |
+| 4 | modified_at               | timestamp without time zone |         | true     |          |         |         |
+| 5 | state                     | varchar(2)                  |         | true     |          |         |         |
+| 6 | store_id                  | integer                     |         | true     |          |         |         |
+| 7 | store_name                | varchar(100)                |         | true     |          |         |         |
+| 8 | street                    | varchar(100)                |         | true     |          |         |         |
+| 9 | zip_code                  | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](dim.dim_stores.svg)
+```mermaid
+erDiagram
+
+
+"dim.dim_stores" {
+  varchar_100_ city
+  timestamp_without_time_zone created_at
+  integer is_shipping_enabled_state
+  timestamp_without_time_zone modified_at
+  varchar_2_ state
+  integer store_id
+  varchar_100_ store_name
+  varchar_100_ street
+  integer zip_code
+}
+```
 
 ---
 

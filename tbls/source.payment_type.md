@@ -4,30 +4,52 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.payment_type_id_seq'::regclass) | false | [source.payment](source.payment.md) |  |  |
-| payment_type | source.payment_enum |  | true |  |  |  |
-| financial_account_id | integer |  | false |  |  |  |
-| payment_type_description | varchar(100) |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name                     | Type                        | Default                                         | Nullable | Children                            | Parents | Comment |
+| - | ------------------------ | --------------------------- | ----------------------------------------------- | -------- | ----------------------------------- | ------- | ------- |
+| 1 | created_at               | timestamp without time zone | CURRENT_TIMESTAMP                               | true     |                                     |         |         |
+| 2 | financial_account_id     | integer                     |                                                 | false    |                                     |         |         |
+| 3 | id                       | integer                     | nextval('source.payment_type_id_seq'::regclass) | false    | [source.payment](source.payment.md) |         |         |
+| 4 | modified_at              | timestamp without time zone | CURRENT_TIMESTAMP                               | true     |                                     |         |         |
+| 5 | payment_type             | source.payment_enum         |                                                 | true     |                                     |         |         |
+| 6 | payment_type_description | varchar(100)                |                                                 | true     |                                     |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| payment_type_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name              | Type        | Definition       |
+| - | ----------------- | ----------- | ---------------- |
+| 1 | payment_type_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| payment_type_pkey | CREATE UNIQUE INDEX payment_type_pkey ON source.payment_type USING btree (id) |
+| # | Name              | Definition                                                                    |
+| - | ----------------- | ----------------------------------------------------------------------------- |
+| 1 | payment_type_pkey | CREATE UNIQUE INDEX payment_type_pkey ON source.payment_type USING btree (id) |
 
 ## Relations
 
-![er](source.payment_type.svg)
+```mermaid
+erDiagram
+
+"source.payment" }o--o| "source.payment_type" : "FOREIGN KEY (payment_type_id) REFERENCES source.payment_type(id)"
+
+"source.payment_type" {
+  timestamp_without_time_zone created_at
+  integer financial_account_id
+  integer id
+  timestamp_without_time_zone modified_at
+  source_payment_enum payment_type
+  varchar_100_ payment_type_description
+}
+"source.payment" {
+  numeric_10_2_ amount
+  timestamp_without_time_zone created_at
+  integer id
+  integer invoice_id FK
+  timestamp_without_time_zone modified_at
+  varchar_100_ payment_type_detail
+  integer payment_type_id FK
+}
+```
 
 ---
 

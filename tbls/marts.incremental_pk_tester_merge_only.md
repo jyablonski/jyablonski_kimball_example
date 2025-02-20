@@ -4,17 +4,28 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| store_id | integer |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name        | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ----------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at  | timestamp without time zone |         | true     |          |         |         |
+| 2 | customer_id | integer                     |         | true     |          |         |         |
+| 3 | id          | integer                     |         | true     |          |         |         |
+| 4 | modified_at | timestamp without time zone |         | true     |          |         |         |
+| 5 | store_id    | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.incremental_pk_tester_merge_only.svg)
+```mermaid
+erDiagram
+
+
+"marts.incremental_pk_tester_merge_only" {
+  timestamp_without_time_zone created_at
+  integer customer_id
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id
+}
+```
 
 ---
 

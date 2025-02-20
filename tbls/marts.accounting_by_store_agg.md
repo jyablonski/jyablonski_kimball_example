@@ -4,16 +4,26 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| store_name | varchar(100) |  | true |  |  |  |
-| financial_account_name | varchar(100) |  | true |  |  |  |
-| total_account_amount | numeric |  | true |  |  |  |
-| as_of_date | date |  | true |  |  |  |
+| # | Name                   | Type         | Default | Nullable | Children | Parents | Comment |
+| - | ---------------------- | ------------ | ------- | -------- | -------- | ------- | ------- |
+| 1 | as_of_date             | date         |         | true     |          |         |         |
+| 2 | financial_account_name | varchar(100) |         | true     |          |         |         |
+| 3 | store_name             | varchar(100) |         | true     |          |         |         |
+| 4 | total_account_amount   | numeric      |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.accounting_by_store_agg.svg)
+```mermaid
+erDiagram
+
+
+"marts.accounting_by_store_agg" {
+  date as_of_date
+  varchar_100_ financial_account_name
+  varchar_100_ store_name
+  numeric total_account_amount
+}
+```
 
 ---
 

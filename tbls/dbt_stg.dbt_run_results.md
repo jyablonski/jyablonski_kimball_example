@@ -4,34 +4,62 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| model_execution_id | text |  | true |  |  |  |
-| unique_id | text |  | true |  |  |  |
-| invocation_id | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| name | text |  | true |  |  |  |
-| message | text |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| resource_type | varchar(4096) |  | true |  |  |  |
-| execution_time | double precision |  | true |  |  |  |
-| execute_started_at | varchar(4096) |  | true |  |  |  |
-| execute_completed_at | varchar(4096) |  | true |  |  |  |
-| compile_started_at | varchar(4096) |  | true |  |  |  |
-| compile_completed_at | varchar(4096) |  | true |  |  |  |
-| rows_affected | bigint |  | true |  |  |  |
-| full_refresh | boolean |  | true |  |  |  |
-| compiled_code | text |  | true |  |  |  |
-| failures | bigint |  | true |  |  |  |
-| query_id | varchar(4096) |  | true |  |  |  |
-| thread_id | varchar(4096) |  | true |  |  |  |
-| materialization | varchar(4096) |  | true |  |  |  |
-| adapter_response | varchar(4096) |  | true |  |  |  |
+| #  | Name                 | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | -------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | adapter_response     | varchar(4096)               |         | true     |          |         |         |
+| 2  | compile_completed_at | varchar(4096)               |         | true     |          |         |         |
+| 3  | compile_started_at   | varchar(4096)               |         | true     |          |         |         |
+| 4  | compiled_code        | text                        |         | true     |          |         |         |
+| 5  | created_at           | timestamp without time zone |         | true     |          |         |         |
+| 6  | execute_completed_at | varchar(4096)               |         | true     |          |         |         |
+| 7  | execute_started_at   | varchar(4096)               |         | true     |          |         |         |
+| 8  | execution_time       | double precision            |         | true     |          |         |         |
+| 9  | failures             | bigint                      |         | true     |          |         |         |
+| 10 | full_refresh         | boolean                     |         | true     |          |         |         |
+| 11 | generated_at         | varchar(4096)               |         | true     |          |         |         |
+| 12 | invocation_id        | varchar(4096)               |         | true     |          |         |         |
+| 13 | materialization      | varchar(4096)               |         | true     |          |         |         |
+| 14 | message              | text                        |         | true     |          |         |         |
+| 15 | model_execution_id   | text                        |         | true     |          |         |         |
+| 16 | name                 | text                        |         | true     |          |         |         |
+| 17 | query_id             | varchar(4096)               |         | true     |          |         |         |
+| 18 | resource_type        | varchar(4096)               |         | true     |          |         |         |
+| 19 | rows_affected        | bigint                      |         | true     |          |         |         |
+| 20 | status               | varchar(4096)               |         | true     |          |         |         |
+| 21 | thread_id            | varchar(4096)               |         | true     |          |         |         |
+| 22 | unique_id            | text                        |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_run_results.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_run_results" {
+  varchar_4096_ adapter_response
+  varchar_4096_ compile_completed_at
+  varchar_4096_ compile_started_at
+  text compiled_code
+  timestamp_without_time_zone created_at
+  varchar_4096_ execute_completed_at
+  varchar_4096_ execute_started_at
+  double_precision execution_time
+  bigint failures
+  boolean full_refresh
+  varchar_4096_ generated_at
+  varchar_4096_ invocation_id
+  varchar_4096_ materialization
+  text message
+  text model_execution_id
+  text name
+  varchar_4096_ query_id
+  varchar_4096_ resource_type
+  bigint rows_affected
+  varchar_4096_ status
+  varchar_4096_ thread_id
+  text unique_id
+}
+```
 
 ---
 

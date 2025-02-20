@@ -4,22 +4,32 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| elementary_test_results_id | text |  | true |  |  |  |
-| result_row | text |  | true |  |  |  |
-| detected_at | timestamp without time zone |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                       | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at                 | timestamp without time zone |         | true     |          |         |         |
+| 2 | detected_at                | timestamp without time zone |         | true     |          |         |         |
+| 3 | elementary_test_results_id | text                        |         | true     |          |         |         |
+| 4 | result_row                 | text                        |         | true     |          |         |         |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| 9e794d8f4662a0b3561fd431c2211d80 | CREATE INDEX "9e794d8f4662a0b3561fd431c2211d80" ON dbt_stg.test_result_rows USING btree (created_at) |
+| # | Name                             | Definition                                                                                         |
+| - | -------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1 | e06a743cb6d56d5380b833093b7d7c01 | CREATE INDEX e06a743cb6d56d5380b833093b7d7c01 ON dbt_stg.test_result_rows USING btree (created_at) |
 
 ## Relations
 
-![er](dbt_stg.test_result_rows.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.test_result_rows" {
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone detected_at
+  text elementary_test_results_id
+  text result_row
+}
+```
 
 ---
 

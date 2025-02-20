@@ -4,30 +4,42 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.integration_id_seq'::regclass) | false |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| integration_type | source.integration_enum |  | true |  |  |  |
-| is_active | integer |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name             | Type                        | Default                                        | Nullable | Children | Parents | Comment |
+| - | ---------------- | --------------------------- | ---------------------------------------------- | -------- | -------- | ------- | ------- |
+| 1 | created_at       | timestamp without time zone | CURRENT_TIMESTAMP                              | true     |          |         |         |
+| 2 | customer_id      | integer                     |                                                | true     |          |         |         |
+| 3 | id               | integer                     | nextval('source.integration_id_seq'::regclass) | false    |          |         |         |
+| 4 | integration_type | source.integration_enum     |                                                | true     |          |         |         |
+| 5 | is_active        | integer                     |                                                | true     |          |         |         |
+| 6 | modified_at      | timestamp without time zone | CURRENT_TIMESTAMP                              | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| integration_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name             | Type        | Definition       |
+| - | ---------------- | ----------- | ---------------- |
+| 1 | integration_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| integration_pkey | CREATE UNIQUE INDEX integration_pkey ON source.integration USING btree (id) |
+| # | Name             | Definition                                                                  |
+| - | ---------------- | --------------------------------------------------------------------------- |
+| 1 | integration_pkey | CREATE UNIQUE INDEX integration_pkey ON source.integration USING btree (id) |
 
 ## Relations
 
-![er](source.integration.svg)
+```mermaid
+erDiagram
+
+
+"source.integration" {
+  timestamp_without_time_zone created_at
+  integer customer_id
+  integer id
+  source_integration_enum integration_type
+  integer is_active
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

@@ -4,31 +4,88 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.order_id_seq'::regclass) | false | [source.order_detail](source.order_detail.md) [source.invoice](source.invoice.md) |  |  |
-| customer_id | integer |  | true |  | [source.customer](source.customer.md) |  |
-| store_id | integer |  | true |  | [source.store](source.store.md) |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name        | Type                        | Default                                  | Nullable | Children                                                                          | Parents                               | Comment |
+| - | ----------- | --------------------------- | ---------------------------------------- | -------- | --------------------------------------------------------------------------------- | ------------------------------------- | ------- |
+| 1 | created_at  | timestamp without time zone | CURRENT_TIMESTAMP                        | true     |                                                                                   |                                       |         |
+| 2 | customer_id | integer                     |                                          | true     |                                                                                   | [source.customer](source.customer.md) |         |
+| 3 | id          | integer                     | nextval('source.order_id_seq'::regclass) | false    | [source.invoice](source.invoice.md) [source.order_detail](source.order_detail.md) |                                       |         |
+| 4 | modified_at | timestamp without time zone | CURRENT_TIMESTAMP                        | true     |                                                                                   |                                       |         |
+| 5 | store_id    | integer                     |                                          | true     |                                                                                   | [source.store](source.store.md)       |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| fk_customer_id | FOREIGN KEY | FOREIGN KEY (customer_id) REFERENCES source.customer(id) |
-| fk_store_id | FOREIGN KEY | FOREIGN KEY (store_id) REFERENCES source.store(id) |
-| order_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name           | Type        | Definition                                               |
+| - | -------------- | ----------- | -------------------------------------------------------- |
+| 1 | fk_customer_id | FOREIGN KEY | FOREIGN KEY (customer_id) REFERENCES source.customer(id) |
+| 2 | fk_store_id    | FOREIGN KEY | FOREIGN KEY (store_id) REFERENCES source.store(id)       |
+| 3 | order_pkey     | PRIMARY KEY | PRIMARY KEY (id)                                         |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| order_pkey | CREATE UNIQUE INDEX order_pkey ON source."order" USING btree (id) |
+| # | Name       | Definition                                                        |
+| - | ---------- | ----------------------------------------------------------------- |
+| 1 | order_pkey | CREATE UNIQUE INDEX order_pkey ON source."order" USING btree (id) |
 
 ## Relations
 
-![er](source.order.svg)
+```mermaid
+erDiagram
+
+"source.order" }o--o| "source.customer" : "FOREIGN KEY (customer_id) REFERENCES source.customer(id)"
+"source.invoice" }o--o| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+"source.order_detail" }o--|| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+"source.order" }o--o| "source.store" : "FOREIGN KEY (store_id) REFERENCES source.store(id)"
+
+"source.order" {
+  timestamp_without_time_zone created_at
+  integer customer_id FK
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id FK
+}
+"source.customer" {
+  varchar_100_ address
+  varchar_100_ address_2
+  varchar_50_ city
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  varchar_100_ customer_email
+  varchar_100_ customer_name
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_3_ state
+  integer zip_code
+}
+"source.invoice" {
+  timestamp_without_time_zone created_at
+  varchar_3_ currency
+  integer id
+  boolean is_voided
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  numeric_10_2_ total_amount
+}
+"source.order_detail" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  integer product_id FK
+  integer product_price_id FK
+  integer quantity
+}
+"source.store" {
+  varchar_100_ city
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_2_ state
+  varchar_100_ store_name
+  varchar_100_ street
+  integer zip_code
+}
+```
 
 ---
 

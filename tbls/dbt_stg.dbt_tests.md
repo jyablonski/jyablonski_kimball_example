@@ -4,40 +4,74 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| short_name | varchar(4096) |  | true |  |  |  |
-| alias | varchar(4096) |  | true |  |  |  |
-| test_column_name | varchar(4096) |  | true |  |  |  |
-| severity | varchar(4096) |  | true |  |  |  |
-| warn_if | varchar(4096) |  | true |  |  |  |
-| error_if | varchar(4096) |  | true |  |  |  |
-| test_params | text |  | true |  |  |  |
-| test_namespace | varchar(4096) |  | true |  |  |  |
-| test_original_name | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| model_tags | text |  | true |  |  |  |
-| model_owners | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| depends_on_macros | text |  | true |  |  |  |
-| depends_on_nodes | text |  | true |  |  |  |
-| parent_model_unique_id | varchar(4096) |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| type | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
-| quality_dimension | varchar(4096) |  | true |  |  |  |
+| #  | Name                   | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ---------------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | alias                  | varchar(4096) |         | true     |          |         |         |
+| 2  | database_name          | varchar(4096) |         | true     |          |         |         |
+| 3  | depends_on_macros      | text          |         | true     |          |         |         |
+| 4  | depends_on_nodes       | text          |         | true     |          |         |         |
+| 5  | description            | text          |         | true     |          |         |         |
+| 6  | error_if               | varchar(4096) |         | true     |          |         |         |
+| 7  | generated_at           | varchar(4096) |         | true     |          |         |         |
+| 8  | meta                   | text          |         | true     |          |         |         |
+| 9  | metadata_hash          | varchar(4096) |         | true     |          |         |         |
+| 10 | model_owners           | text          |         | true     |          |         |         |
+| 11 | model_tags             | text          |         | true     |          |         |         |
+| 12 | name                   | varchar(4096) |         | true     |          |         |         |
+| 13 | original_path          | text          |         | true     |          |         |         |
+| 14 | package_name           | varchar(4096) |         | true     |          |         |         |
+| 15 | parent_model_unique_id | varchar(4096) |         | true     |          |         |         |
+| 16 | path                   | varchar(4096) |         | true     |          |         |         |
+| 17 | quality_dimension      | varchar(4096) |         | true     |          |         |         |
+| 18 | schema_name            | varchar(4096) |         | true     |          |         |         |
+| 19 | severity               | varchar(4096) |         | true     |          |         |         |
+| 20 | short_name             | varchar(4096) |         | true     |          |         |         |
+| 21 | tags                   | text          |         | true     |          |         |         |
+| 22 | test_column_name       | varchar(4096) |         | true     |          |         |         |
+| 23 | test_namespace         | varchar(4096) |         | true     |          |         |         |
+| 24 | test_original_name     | varchar(4096) |         | true     |          |         |         |
+| 25 | test_params            | text          |         | true     |          |         |         |
+| 26 | type                   | varchar(4096) |         | true     |          |         |         |
+| 27 | unique_id              | varchar(4096) |         | true     |          |         |         |
+| 28 | warn_if                | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_tests.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_tests" {
+  varchar_4096_ alias
+  varchar_4096_ database_name
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  varchar_4096_ error_if
+  varchar_4096_ generated_at
+  text meta
+  varchar_4096_ metadata_hash
+  text model_owners
+  text model_tags
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ package_name
+  varchar_4096_ parent_model_unique_id
+  varchar_4096_ path
+  varchar_4096_ quality_dimension
+  varchar_4096_ schema_name
+  varchar_4096_ severity
+  varchar_4096_ short_name
+  text tags
+  varchar_4096_ test_column_name
+  varchar_4096_ test_namespace
+  varchar_4096_ test_original_name
+  text test_params
+  varchar_4096_ type
+  varchar_4096_ unique_id
+  varchar_4096_ warn_if
+}
+```
 
 ---
 

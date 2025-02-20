@@ -32,24 +32,36 @@ CREATE VIEW job_run_results AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| name | text |  | true |  |  |  |
-| id | text |  | true |  |  |  |
-| run_id | text |  | true |  |  |  |
-| run_started_at | timestamp without time zone |  | true |  |  |  |
-| run_completed_at | timestamp without time zone |  | true |  |  |  |
-| run_execution_time | double precision |  | true |  |  |  |
+| # | Name               | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------------ | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | id                 | text                        |         | true     |          |         |         |
+| 2 | name               | text                        |         | true     |          |         |         |
+| 3 | run_completed_at   | timestamp without time zone |         | true     |          |         |         |
+| 4 | run_execution_time | double precision            |         | true     |          |         |         |
+| 5 | run_id             | text                        |         | true     |          |         |         |
+| 6 | run_started_at     | timestamp without time zone |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.dbt_invocations](dbt_stg.dbt_invocations.md) | 35 |  | BASE TABLE |
+| # | # | Name                                                  | Columns | Comment | Type       |
+| - | - | ----------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.dbt_invocations](dbt_stg.dbt_invocations.md) | 35      |         | BASE TABLE |
 
 ## Relations
 
-![er](dbt_stg.job_run_results.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.job_run_results" {
+  text id
+  text name
+  timestamp_without_time_zone run_completed_at
+  double_precision run_execution_time
+  text run_id
+  timestamp_without_time_zone run_started_at
+}
+```
 
 ---
 

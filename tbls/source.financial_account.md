@@ -4,31 +4,44 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.financial_account_id_seq'::regclass) | false |  |  |  |
-| financial_account_name | varchar(100) |  | false |  |  |  |
-| financial_account_type | source.financial_account_enum |  | true |  |  |  |
-| financial_account_description | text |  | true |  |  |  |
-| is_active | boolean | true | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name                          | Type                          | Default                                              | Nullable | Children | Parents | Comment |
+| - | ----------------------------- | ----------------------------- | ---------------------------------------------------- | -------- | -------- | ------- | ------- |
+| 1 | created_at                    | timestamp without time zone   | CURRENT_TIMESTAMP                                    | true     |          |         |         |
+| 2 | financial_account_description | text                          |                                                      | true     |          |         |         |
+| 3 | financial_account_name        | varchar(100)                  |                                                      | false    |          |         |         |
+| 4 | financial_account_type        | source.financial_account_enum |                                                      | true     |          |         |         |
+| 5 | id                            | integer                       | nextval('source.financial_account_id_seq'::regclass) | false    |          |         |         |
+| 6 | is_active                     | boolean                       | true                                                 | true     |          |         |         |
+| 7 | modified_at                   | timestamp without time zone   | CURRENT_TIMESTAMP                                    | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| financial_account_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name                   | Type        | Definition       |
+| - | ---------------------- | ----------- | ---------------- |
+| 1 | financial_account_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| financial_account_pkey | CREATE UNIQUE INDEX financial_account_pkey ON source.financial_account USING btree (id) |
+| # | Name                   | Definition                                                                              |
+| - | ---------------------- | --------------------------------------------------------------------------------------- |
+| 1 | financial_account_pkey | CREATE UNIQUE INDEX financial_account_pkey ON source.financial_account USING btree (id) |
 
 ## Relations
 
-![er](source.financial_account.svg)
+```mermaid
+erDiagram
+
+
+"source.financial_account" {
+  timestamp_without_time_zone created_at
+  text financial_account_description
+  varchar_100_ financial_account_name
+  source_financial_account_enum financial_account_type
+  integer id
+  boolean is_active
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

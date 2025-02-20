@@ -4,27 +4,48 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| alias | varchar(4096) |  | true |  |  |  |
-| checksum | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| owner | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| #  | Name          | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | alias         | varchar(4096) |         | true     |          |         |         |
+| 2  | checksum      | varchar(4096) |         | true     |          |         |         |
+| 3  | database_name | varchar(4096) |         | true     |          |         |         |
+| 4  | description   | text          |         | true     |          |         |         |
+| 5  | generated_at  | varchar(4096) |         | true     |          |         |         |
+| 6  | meta          | text          |         | true     |          |         |         |
+| 7  | metadata_hash | varchar(4096) |         | true     |          |         |         |
+| 8  | name          | varchar(4096) |         | true     |          |         |         |
+| 9  | original_path | text          |         | true     |          |         |         |
+| 10 | owner         | varchar(4096) |         | true     |          |         |         |
+| 11 | package_name  | varchar(4096) |         | true     |          |         |         |
+| 12 | path          | varchar(4096) |         | true     |          |         |         |
+| 13 | schema_name   | varchar(4096) |         | true     |          |         |         |
+| 14 | tags          | text          |         | true     |          |         |         |
+| 15 | unique_id     | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_seeds.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_seeds" {
+  varchar_4096_ alias
+  varchar_4096_ checksum
+  varchar_4096_ database_name
+  text description
+  varchar_4096_ generated_at
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ path
+  varchar_4096_ schema_name
+  text tags
+  varchar_4096_ unique_id
+}
+```
 
 ---
 

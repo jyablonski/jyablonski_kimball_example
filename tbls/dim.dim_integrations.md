@@ -4,19 +4,32 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| customer_email | varchar(100) |  | true |  |  |  |
-| integration_type | source.integration_enum |  | true |  |  |  |
-| is_active | integer |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name             | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ---------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at       | timestamp without time zone |         | true     |          |         |         |
+| 2 | customer_email   | varchar(100)                |         | true     |          |         |         |
+| 3 | customer_id      | integer                     |         | true     |          |         |         |
+| 4 | id               | integer                     |         | true     |          |         |         |
+| 5 | integration_type | source.integration_enum     |         | true     |          |         |         |
+| 6 | is_active        | integer                     |         | true     |          |         |         |
+| 7 | modified_at      | timestamp without time zone |         | true     |          |         |         |
 
 ## Relations
 
-![er](dim.dim_integrations.svg)
+```mermaid
+erDiagram
+
+
+"dim.dim_integrations" {
+  timestamp_without_time_zone created_at
+  varchar_100_ customer_email
+  integer customer_id
+  integer id
+  source_integration_enum integration_type
+  integer is_active
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

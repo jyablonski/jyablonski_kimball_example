@@ -4,16 +4,26 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer |  | true |  |  |  |
-| start_date | date |  | true |  |  |  |
-| end_date | date |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name        | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ----------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | end_date    | date                        |         | true     |          |         |         |
+| 2 | id          | integer                     |         | true     |          |         |         |
+| 3 | modified_at | timestamp without time zone |         | true     |          |         |         |
+| 4 | start_date  | date                        |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.ohshit.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.ohshit" {
+  date end_date
+  integer id
+  timestamp_without_time_zone modified_at
+  date start_date
+}
+```
 
 ---
 

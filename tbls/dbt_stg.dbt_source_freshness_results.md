@@ -4,29 +4,52 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| source_freshness_execution_id | varchar(4096) |  | true |  |  |  |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| max_loaded_at | varchar(4096) |  | true |  |  |  |
-| snapshotted_at | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| max_loaded_at_time_ago_in_s | double precision |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| error | varchar(4096) |  | true |  |  |  |
-| compile_started_at | varchar(4096) |  | true |  |  |  |
-| compile_completed_at | varchar(4096) |  | true |  |  |  |
-| execute_started_at | varchar(4096) |  | true |  |  |  |
-| execute_completed_at | varchar(4096) |  | true |  |  |  |
-| invocation_id | varchar(4096) |  | true |  |  |  |
-| warn_after | varchar(4096) |  | true |  |  |  |
-| error_after | varchar(4096) |  | true |  |  |  |
-| filter | text |  | true |  |  |  |
+| #  | Name                          | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ----------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | compile_completed_at          | varchar(4096)               |         | true     |          |         |         |
+| 2  | compile_started_at            | varchar(4096)               |         | true     |          |         |         |
+| 3  | created_at                    | timestamp without time zone |         | true     |          |         |         |
+| 4  | error                         | varchar(4096)               |         | true     |          |         |         |
+| 5  | error_after                   | varchar(4096)               |         | true     |          |         |         |
+| 6  | execute_completed_at          | varchar(4096)               |         | true     |          |         |         |
+| 7  | execute_started_at            | varchar(4096)               |         | true     |          |         |         |
+| 8  | filter                        | text                        |         | true     |          |         |         |
+| 9  | generated_at                  | varchar(4096)               |         | true     |          |         |         |
+| 10 | invocation_id                 | varchar(4096)               |         | true     |          |         |         |
+| 11 | max_loaded_at                 | varchar(4096)               |         | true     |          |         |         |
+| 12 | max_loaded_at_time_ago_in_s   | double precision            |         | true     |          |         |         |
+| 13 | snapshotted_at                | varchar(4096)               |         | true     |          |         |         |
+| 14 | source_freshness_execution_id | varchar(4096)               |         | true     |          |         |         |
+| 15 | status                        | varchar(4096)               |         | true     |          |         |         |
+| 16 | unique_id                     | varchar(4096)               |         | true     |          |         |         |
+| 17 | warn_after                    | varchar(4096)               |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_source_freshness_results.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_source_freshness_results" {
+  varchar_4096_ compile_completed_at
+  varchar_4096_ compile_started_at
+  timestamp_without_time_zone created_at
+  varchar_4096_ error
+  varchar_4096_ error_after
+  varchar_4096_ execute_completed_at
+  varchar_4096_ execute_started_at
+  text filter
+  varchar_4096_ generated_at
+  varchar_4096_ invocation_id
+  varchar_4096_ max_loaded_at
+  double_precision max_loaded_at_time_ago_in_s
+  varchar_4096_ snapshotted_at
+  varchar_4096_ source_freshness_execution_id
+  varchar_4096_ status
+  varchar_4096_ unique_id
+  varchar_4096_ warn_after
+}
+```
 
 ---
 

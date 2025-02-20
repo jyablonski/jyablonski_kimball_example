@@ -4,25 +4,44 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| parent_unique_id | varchar(4096) |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| data_type | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| table_name | varchar(4096) |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| resource_type | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| #  | Name             | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ---------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | data_type        | varchar(4096) |         | true     |          |         |         |
+| 2  | database_name    | varchar(4096) |         | true     |          |         |         |
+| 3  | description      | text          |         | true     |          |         |         |
+| 4  | generated_at     | varchar(4096) |         | true     |          |         |         |
+| 5  | meta             | text          |         | true     |          |         |         |
+| 6  | metadata_hash    | varchar(4096) |         | true     |          |         |         |
+| 7  | name             | varchar(4096) |         | true     |          |         |         |
+| 8  | parent_unique_id | varchar(4096) |         | true     |          |         |         |
+| 9  | resource_type    | varchar(4096) |         | true     |          |         |         |
+| 10 | schema_name      | varchar(4096) |         | true     |          |         |         |
+| 11 | table_name       | varchar(4096) |         | true     |          |         |         |
+| 12 | tags             | text          |         | true     |          |         |         |
+| 13 | unique_id        | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_columns.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_columns" {
+  varchar_4096_ data_type
+  varchar_4096_ database_name
+  text description
+  varchar_4096_ generated_at
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ name
+  varchar_4096_ parent_unique_id
+  varchar_4096_ resource_type
+  varchar_4096_ schema_name
+  varchar_4096_ table_name
+  text tags
+  varchar_4096_ unique_id
+}
+```
 
 ---
 

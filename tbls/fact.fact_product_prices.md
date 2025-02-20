@@ -4,20 +4,34 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| product_price_id | integer |  | true |  |  |  |
-| product_id | integer |  | true |  |  |  |
-| price | numeric(10,2) |  | true |  |  |  |
-| is_active | boolean |  | true |  |  |  |
-| valid_from | timestamp without time zone |  | true |  |  |  |
-| valid_to | timestamp without time zone |  | true |  |  |  |
-| product_price_created_at | timestamp without time zone |  | true |  |  |  |
-| product_price_modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                      | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | is_active                 | boolean                     |         | true     |          |         |         |
+| 2 | price                     | numeric(10,2)               |         | true     |          |         |         |
+| 3 | product_id                | integer                     |         | true     |          |         |         |
+| 4 | product_price_created_at  | timestamp without time zone |         | true     |          |         |         |
+| 5 | product_price_id          | integer                     |         | true     |          |         |         |
+| 6 | product_price_modified_at | timestamp without time zone |         | true     |          |         |         |
+| 7 | valid_from                | timestamp without time zone |         | true     |          |         |         |
+| 8 | valid_to                  | timestamp without time zone |         | true     |          |         |         |
 
 ## Relations
 
-![er](fact.fact_product_prices.svg)
+```mermaid
+erDiagram
+
+
+"fact.fact_product_prices" {
+  boolean is_active
+  numeric_10_2_ price
+  integer product_id
+  timestamp_without_time_zone product_price_created_at
+  integer product_price_id
+  timestamp_without_time_zone product_price_modified_at
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+}
+```
 
 ---
 

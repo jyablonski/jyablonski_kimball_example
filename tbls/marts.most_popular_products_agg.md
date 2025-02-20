@@ -4,15 +4,24 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| product_name | varchar(100) |  | true |  |  |  |
-| product_category_name | varchar(100) |  | true |  |  |  |
-| units_sold | bigint |  | true |  |  |  |
+| # | Name                  | Type         | Default | Nullable | Children | Parents | Comment |
+| - | --------------------- | ------------ | ------- | -------- | -------- | ------- | ------- |
+| 1 | product_category_name | varchar(100) |         | true     |          |         |         |
+| 2 | product_name          | varchar(100) |         | true     |          |         |         |
+| 3 | units_sold            | bigint       |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.most_popular_products_agg.svg)
+```mermaid
+erDiagram
+
+
+"marts.most_popular_products_agg" {
+  varchar_100_ product_category_name
+  varchar_100_ product_name
+  bigint units_sold
+}
+```
 
 ---
 

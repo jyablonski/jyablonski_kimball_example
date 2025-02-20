@@ -1,29 +1,30 @@
 version: 2
 
 models:
-    - name: customer_integration_history_scd2
-      tests:
-        - dbt_expectations.expect_compound_columns_to_be_unique:
-            column_list: ["customer_id", "integration_type", "valid_from"]
-      columns:
-          - name: customer_id
-            data_tests:
-            - relationships: # dbterd looks for all kind of this test
-                to: ref('dim_customers')
-                field: customer_id
-                # this where clause isnt needed, but for performance purposes i think you want it in there
-                where: is_current_integration_record = 1
-          - name: is_active
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0
-                  max_value: 1
-          - name: is_current_integration_record
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_between:
-                  min_value: 0
-                  max_value: 1
-          - name: integration_type
-            data_tests:
-              - dbt_expectations.expect_column_values_to_be_in_set:
-                  value_set: ["Hubspot", "Mailchimp", "Salesforce"]
+  - name: customer_integration_history_scd2
+    tests:
+      - dbt_expectations.expect_compound_columns_to_be_unique:
+          column_list: ["customer_id", "integration_type", "valid_from"]
+    columns:
+      - name: customer_id
+        data_tests:
+          - relationships: # dbterd looks for all kind of this test
+              to: ref('dim_customers')
+              field: customer_id
+              # this where clause isnt needed, but for performance purposes i think you want it in there
+              # where: is_current_integration_record = 1
+              enabled: true
+      - name: is_active
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: is_current_integration_record
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: integration_type
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["Hubspot", "Mailchimp", "Salesforce"]

@@ -4,19 +4,32 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| financial_account_id | integer |  | true |  |  |  |
-| financial_account_name | varchar(100) |  | true |  |  |  |
-| financial_account_description | text |  | true |  |  |  |
-| financial_account_type | source.financial_account_enum |  | true |  |  |  |
-| is_active | boolean |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                          | Type                          | Default | Nullable | Children | Parents | Comment |
+| - | ----------------------------- | ----------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at                    | timestamp without time zone   |         | true     |          |         |         |
+| 2 | financial_account_description | text                          |         | true     |          |         |         |
+| 3 | financial_account_id          | integer                       |         | true     |          |         |         |
+| 4 | financial_account_name        | varchar(100)                  |         | true     |          |         |         |
+| 5 | financial_account_type        | source.financial_account_enum |         | true     |          |         |         |
+| 6 | is_active                     | boolean                       |         | true     |          |         |         |
+| 7 | modified_at                   | timestamp without time zone   |         | true     |          |         |         |
 
 ## Relations
 
-![er](dim.dim_financial_accounts.svg)
+```mermaid
+erDiagram
+
+
+"dim.dim_financial_accounts" {
+  timestamp_without_time_zone created_at
+  text financial_account_description
+  integer financial_account_id
+  varchar_100_ financial_account_name
+  source_financial_account_enum financial_account_type
+  boolean is_active
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

@@ -4,33 +4,65 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.payment_id_seq'::regclass) | false |  |  |  |
-| amount | numeric(10,2) |  | true |  |  |  |
-| payment_type_id | integer |  | true |  | [source.payment_type](source.payment_type.md) |  |
-| payment_type_detail | varchar(100) |  | true |  |  |  |
-| invoice_id | integer |  | true |  | [source.invoice](source.invoice.md) |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name                | Type                        | Default                                    | Nullable | Children | Parents                                       | Comment |
+| - | ------------------- | --------------------------- | ------------------------------------------ | -------- | -------- | --------------------------------------------- | ------- |
+| 1 | amount              | numeric(10,2)               |                                            | true     |          |                                               |         |
+| 2 | created_at          | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |          |                                               |         |
+| 3 | id                  | integer                     | nextval('source.payment_id_seq'::regclass) | false    |          |                                               |         |
+| 4 | invoice_id          | integer                     |                                            | true     |          | [source.invoice](source.invoice.md)           |         |
+| 5 | modified_at         | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |          |                                               |         |
+| 6 | payment_type_detail | varchar(100)                |                                            | true     |          |                                               |         |
+| 7 | payment_type_id     | integer                     |                                            | true     |          | [source.payment_type](source.payment_type.md) |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| fk_payment_type_id | FOREIGN KEY | FOREIGN KEY (payment_type_id) REFERENCES source.payment_type(id) |
-| fk_invoice_id | FOREIGN KEY | FOREIGN KEY (invoice_id) REFERENCES source.invoice(id) |
-| payment_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name               | Type        | Definition                                                       |
+| - | ------------------ | ----------- | ---------------------------------------------------------------- |
+| 1 | fk_invoice_id      | FOREIGN KEY | FOREIGN KEY (invoice_id) REFERENCES source.invoice(id)           |
+| 2 | fk_payment_type_id | FOREIGN KEY | FOREIGN KEY (payment_type_id) REFERENCES source.payment_type(id) |
+| 3 | payment_pkey       | PRIMARY KEY | PRIMARY KEY (id)                                                 |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| payment_pkey | CREATE UNIQUE INDEX payment_pkey ON source.payment USING btree (id) |
+| # | Name         | Definition                                                          |
+| - | ------------ | ------------------------------------------------------------------- |
+| 1 | payment_pkey | CREATE UNIQUE INDEX payment_pkey ON source.payment USING btree (id) |
 
 ## Relations
 
-![er](source.payment.svg)
+```mermaid
+erDiagram
+
+"source.payment" }o--o| "source.invoice" : "FOREIGN KEY (invoice_id) REFERENCES source.invoice(id)"
+"source.payment" }o--o| "source.payment_type" : "FOREIGN KEY (payment_type_id) REFERENCES source.payment_type(id)"
+
+"source.payment" {
+  numeric_10_2_ amount
+  timestamp_without_time_zone created_at
+  integer id
+  integer invoice_id FK
+  timestamp_without_time_zone modified_at
+  varchar_100_ payment_type_detail
+  integer payment_type_id FK
+}
+"source.invoice" {
+  timestamp_without_time_zone created_at
+  varchar_3_ currency
+  integer id
+  boolean is_voided
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  numeric_10_2_ total_amount
+}
+"source.payment_type" {
+  timestamp_without_time_zone created_at
+  integer financial_account_id
+  integer id
+  timestamp_without_time_zone modified_at
+  source_payment_enum payment_type
+  varchar_100_ payment_type_description
+}
+```
 
 ---
 

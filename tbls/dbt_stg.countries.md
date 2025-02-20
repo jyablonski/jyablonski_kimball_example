@@ -4,16 +4,26 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| country_code | text |  | true |  |  |  |
-| country_name | text |  | true |  |  |  |
-| country_rank | integer |  | true |  |  |  |
-| test_fail | integer |  | true |  |  |  |
+| # | Name         | Type    | Default | Nullable | Children | Parents | Comment |
+| - | ------------ | ------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | country_code | text    |         | true     |          |         |         |
+| 2 | country_name | text    |         | true     |          |         |         |
+| 3 | country_rank | integer |         | true     |          |         |         |
+| 4 | test_fail    | integer |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.countries.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.countries" {
+  text country_code
+  text country_name
+  integer country_rank
+  integer test_fail
+}
+```
 
 ---
 

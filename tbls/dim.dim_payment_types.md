@@ -4,18 +4,30 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| payment_type_id | integer |  | true |  |  |  |
-| financial_account_id | integer |  | true |  |  |  |
-| payment_type | source.payment_enum |  | true |  |  |  |
-| payment_type_description | varchar(100) |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                     | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ------------------------ | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at               | timestamp without time zone |         | true     |          |         |         |
+| 2 | financial_account_id     | integer                     |         | true     |          |         |         |
+| 3 | modified_at              | timestamp without time zone |         | true     |          |         |         |
+| 4 | payment_type             | source.payment_enum         |         | true     |          |         |         |
+| 5 | payment_type_description | varchar(100)                |         | true     |          |         |         |
+| 6 | payment_type_id          | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](dim.dim_payment_types.svg)
+```mermaid
+erDiagram
+
+
+"dim.dim_payment_types" {
+  timestamp_without_time_zone created_at
+  integer financial_account_id
+  timestamp_without_time_zone modified_at
+  source_payment_enum payment_type
+  varchar_100_ payment_type_description
+  integer payment_type_id
+}
+```
 
 ---
 

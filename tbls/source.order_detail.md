@@ -4,34 +4,74 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.order_detail_id_seq'::regclass) | false |  |  |  |
-| order_id | integer |  | false |  | [source.order](source.order.md) |  |
-| product_id | integer |  | false |  | [source.product](source.product.md) |  |
-| product_price_id | integer |  | false |  | [source.product_price](source.product_price.md) |  |
-| quantity | integer |  | false |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name             | Type                        | Default                                         | Nullable | Children | Parents                                         | Comment |
+| - | ---------------- | --------------------------- | ----------------------------------------------- | -------- | -------- | ----------------------------------------------- | ------- |
+| 1 | created_at       | timestamp without time zone | CURRENT_TIMESTAMP                               | true     |          |                                                 |         |
+| 2 | id               | integer                     | nextval('source.order_detail_id_seq'::regclass) | false    |          |                                                 |         |
+| 3 | modified_at      | timestamp without time zone | CURRENT_TIMESTAMP                               | true     |          |                                                 |         |
+| 4 | order_id         | integer                     |                                                 | false    |          | [source.order](source.order.md)                 |         |
+| 5 | product_id       | integer                     |                                                 | false    |          | [source.product](source.product.md)             |         |
+| 6 | product_price_id | integer                     |                                                 | false    |          | [source.product_price](source.product_price.md) |         |
+| 7 | quantity         | integer                     |                                                 | false    |          |                                                 |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| fk_order_id | FOREIGN KEY | FOREIGN KEY (order_id) REFERENCES source."order"(id) |
-| fk_product_id | FOREIGN KEY | FOREIGN KEY (product_id) REFERENCES source.product(id) |
-| fk_product_price_id | FOREIGN KEY | FOREIGN KEY (product_price_id) REFERENCES source.product_price(id) |
-| order_detail_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name                | Type        | Definition                                                         |
+| - | ------------------- | ----------- | ------------------------------------------------------------------ |
+| 1 | fk_order_id         | FOREIGN KEY | FOREIGN KEY (order_id) REFERENCES source."order"(id)               |
+| 2 | fk_product_id       | FOREIGN KEY | FOREIGN KEY (product_id) REFERENCES source.product(id)             |
+| 3 | fk_product_price_id | FOREIGN KEY | FOREIGN KEY (product_price_id) REFERENCES source.product_price(id) |
+| 4 | order_detail_pkey   | PRIMARY KEY | PRIMARY KEY (id)                                                   |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| order_detail_pkey | CREATE UNIQUE INDEX order_detail_pkey ON source.order_detail USING btree (id) |
+| # | Name              | Definition                                                                    |
+| - | ----------------- | ----------------------------------------------------------------------------- |
+| 1 | order_detail_pkey | CREATE UNIQUE INDEX order_detail_pkey ON source.order_detail USING btree (id) |
 
 ## Relations
 
-![er](source.order_detail.svg)
+```mermaid
+erDiagram
+
+"source.order_detail" }o--|| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+"source.order_detail" }o--|| "source.product" : "FOREIGN KEY (product_id) REFERENCES source.product(id)"
+"source.order_detail" }o--|| "source.product_price" : "FOREIGN KEY (product_price_id) REFERENCES source.product_price(id)"
+
+"source.order_detail" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  integer product_id FK
+  integer product_price_id FK
+  integer quantity
+}
+"source.order" {
+  timestamp_without_time_zone created_at
+  integer customer_id FK
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id FK
+}
+"source.product" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer product_category_id FK
+  varchar_100_ product_name
+}
+"source.product_price" {
+  timestamp_without_time_zone created_at
+  integer id
+  boolean is_active
+  timestamp_without_time_zone modified_at
+  numeric_10_2_ price
+  integer product_id FK
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+}
+```
 
 ---
 

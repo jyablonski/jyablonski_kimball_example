@@ -46,27 +46,35 @@ UNION ALL
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| artifacts_model | text |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| # | Name            | Type          | Default | Nullable | Children | Parents | Comment |
+| - | --------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | artifacts_model | text          |         | true     |          |         |         |
+| 2 | metadata_hash   | varchar(4096) |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.dbt_models](dbt_stg.dbt_models.md) | 19 |  | BASE TABLE |
-| [dbt_stg.dbt_tests](dbt_stg.dbt_tests.md) | 28 |  | BASE TABLE |
-| [dbt_stg.dbt_sources](dbt_stg.dbt_sources.md) | 22 |  | BASE TABLE |
-| [dbt_stg.dbt_snapshots](dbt_stg.dbt_snapshots.md) | 19 |  | BASE TABLE |
-| [dbt_stg.dbt_metrics](dbt_stg.dbt_metrics.md) | 20 |  | BASE TABLE |
-| [dbt_stg.dbt_exposures](dbt_stg.dbt_exposures.md) | 20 |  | BASE TABLE |
-| [dbt_stg.dbt_seeds](dbt_stg.dbt_seeds.md) | 15 |  | BASE TABLE |
-| [dbt_stg.dbt_columns](dbt_stg.dbt_columns.md) | 13 |  | BASE TABLE |
+| # | # | Name                                              | Columns | Comment | Type       |
+| - | - | ------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.dbt_models](dbt_stg.dbt_models.md)       | 19      |         | BASE TABLE |
+| 2 | 2 | [dbt_stg.dbt_tests](dbt_stg.dbt_tests.md)         | 28      |         | BASE TABLE |
+| 3 | 3 | [dbt_stg.dbt_sources](dbt_stg.dbt_sources.md)     | 22      |         | BASE TABLE |
+| 4 | 4 | [dbt_stg.dbt_snapshots](dbt_stg.dbt_snapshots.md) | 19      |         | BASE TABLE |
+| 5 | 5 | [dbt_stg.dbt_metrics](dbt_stg.dbt_metrics.md)     | 20      |         | BASE TABLE |
+| 6 | 6 | [dbt_stg.dbt_exposures](dbt_stg.dbt_exposures.md) | 20      |         | BASE TABLE |
+| 7 | 7 | [dbt_stg.dbt_seeds](dbt_stg.dbt_seeds.md)         | 15      |         | BASE TABLE |
+| 8 | 8 | [dbt_stg.dbt_columns](dbt_stg.dbt_columns.md)     | 13      |         | BASE TABLE |
 
 ## Relations
 
-![er](dbt_stg.dbt_artifacts_hashes.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_artifacts_hashes" {
+  text artifacts_model
+  varchar_4096_ metadata_hash
+}
+```
 
 ---
 

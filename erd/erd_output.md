@@ -597,6 +597,11 @@ erDiagram
     integer country_rank
     integer test_fail
   }
+  "MODEL.JYABLONSKI_KIMBALL_EXAMPLE.CUSTOMER_CHANGES_AGG" {
+    integer customer_id
+    bigint num_records
+    timestamp-without-time-zone max_modified_at
+  }
   "MODEL.JYABLONSKI_KIMBALL_EXAMPLE.CUSTOMER_INTEGRATION_HISTORY_SCD2" {
     integer customer_id
     text integration_type
@@ -604,7 +609,6 @@ erDiagram
     timestamp-without-time-zone valid_from
     timestamp-without-time-zone valid_to
     integer is_current_integration_record
-    unknown customer_id2
   }
   "MODEL.JYABLONSKI_KIMBALL_EXAMPLE.CUSTOMER_PAYMENTS_BY_INVOICE" {
     integer order_id
@@ -826,5 +830,4 @@ erDiagram
     timestamp-without-time-zone invoice_created_at
     timestamp-without-time-zone latest_payment_made
   }
-  "MODEL.JYABLONSKI_KIMBALL_EXAMPLE.DIM_CUSTOMERS" }|--|| "MODEL.JYABLONSKI_KIMBALL_EXAMPLE.CUSTOMER_INTEGRATION_HISTORY_SCD2": customer_id2--customer_id
 ```

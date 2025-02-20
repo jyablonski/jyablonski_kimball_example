@@ -4,21 +4,36 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| email_id | integer |  | true |  |  |  |
-| email_name | varchar(100) |  | true |  |  |  |
-| subject_1 | text |  | true |  |  |  |
-| subject_2 | text |  | true |  |  |  |
-| subject_3 | text |  | true |  |  |  |
-| subject_4 | text |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
-| dbt_created_at | timestamp with time zone |  | true |  |  |  |
+| # | Name           | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at     | timestamp without time zone |         | true     |          |         |         |
+| 2 | dbt_created_at | timestamp with time zone    |         | true     |          |         |         |
+| 3 | email_id       | integer                     |         | true     |          |         |         |
+| 4 | email_name     | varchar(100)                |         | true     |          |         |         |
+| 5 | modified_at    | timestamp without time zone |         | true     |          |         |         |
+| 6 | subject_1      | text                        |         | true     |          |         |         |
+| 7 | subject_2      | text                        |         | true     |          |         |         |
+| 8 | subject_3      | text                        |         | true     |          |         |         |
+| 9 | subject_4      | text                        |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.emails_subject_cols.svg)
+```mermaid
+erDiagram
+
+
+"marts.emails_subject_cols" {
+  timestamp_without_time_zone created_at
+  timestamp_with_time_zone dbt_created_at
+  integer email_id
+  varchar_100_ email_name
+  timestamp_without_time_zone modified_at
+  text subject_1
+  text subject_2
+  text subject_3
+  text subject_4
+}
+```
 
 ---
 
