@@ -4,35 +4,66 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.customer_id_seq'::regclass) | false | [source.order](source.order.md) |  |  |
-| customer_name | varchar(100) |  | true |  |  |  |
-| customer_email | varchar(100) |  | true |  |  |  |
-| address | varchar(100) |  | true |  |  |  |
-| address_2 | varchar(100) |  | true |  |  |  |
-| city | varchar(50) |  | true |  |  |  |
-| zip_code | integer |  | true |  |  |  |
-| state | varchar(3) |  | true |  |  |  |
-| country | varchar(50) |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| #  | Name           | Type                        | Default                                     | Nullable | Children                                                                                        | Parents | Comment |
+| -- | -------------- | --------------------------- | ------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ------- | ------- |
+| 1  | address        | varchar(100)                |                                             | true     |                                                                                                 |         |         |
+| 2  | address_2      | varchar(100)                |                                             | true     |                                                                                                 |         |         |
+| 3  | city           | varchar(50)                 |                                             | true     |                                                                                                 |         |         |
+| 4  | country        | varchar(50)                 |                                             | true     |                                                                                                 |         |         |
+| 5  | created_at     | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                 |         |         |
+| 6  | customer_email | varchar(100)                |                                             | true     |                                                                                                 |         |         |
+| 7  | customer_name  | varchar(100)                |                                             | true     |                                                                                                 |         |         |
+| 8  | id             | integer                     | nextval('source.customer_id_seq'::regclass) | false    | [dbt_stg.customer_changes_agg](dbt_stg.customer_changes_agg.md) [source.order](source.order.md) |         |         |
+| 9  | modified_at    | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                 |         |         |
+| 10 | state          | varchar(3)                  |                                             | true     |                                                                                                 |         |         |
+| 11 | zip_code       | integer                     |                                             | true     |                                                                                                 |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| customer_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name          | Type        | Definition       |
+| - | ------------- | ----------- | ---------------- |
+| 1 | customer_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| customer_pkey | CREATE UNIQUE INDEX customer_pkey ON source.customer USING btree (id) |
+| # | Name          | Definition                                                            |
+| - | ------------- | --------------------------------------------------------------------- |
+| 1 | customer_pkey | CREATE UNIQUE INDEX customer_pkey ON source.customer USING btree (id) |
 
 ## Relations
 
-![er](source.customer.svg)
+```mermaid
+erDiagram
+
+"dbt_stg.customer_changes_agg" }o--o| "source.customer" : "id -> customer_id"
+"source.order" }o--o| "source.customer" : "FOREIGN KEY (customer_id) REFERENCES source.customer(id)"
+
+"source.customer" {
+  varchar_100_ address
+  varchar_100_ address_2
+  varchar_50_ city
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  varchar_100_ customer_email
+  varchar_100_ customer_name
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_3_ state
+  integer zip_code
+}
+"dbt_stg.customer_changes_agg" {
+  integer customer_id
+  timestamp_without_time_zone max_modified_at
+  bigint num_records
+}
+"source.order" {
+  timestamp_without_time_zone created_at
+  integer customer_id FK
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id FK
+}
+```
 
 ---
 

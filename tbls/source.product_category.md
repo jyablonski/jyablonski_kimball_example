@@ -4,28 +4,46 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.product_category_id_seq'::regclass) | false | [source.product](source.product.md) |  |  |
-| product_category_name | varchar(100) |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name                  | Type                        | Default                                             | Nullable | Children                            | Parents | Comment |
+| - | --------------------- | --------------------------- | --------------------------------------------------- | -------- | ----------------------------------- | ------- | ------- |
+| 1 | created_at            | timestamp without time zone | CURRENT_TIMESTAMP                                   | true     |                                     |         |         |
+| 2 | id                    | integer                     | nextval('source.product_category_id_seq'::regclass) | false    | [source.product](source.product.md) |         |         |
+| 3 | modified_at           | timestamp without time zone | CURRENT_TIMESTAMP                                   | true     |                                     |         |         |
+| 4 | product_category_name | varchar(100)                |                                                     | true     |                                     |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| product_category_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name                  | Type        | Definition       |
+| - | --------------------- | ----------- | ---------------- |
+| 1 | product_category_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| product_category_pkey | CREATE UNIQUE INDEX product_category_pkey ON source.product_category USING btree (id) |
+| # | Name                  | Definition                                                                            |
+| - | --------------------- | ------------------------------------------------------------------------------------- |
+| 1 | product_category_pkey | CREATE UNIQUE INDEX product_category_pkey ON source.product_category USING btree (id) |
 
 ## Relations
 
-![er](source.product_category.svg)
+```mermaid
+erDiagram
+
+"source.product" }o--o| "source.product_category" : "FOREIGN KEY (product_category_id) REFERENCES source.product_category(id)"
+
+"source.product_category" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_100_ product_category_name
+}
+"source.product" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer product_category_id FK
+  varchar_100_ product_name
+}
+```
 
 ---
 

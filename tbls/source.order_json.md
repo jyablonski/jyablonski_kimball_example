@@ -4,28 +4,38 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.order_json_id_seq'::regclass) | false |  |  |  |
-| external_data | json |  | false |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name          | Type                        | Default                                       | Nullable | Children | Parents | Comment |
+| - | ------------- | --------------------------- | --------------------------------------------- | -------- | -------- | ------- | ------- |
+| 1 | created_at    | timestamp without time zone | CURRENT_TIMESTAMP                             | true     |          |         |         |
+| 2 | external_data | json                        |                                               | false    |          |         |         |
+| 3 | id            | integer                     | nextval('source.order_json_id_seq'::regclass) | false    |          |         |         |
+| 4 | modified_at   | timestamp without time zone | CURRENT_TIMESTAMP                             | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| order_json_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name            | Type        | Definition       |
+| - | --------------- | ----------- | ---------------- |
+| 1 | order_json_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| order_json_pkey | CREATE UNIQUE INDEX order_json_pkey ON source.order_json USING btree (id) |
+| # | Name            | Definition                                                                |
+| - | --------------- | ------------------------------------------------------------------------- |
+| 1 | order_json_pkey | CREATE UNIQUE INDEX order_json_pkey ON source.order_json USING btree (id) |
 
 ## Relations
 
-![er](source.order_json.svg)
+```mermaid
+erDiagram
+
+
+"source.order_json" {
+  timestamp_without_time_zone created_at
+  json external_data
+  integer id
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

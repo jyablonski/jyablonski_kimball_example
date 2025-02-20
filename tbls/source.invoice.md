@@ -4,32 +4,63 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.invoice_id_seq'::regclass) | false | [source.payment](source.payment.md) |  |  |
-| order_id | integer |  | true |  | [source.order](source.order.md) |  |
-| total_amount | numeric(10,2) |  | false |  |  |  |
-| currency | varchar(3) | 'USD'::character varying | true |  |  |  |
-| is_voided | boolean | false | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name         | Type                        | Default                                    | Nullable | Children                            | Parents                         | Comment |
+| - | ------------ | --------------------------- | ------------------------------------------ | -------- | ----------------------------------- | ------------------------------- | ------- |
+| 1 | created_at   | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |                                     |                                 |         |
+| 2 | currency     | varchar(3)                  | 'USD'::character varying                   | true     |                                     |                                 |         |
+| 3 | id           | integer                     | nextval('source.invoice_id_seq'::regclass) | false    | [source.payment](source.payment.md) |                                 |         |
+| 4 | is_voided    | boolean                     | false                                      | true     |                                     |                                 |         |
+| 5 | modified_at  | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |                                     |                                 |         |
+| 6 | order_id     | integer                     |                                            | true     |                                     | [source.order](source.order.md) |         |
+| 7 | total_amount | numeric(10,2)               |                                            | false    |                                     |                                 |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| fk_order_id | FOREIGN KEY | FOREIGN KEY (order_id) REFERENCES source."order"(id) |
-| invoice_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name         | Type        | Definition                                           |
+| - | ------------ | ----------- | ---------------------------------------------------- |
+| 1 | fk_order_id  | FOREIGN KEY | FOREIGN KEY (order_id) REFERENCES source."order"(id) |
+| 2 | invoice_pkey | PRIMARY KEY | PRIMARY KEY (id)                                     |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| invoice_pkey | CREATE UNIQUE INDEX invoice_pkey ON source.invoice USING btree (id) |
+| # | Name         | Definition                                                          |
+| - | ------------ | ------------------------------------------------------------------- |
+| 1 | invoice_pkey | CREATE UNIQUE INDEX invoice_pkey ON source.invoice USING btree (id) |
 
 ## Relations
 
-![er](source.invoice.svg)
+```mermaid
+erDiagram
+
+"source.payment" }o--o| "source.invoice" : "FOREIGN KEY (invoice_id) REFERENCES source.invoice(id)"
+"source.invoice" }o--o| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
+
+"source.invoice" {
+  timestamp_without_time_zone created_at
+  varchar_3_ currency
+  integer id
+  boolean is_voided
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  numeric_10_2_ total_amount
+}
+"source.payment" {
+  numeric_10_2_ amount
+  timestamp_without_time_zone created_at
+  integer id
+  integer invoice_id FK
+  timestamp_without_time_zone modified_at
+  varchar_100_ payment_type_detail
+  integer payment_type_id FK
+}
+"source.order" {
+  timestamp_without_time_zone created_at
+  integer customer_id FK
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id FK
+}
+```
 
 ---
 

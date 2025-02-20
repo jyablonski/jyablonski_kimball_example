@@ -4,20 +4,34 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| column_state_id | varchar(4096) |  | true |  |  |  |
-| full_column_name | varchar(4096) |  | true |  |  |  |
-| full_table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| data_type | varchar(4096) |  | true |  |  |  |
-| is_new | boolean |  | true |  |  |  |
-| detected_at | timestamp without time zone |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
+| # | Name             | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ---------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | column_name      | varchar(4096)               |         | true     |          |         |         |
+| 2 | column_state_id  | varchar(4096)               |         | true     |          |         |         |
+| 3 | created_at       | timestamp without time zone |         | true     |          |         |         |
+| 4 | data_type        | varchar(4096)               |         | true     |          |         |         |
+| 5 | detected_at      | timestamp without time zone |         | true     |          |         |         |
+| 6 | full_column_name | varchar(4096)               |         | true     |          |         |         |
+| 7 | full_table_name  | varchar(4096)               |         | true     |          |         |         |
+| 8 | is_new           | boolean                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.schema_columns_snapshot.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.schema_columns_snapshot" {
+  varchar_4096_ column_name
+  varchar_4096_ column_state_id
+  timestamp_without_time_zone created_at
+  varchar_4096_ data_type
+  timestamp_without_time_zone detected_at
+  varchar_4096_ full_column_name
+  varchar_4096_ full_table_name
+  boolean is_new
+}
+```
 
 ---
 

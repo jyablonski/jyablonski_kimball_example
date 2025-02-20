@@ -4,34 +4,56 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| audit_id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| customer_name | varchar(100) |  | true |  |  |  |
-| customer_email | varchar(100) |  | true |  |  |  |
-| address | varchar(100) |  | true |  |  |  |
-| address_2 | varchar(100) |  | true |  |  |  |
-| city | varchar(50) |  | true |  |  |  |
-| zip_code | integer |  | true |  |  |  |
-| state | varchar(3) |  | true |  |  |  |
-| country | varchar(50) |  | true |  |  |  |
-| valid_from | timestamp without time zone |  | true |  |  |  |
-| valid_to | timestamp without time zone |  | true |  |  |  |
-| is_deleted | integer |  | true |  |  |  |
-| is_current_record | integer |  | true |  |  |  |
-| is_latest_record | integer |  | true |  |  |  |
-| dbt_updated_at | timestamp with time zone |  | true |  |  |  |
+| #  | Name              | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ----------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | address           | varchar(100)                |         | true     |          |         |         |
+| 2  | address_2         | varchar(100)                |         | true     |          |         |         |
+| 3  | audit_id          | integer                     |         | true     |          |         |         |
+| 4  | city              | varchar(50)                 |         | true     |          |         |         |
+| 5  | country           | varchar(50)                 |         | true     |          |         |         |
+| 6  | customer_email    | varchar(100)                |         | true     |          |         |         |
+| 7  | customer_id       | integer                     |         | true     |          |         |         |
+| 8  | customer_name     | varchar(100)                |         | true     |          |         |         |
+| 9  | dbt_updated_at    | timestamp with time zone    |         | true     |          |         |         |
+| 10 | is_current_record | integer                     |         | true     |          |         |         |
+| 11 | is_deleted        | integer                     |         | true     |          |         |         |
+| 12 | is_latest_record  | integer                     |         | true     |          |         |         |
+| 13 | state             | varchar(3)                  |         | true     |          |         |         |
+| 14 | valid_from        | timestamp without time zone |         | true     |          |         |         |
+| 15 | valid_to          | timestamp without time zone |         | true     |          |         |         |
+| 16 | zip_code          | integer                     |         | true     |          |         |         |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| 7755dcb248a8c45da6bbb9e2c1ef1603 | CREATE INDEX "7755dcb248a8c45da6bbb9e2c1ef1603" ON dim.dim_customers USING btree (customer_id) |
+| # | Name                             | Definition                                                                                   |
+| - | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| 1 | fa783fc84513928bf79a816b6f20dde8 | CREATE INDEX fa783fc84513928bf79a816b6f20dde8 ON dim.dim_customers USING btree (customer_id) |
 
 ## Relations
 
-![er](dim.dim_customers.svg)
+```mermaid
+erDiagram
+
+
+"dim.dim_customers" {
+  varchar_100_ address
+  varchar_100_ address_2
+  integer audit_id
+  varchar_50_ city
+  varchar_50_ country
+  varchar_100_ customer_email
+  integer customer_id
+  varchar_100_ customer_name
+  timestamp_with_time_zone dbt_updated_at
+  integer is_current_record
+  integer is_deleted
+  integer is_latest_record
+  varchar_3_ state
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+  integer zip_code
+}
+```
 
 ---
 

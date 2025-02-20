@@ -4,13 +4,20 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| dbt_pkg_version | text |  | true |  |  |  |
+| # | Name            | Type | Default | Nullable | Children | Parents | Comment |
+| - | --------------- | ---- | ------- | -------- | -------- | ------- | ------- |
+| 1 | dbt_pkg_version | text |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.metadata.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.metadata" {
+  text dbt_pkg_version
+}
+```
 
 ---
 

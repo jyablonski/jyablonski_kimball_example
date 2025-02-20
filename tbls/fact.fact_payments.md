@@ -4,21 +4,36 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| payment_id | integer |  | true |  |  |  |
-| payment_type_id | integer |  | true |  |  |  |
-| invoice_id | integer |  | true |  |  |  |
-| order_id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| financial_account_id | integer |  | true |  |  |  |
-| payment_amount | numeric(10,2) |  | true |  |  |  |
-| payment_created_at | timestamp without time zone |  | true |  |  |  |
-| payment_modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                 | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | customer_id          | integer                     |         | true     |          |         |         |
+| 2 | financial_account_id | integer                     |         | true     |          |         |         |
+| 3 | invoice_id           | integer                     |         | true     |          |         |         |
+| 4 | order_id             | integer                     |         | true     |          |         |         |
+| 5 | payment_amount       | numeric(10,2)               |         | true     |          |         |         |
+| 6 | payment_created_at   | timestamp without time zone |         | true     |          |         |         |
+| 7 | payment_id           | integer                     |         | true     |          |         |         |
+| 8 | payment_modified_at  | timestamp without time zone |         | true     |          |         |         |
+| 9 | payment_type_id      | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](fact.fact_payments.svg)
+```mermaid
+erDiagram
+
+
+"fact.fact_payments" {
+  integer customer_id
+  integer financial_account_id
+  integer invoice_id
+  integer order_id
+  numeric_10_2_ payment_amount
+  timestamp_without_time_zone payment_created_at
+  integer payment_id
+  timestamp_without_time_zone payment_modified_at
+  integer payment_type_id
+}
+```
 
 ---
 

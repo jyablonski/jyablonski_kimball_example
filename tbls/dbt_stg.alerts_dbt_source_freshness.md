@@ -84,43 +84,72 @@ CREATE VIEW alerts_dbt_source_freshness AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| alert_id | varchar(4096) |  | true |  |  |  |
-| max_loaded_at | varchar(4096) |  | true |  |  |  |
-| snapshotted_at | varchar(4096) |  | true |  |  |  |
-| detected_at | timestamp without time zone |  | true |  |  |  |
-| max_loaded_at_time_ago_in_s | double precision |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| error | varchar(4096) |  | true |  |  |  |
-| warn_after | varchar(4096) |  | true |  |  |  |
-| error_after | varchar(4096) |  | true |  |  |  |
-| filter | text |  | true |  |  |  |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| source_name | varchar(4096) |  | true |  |  |  |
-| identifier | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| owner | varchar(4096) |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| freshness_error_after | varchar(4096) |  | true |  |  |  |
-| freshness_warn_after | varchar(4096) |  | true |  |  |  |
-| freshness_filter | text |  | true |  |  |  |
+| #  | Name                        | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | --------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | alert_id                    | varchar(4096)               |         | true     |          |         |         |
+| 2  | database_name               | varchar(4096)               |         | true     |          |         |         |
+| 3  | detected_at                 | timestamp without time zone |         | true     |          |         |         |
+| 4  | error                       | varchar(4096)               |         | true     |          |         |         |
+| 5  | error_after                 | varchar(4096)               |         | true     |          |         |         |
+| 6  | filter                      | text                        |         | true     |          |         |         |
+| 7  | freshness_error_after       | varchar(4096)               |         | true     |          |         |         |
+| 8  | freshness_filter            | text                        |         | true     |          |         |         |
+| 9  | freshness_warn_after        | varchar(4096)               |         | true     |          |         |         |
+| 10 | identifier                  | varchar(4096)               |         | true     |          |         |         |
+| 11 | max_loaded_at               | varchar(4096)               |         | true     |          |         |         |
+| 12 | max_loaded_at_time_ago_in_s | double precision            |         | true     |          |         |         |
+| 13 | meta                        | text                        |         | true     |          |         |         |
+| 14 | owner                       | varchar(4096)               |         | true     |          |         |         |
+| 15 | package_name                | varchar(4096)               |         | true     |          |         |         |
+| 16 | path                        | varchar(4096)               |         | true     |          |         |         |
+| 17 | schema_name                 | varchar(4096)               |         | true     |          |         |         |
+| 18 | snapshotted_at              | varchar(4096)               |         | true     |          |         |         |
+| 19 | source_name                 | varchar(4096)               |         | true     |          |         |         |
+| 20 | status                      | varchar(4096)               |         | true     |          |         |         |
+| 21 | tags                        | text                        |         | true     |          |         |         |
+| 22 | unique_id                   | varchar(4096)               |         | true     |          |         |         |
+| 23 | warn_after                  | varchar(4096)               |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.dbt_source_freshness_results](dbt_stg.dbt_source_freshness_results.md) | 17 |  | BASE TABLE |
-| [dbt_stg.dbt_sources](dbt_stg.dbt_sources.md) | 22 |  | BASE TABLE |
-| [sources](sources.md) | 0 |  |  |
+| # | # | Name                                                                            | Columns | Comment | Type       |
+| - | - | ------------------------------------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.dbt_source_freshness_results](dbt_stg.dbt_source_freshness_results.md) | 17      |         | BASE TABLE |
+| 2 | 2 | [dbt_stg.dbt_sources](dbt_stg.dbt_sources.md)                                   | 22      |         | BASE TABLE |
+| 3 | 3 | [sources](sources.md)                                                           | 0       |         |            |
 
 ## Relations
 
-![er](dbt_stg.alerts_dbt_source_freshness.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.alerts_dbt_source_freshness" {
+  varchar_4096_ alert_id
+  varchar_4096_ database_name
+  timestamp_without_time_zone detected_at
+  varchar_4096_ error
+  varchar_4096_ error_after
+  text filter
+  varchar_4096_ freshness_error_after
+  text freshness_filter
+  varchar_4096_ freshness_warn_after
+  varchar_4096_ identifier
+  varchar_4096_ max_loaded_at
+  double_precision max_loaded_at_time_ago_in_s
+  text meta
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ path
+  varchar_4096_ schema_name
+  varchar_4096_ snapshotted_at
+  varchar_4096_ source_name
+  varchar_4096_ status
+  text tags
+  varchar_4096_ unique_id
+  varchar_4096_ warn_after
+}
+```
 
 ---
 

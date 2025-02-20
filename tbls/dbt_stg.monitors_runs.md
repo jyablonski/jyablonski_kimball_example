@@ -48,25 +48,37 @@ CREATE VIEW monitors_runs AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| full_table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| metric_name | varchar(4096) |  | true |  |  |  |
-| metric_properties | varchar(4096) |  | true |  |  |  |
-| last_bucket_end | timestamp without time zone |  | true |  |  |  |
-| first_bucket_end | timestamp without time zone |  | true |  |  |  |
+| # | Name              | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ----------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | column_name       | varchar(4096)               |         | true     |          |         |         |
+| 2 | first_bucket_end  | timestamp without time zone |         | true     |          |         |         |
+| 3 | full_table_name   | varchar(4096)               |         | true     |          |         |         |
+| 4 | last_bucket_end   | timestamp without time zone |         | true     |          |         |         |
+| 5 | metric_name       | varchar(4096)               |         | true     |          |         |         |
+| 6 | metric_properties | varchar(4096)               |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.data_monitoring_metrics](dbt_stg.data_monitoring_metrics.md) | 15 |  | BASE TABLE |
-| [max_bucket_end](max_bucket_end.md) | 0 |  |  |
+| # | # | Name                                                                  | Columns | Comment | Type       |
+| - | - | --------------------------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.data_monitoring_metrics](dbt_stg.data_monitoring_metrics.md) | 15      |         | BASE TABLE |
+| 2 | 2 | [max_bucket_end](max_bucket_end.md)                                   | 0       |         |            |
 
 ## Relations
 
-![er](dbt_stg.monitors_runs.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.monitors_runs" {
+  varchar_4096_ column_name
+  timestamp_without_time_zone first_bucket_end
+  varchar_4096_ full_table_name
+  timestamp_without_time_zone last_bucket_end
+  varchar_4096_ metric_name
+  varchar_4096_ metric_properties
+}
+```
 
 ---
 

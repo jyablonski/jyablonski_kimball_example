@@ -65,11 +65,11 @@ models:
         #   where: "modified_at >= current_date - interval '1 day'"
         meta:
           fides:
-          - data_categories:
-              - user.contact.email
-          - fides_meta:
-              references:
-                - dataset: fact_32482384
-                  field: table_a.product_id
-              identity: email
-              data_type: string
+            - data_categories:
+                - user.contact.email
+            - fides_meta:
+                references:
+                  - dataset: fact_32482384
+                    field: table_a.product_id
+                identity: email
+                data_type: string

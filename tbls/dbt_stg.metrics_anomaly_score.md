@@ -122,38 +122,61 @@ CREATE VIEW metrics_anomaly_score AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | varchar(4096) |  | true |  |  |  |
-| full_table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| dimension | varchar(4096) |  | true |  |  |  |
-| dimension_value | varchar(4096) |  | true |  |  |  |
-| metric_name | varchar(4096) |  | true |  |  |  |
-| anomaly_score | double precision |  | true |  |  |  |
-| latest_metric_value | double precision |  | true |  |  |  |
-| bucket_start | timestamp without time zone |  | true |  |  |  |
-| bucket_end | timestamp without time zone |  | true |  |  |  |
-| training_avg | double precision |  | true |  |  |  |
-| training_stddev | double precision |  | true |  |  |  |
-| training_start | timestamp without time zone |  | true |  |  |  |
-| training_end | timestamp without time zone |  | true |  |  |  |
-| training_set_size | bigint |  | true |  |  |  |
-| updated_at | timestamp without time zone |  | true |  |  |  |
-| is_anomaly | boolean |  | true |  |  |  |
+| #  | Name                | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | anomaly_score       | double precision            |         | true     |          |         |         |
+| 2  | bucket_end          | timestamp without time zone |         | true     |          |         |         |
+| 3  | bucket_start        | timestamp without time zone |         | true     |          |         |         |
+| 4  | column_name         | varchar(4096)               |         | true     |          |         |         |
+| 5  | dimension           | varchar(4096)               |         | true     |          |         |         |
+| 6  | dimension_value     | varchar(4096)               |         | true     |          |         |         |
+| 7  | full_table_name     | varchar(4096)               |         | true     |          |         |         |
+| 8  | id                  | varchar(4096)               |         | true     |          |         |         |
+| 9  | is_anomaly          | boolean                     |         | true     |          |         |         |
+| 10 | latest_metric_value | double precision            |         | true     |          |         |         |
+| 11 | metric_name         | varchar(4096)               |         | true     |          |         |         |
+| 12 | training_avg        | double precision            |         | true     |          |         |         |
+| 13 | training_end        | timestamp without time zone |         | true     |          |         |         |
+| 14 | training_set_size   | bigint                      |         | true     |          |         |         |
+| 15 | training_start      | timestamp without time zone |         | true     |          |         |         |
+| 16 | training_stddev     | double precision            |         | true     |          |         |         |
+| 17 | updated_at          | timestamp without time zone |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.data_monitoring_metrics](dbt_stg.data_monitoring_metrics.md) | 15 |  | BASE TABLE |
-| [time_window_aggregation](time_window_aggregation.md) | 0 |  |  |
-| [metrics_anomaly_score](metrics_anomaly_score.md) | 0 |  |  |
-| [final](final.md) | 0 |  |  |
+| # | # | Name                                                                  | Columns | Comment | Type       |
+| - | - | --------------------------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.data_monitoring_metrics](dbt_stg.data_monitoring_metrics.md) | 15      |         | BASE TABLE |
+| 2 | 2 | [time_window_aggregation](time_window_aggregation.md)                 | 0       |         |            |
+| 3 | 3 | [metrics_anomaly_score](metrics_anomaly_score.md)                     | 0       |         |            |
+| 4 | 4 | [final](final.md)                                                     | 0       |         |            |
 
 ## Relations
 
-![er](dbt_stg.metrics_anomaly_score.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.metrics_anomaly_score" {
+  double_precision anomaly_score
+  timestamp_without_time_zone bucket_end
+  timestamp_without_time_zone bucket_start
+  varchar_4096_ column_name
+  varchar_4096_ dimension
+  varchar_4096_ dimension_value
+  varchar_4096_ full_table_name
+  varchar_4096_ id
+  boolean is_anomaly
+  double_precision latest_metric_value
+  varchar_4096_ metric_name
+  double_precision training_avg
+  timestamp_without_time_zone training_end
+  bigint training_set_size
+  timestamp_without_time_zone training_start
+  double_precision training_stddev
+  timestamp_without_time_zone updated_at
+}
+```
 
 ---
 

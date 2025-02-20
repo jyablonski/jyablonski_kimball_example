@@ -4,23 +4,40 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| order_detail_id | integer |  | true |  |  |  |
-| order_id | integer |  | true |  |  |  |
-| store_id | integer |  | true |  |  |  |
-| product_id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| product_category_id | integer |  | true |  |  |  |
-| quantity | integer |  | true |  |  |  |
-| product_price_id | integer |  | true |  |  |  |
-| product_price | numeric(10,2) |  | true |  |  |  |
-| order_detail_created_at | timestamp without time zone |  | true |  |  |  |
-| order_detail_modified_at | timestamp without time zone |  | true |  |  |  |
+| #  | Name                     | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------------ | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | customer_id              | integer                     |         | true     |          |         |         |
+| 2  | order_detail_created_at  | timestamp without time zone |         | true     |          |         |         |
+| 3  | order_detail_id          | integer                     |         | true     |          |         |         |
+| 4  | order_detail_modified_at | timestamp without time zone |         | true     |          |         |         |
+| 5  | order_id                 | integer                     |         | true     |          |         |         |
+| 6  | product_category_id      | integer                     |         | true     |          |         |         |
+| 7  | product_id               | integer                     |         | true     |          |         |         |
+| 8  | product_price            | numeric(10,2)               |         | true     |          |         |         |
+| 9  | product_price_id         | integer                     |         | true     |          |         |         |
+| 10 | quantity                 | integer                     |         | true     |          |         |         |
+| 11 | store_id                 | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](fact.fact_orders_detailed.svg)
+```mermaid
+erDiagram
+
+
+"fact.fact_orders_detailed" {
+  integer customer_id
+  timestamp_without_time_zone order_detail_created_at
+  integer order_detail_id
+  timestamp_without_time_zone order_detail_modified_at
+  integer order_id
+  integer product_category_id
+  integer product_id
+  numeric_10_2_ product_price
+  integer product_price_id
+  integer quantity
+  integer store_id
+}
+```
 
 ---
 

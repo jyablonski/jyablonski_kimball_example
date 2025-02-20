@@ -4,21 +4,36 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| order_id | integer |  | true |  |  |  |
-| invoice_id | integer |  | true |  |  |  |
-| store_id | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| invoice_total_amount | numeric(10,2) |  | true |  |  |  |
-| invoice_created_at | timestamp without time zone |  | true |  |  |  |
-| invoice_modified_at | timestamp without time zone |  | true |  |  |  |
-| order_created_at | timestamp without time zone |  | true |  |  |  |
-| order_modified_at | timestamp without time zone |  | true |  |  |  |
+| # | Name                 | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | customer_id          | integer                     |         | true     |          |         |         |
+| 2 | invoice_created_at   | timestamp without time zone |         | true     |          |         |         |
+| 3 | invoice_id           | integer                     |         | true     |          |         |         |
+| 4 | invoice_modified_at  | timestamp without time zone |         | true     |          |         |         |
+| 5 | invoice_total_amount | numeric(10,2)               |         | true     |          |         |         |
+| 6 | order_created_at     | timestamp without time zone |         | true     |          |         |         |
+| 7 | order_id             | integer                     |         | true     |          |         |         |
+| 8 | order_modified_at    | timestamp without time zone |         | true     |          |         |         |
+| 9 | store_id             | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](fact.fact_orders_generalized.svg)
+```mermaid
+erDiagram
+
+
+"fact.fact_orders_generalized" {
+  integer customer_id
+  timestamp_without_time_zone invoice_created_at
+  integer invoice_id
+  timestamp_without_time_zone invoice_modified_at
+  numeric_10_2_ invoice_total_amount
+  timestamp_without_time_zone order_created_at
+  integer order_id
+  timestamp_without_time_zone order_modified_at
+  integer store_id
+}
+```
 
 ---
 

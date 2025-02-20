@@ -4,33 +4,56 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.store_id_seq'::regclass) | false | [source.order](source.order.md) |  |  |
-| store_name | varchar(100) |  | true |  |  |  |
-| street | varchar(100) |  | true |  |  |  |
-| city | varchar(100) |  | true |  |  |  |
-| state | varchar(2) |  | true |  |  |  |
-| zip_code | integer |  | true |  |  |  |
-| country | varchar(50) |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name        | Type                        | Default                                  | Nullable | Children                        | Parents | Comment |
+| - | ----------- | --------------------------- | ---------------------------------------- | -------- | ------------------------------- | ------- | ------- |
+| 1 | city        | varchar(100)                |                                          | true     |                                 |         |         |
+| 2 | country     | varchar(50)                 |                                          | true     |                                 |         |         |
+| 3 | created_at  | timestamp without time zone | CURRENT_TIMESTAMP                        | true     |                                 |         |         |
+| 4 | id          | integer                     | nextval('source.store_id_seq'::regclass) | false    | [source.order](source.order.md) |         |         |
+| 5 | modified_at | timestamp without time zone | CURRENT_TIMESTAMP                        | true     |                                 |         |         |
+| 6 | state       | varchar(2)                  |                                          | true     |                                 |         |         |
+| 7 | store_name  | varchar(100)                |                                          | true     |                                 |         |         |
+| 8 | street      | varchar(100)                |                                          | true     |                                 |         |         |
+| 9 | zip_code    | integer                     |                                          | true     |                                 |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| store_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name       | Type        | Definition       |
+| - | ---------- | ----------- | ---------------- |
+| 1 | store_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| store_pkey | CREATE UNIQUE INDEX store_pkey ON source.store USING btree (id) |
+| # | Name       | Definition                                                      |
+| - | ---------- | --------------------------------------------------------------- |
+| 1 | store_pkey | CREATE UNIQUE INDEX store_pkey ON source.store USING btree (id) |
 
 ## Relations
 
-![er](source.store.svg)
+```mermaid
+erDiagram
+
+"source.order" }o--o| "source.store" : "FOREIGN KEY (store_id) REFERENCES source.store(id)"
+
+"source.store" {
+  varchar_100_ city
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_2_ state
+  varchar_100_ store_name
+  varchar_100_ street
+  integer zip_code
+}
+"source.order" {
+  timestamp_without_time_zone created_at
+  integer customer_id FK
+  integer id
+  timestamp_without_time_zone modified_at
+  integer store_id FK
+}
+```
 
 ---
 

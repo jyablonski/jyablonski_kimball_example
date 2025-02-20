@@ -1,7 +1,26 @@
-
 # DSN (Database Source Name) to connect database
 dsn: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
 
 # Path to generate document
 # Default is `dbdoc`
 docPath: tbls
+
+format:
+  adjust: true
+  sort: true
+  number: true
+
+er:
+  format: mermaid
+
+relations:
+  - table: dbt_stg.customer_changes_agg
+    columns:
+      - customer_id
+    parentTable: source.customer
+    parentColumns:
+      - id
+    # this just adjusts the label
+    # Relation definition
+    # Default is `Additional Relation`
+    def: id -> customer_id

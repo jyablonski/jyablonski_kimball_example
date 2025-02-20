@@ -4,37 +4,56 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.customer_audit_id_seq'::regclass) | false |  |  |  |
-| audit_type | integer |  | true |  |  |  |
-| customer_id | integer |  | true |  |  |  |
-| customer_name | varchar(100) |  | true |  |  |  |
-| customer_email | varchar(100) |  | true |  |  |  |
-| address | varchar(100) |  | true |  |  |  |
-| address_2 | varchar(100) |  | true |  |  |  |
-| city | varchar(50) |  | true |  |  |  |
-| zip_code | integer |  | true |  |  |  |
-| state | varchar(3) |  | true |  |  |  |
-| country | varchar(50) |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| #  | Name           | Type                        | Default                                           | Nullable | Children | Parents | Comment |
+| -- | -------------- | --------------------------- | ------------------------------------------------- | -------- | -------- | ------- | ------- |
+| 1  | address        | varchar(100)                |                                                   | true     |          |         |         |
+| 2  | address_2      | varchar(100)                |                                                   | true     |          |         |         |
+| 3  | audit_type     | integer                     |                                                   | true     |          |         |         |
+| 4  | city           | varchar(50)                 |                                                   | true     |          |         |         |
+| 5  | country        | varchar(50)                 |                                                   | true     |          |         |         |
+| 6  | created_at     | timestamp without time zone | CURRENT_TIMESTAMP                                 | true     |          |         |         |
+| 7  | customer_email | varchar(100)                |                                                   | true     |          |         |         |
+| 8  | customer_id    | integer                     |                                                   | true     |          |         |         |
+| 9  | customer_name  | varchar(100)                |                                                   | true     |          |         |         |
+| 10 | id             | integer                     | nextval('source.customer_audit_id_seq'::regclass) | false    |          |         |         |
+| 11 | modified_at    | timestamp without time zone | CURRENT_TIMESTAMP                                 | true     |          |         |         |
+| 12 | state          | varchar(3)                  |                                                   | true     |          |         |         |
+| 13 | zip_code       | integer                     |                                                   | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| customer_audit_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name                | Type        | Definition       |
+| - | ------------------- | ----------- | ---------------- |
+| 1 | customer_audit_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| customer_audit_pkey | CREATE UNIQUE INDEX customer_audit_pkey ON source.customer_audit USING btree (id) |
+| # | Name                | Definition                                                                        |
+| - | ------------------- | --------------------------------------------------------------------------------- |
+| 1 | customer_audit_pkey | CREATE UNIQUE INDEX customer_audit_pkey ON source.customer_audit USING btree (id) |
 
 ## Relations
 
-![er](source.customer_audit.svg)
+```mermaid
+erDiagram
+
+
+"source.customer_audit" {
+  varchar_100_ address
+  varchar_100_ address_2
+  integer audit_type
+  varchar_50_ city
+  varchar_50_ country
+  timestamp_without_time_zone created_at
+  varchar_100_ customer_email
+  integer customer_id
+  varchar_100_ customer_name
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_3_ state
+  integer zip_code
+}
+```
 
 ---
 

@@ -4,23 +4,40 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer |  | true |  |  |  |
-| amount | numeric(10,2) |  | true |  |  |  |
-| payment_type_id | integer |  | true |  |  |  |
-| payment_type_detail | varchar(100) |  | true |  |  |  |
-| invoice_id | integer |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
-| dbt_scd_id | text |  | true |  |  |  |
-| dbt_updated_at | timestamp without time zone |  | true |  |  |  |
-| dbt_valid_from | timestamp without time zone |  | true |  |  |  |
-| dbt_valid_to | timestamp without time zone |  | true |  |  |  |
+| #  | Name                | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | amount              | numeric(10,2)               |         | true     |          |         |         |
+| 2  | created_at          | timestamp without time zone |         | true     |          |         |         |
+| 3  | dbt_scd_id          | text                        |         | true     |          |         |         |
+| 4  | dbt_updated_at      | timestamp without time zone |         | true     |          |         |         |
+| 5  | dbt_valid_from      | timestamp without time zone |         | true     |          |         |         |
+| 6  | dbt_valid_to        | timestamp without time zone |         | true     |          |         |         |
+| 7  | id                  | integer                     |         | true     |          |         |         |
+| 8  | invoice_id          | integer                     |         | true     |          |         |         |
+| 9  | modified_at         | timestamp without time zone |         | true     |          |         |         |
+| 10 | payment_type_detail | varchar(100)                |         | true     |          |         |         |
+| 11 | payment_type_id     | integer                     |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.orders_snapshot.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.orders_snapshot" {
+  numeric_10_2_ amount
+  timestamp_without_time_zone created_at
+  text dbt_scd_id
+  timestamp_without_time_zone dbt_updated_at
+  timestamp_without_time_zone dbt_valid_from
+  timestamp_without_time_zone dbt_valid_to
+  integer id
+  integer invoice_id
+  timestamp_without_time_zone modified_at
+  varchar_100_ payment_type_detail
+  integer payment_type_id
+}
+```
 
 ---
 

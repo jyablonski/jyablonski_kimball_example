@@ -4,18 +4,30 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| email_id | integer |  | true |  |  |  |
-| email_name | varchar(100) |  | true |  |  |  |
-| messages | json |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
-| dbt_created_at | timestamp with time zone |  | true |  |  |  |
+| # | Name           | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at     | timestamp without time zone |         | true     |          |         |         |
+| 2 | dbt_created_at | timestamp with time zone    |         | true     |          |         |         |
+| 3 | email_id       | integer                     |         | true     |          |         |         |
+| 4 | email_name     | varchar(100)                |         | true     |          |         |         |
+| 5 | messages       | json                        |         | true     |          |         |         |
+| 6 | modified_at    | timestamp without time zone |         | true     |          |         |         |
 
 ## Relations
 
-![er](fact.fact_emails.svg)
+```mermaid
+erDiagram
+
+
+"fact.fact_emails" {
+  timestamp_without_time_zone created_at
+  timestamp_with_time_zone dbt_created_at
+  integer email_id
+  varchar_100_ email_name
+  json messages
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

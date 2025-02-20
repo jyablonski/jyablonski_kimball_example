@@ -81,33 +81,53 @@ CREATE VIEW alerts_dbt_models AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| alert_id | text |  | true |  |  |  |
-| unique_id | text |  | true |  |  |  |
-| detected_at | timestamp without time zone |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| materialization | varchar(4096) |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| message | text |  | true |  |  |  |
-| owners | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| alias | varchar(4096) |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| full_refresh | boolean |  | true |  |  |  |
+| #  | Name            | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | --------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | alert_id        | text                        |         | true     |          |         |         |
+| 2  | alias           | varchar(4096)               |         | true     |          |         |         |
+| 3  | database_name   | varchar(4096)               |         | true     |          |         |         |
+| 4  | detected_at     | timestamp without time zone |         | true     |          |         |         |
+| 5  | full_refresh    | boolean                     |         | true     |          |         |         |
+| 6  | materialization | varchar(4096)               |         | true     |          |         |         |
+| 7  | message         | text                        |         | true     |          |         |         |
+| 8  | original_path   | text                        |         | true     |          |         |         |
+| 9  | owners          | varchar(4096)               |         | true     |          |         |         |
+| 10 | path            | varchar(4096)               |         | true     |          |         |         |
+| 11 | schema_name     | varchar(4096)               |         | true     |          |         |         |
+| 12 | status          | varchar(4096)               |         | true     |          |         |         |
+| 13 | tags            | text                        |         | true     |          |         |         |
+| 14 | unique_id       | text                        |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.model_run_results](dbt_stg.model_run_results.md) | 29 |  | VIEW |
-| [dbt_stg.snapshot_run_results](dbt_stg.snapshot_run_results.md) | 26 |  | VIEW |
+| # | # | Name                                                            | Columns | Comment | Type |
+| - | - | --------------------------------------------------------------- | ------- | ------- | ---- |
+| 1 | 1 | [dbt_stg.model_run_results](dbt_stg.model_run_results.md)       | 29      |         | VIEW |
+| 2 | 2 | [dbt_stg.snapshot_run_results](dbt_stg.snapshot_run_results.md) | 26      |         | VIEW |
 
 ## Relations
 
-![er](dbt_stg.alerts_dbt_models.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.alerts_dbt_models" {
+  text alert_id
+  varchar_4096_ alias
+  varchar_4096_ database_name
+  timestamp_without_time_zone detected_at
+  boolean full_refresh
+  varchar_4096_ materialization
+  text message
+  text original_path
+  varchar_4096_ owners
+  varchar_4096_ path
+  varchar_4096_ schema_name
+  varchar_4096_ status
+  text tags
+  text unique_id
+}
+```
 
 ---
 

@@ -4,30 +4,69 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.product_id_seq'::regclass) | false | [source.product_price](source.product_price.md) [source.order_detail](source.order_detail.md) |  |  |
-| product_name | varchar(100) |  | true |  |  |  |
-| product_category_id | integer |  | true |  | [source.product_category](source.product_category.md) |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name                | Type                        | Default                                    | Nullable | Children                                                                                      | Parents                                               | Comment |
+| - | ------------------- | --------------------------- | ------------------------------------------ | -------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------- |
+| 1 | created_at          | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |                                                                                               |                                                       |         |
+| 2 | id                  | integer                     | nextval('source.product_id_seq'::regclass) | false    | [source.order_detail](source.order_detail.md) [source.product_price](source.product_price.md) |                                                       |         |
+| 3 | modified_at         | timestamp without time zone | CURRENT_TIMESTAMP                          | true     |                                                                                               |                                                       |         |
+| 4 | product_category_id | integer                     |                                            | true     |                                                                                               | [source.product_category](source.product_category.md) |         |
+| 5 | product_name        | varchar(100)                |                                            | true     |                                                                                               |                                                       |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| fk_product_category_id | FOREIGN KEY | FOREIGN KEY (product_category_id) REFERENCES source.product_category(id) |
-| product_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name                   | Type        | Definition                                                               |
+| - | ---------------------- | ----------- | ------------------------------------------------------------------------ |
+| 1 | fk_product_category_id | FOREIGN KEY | FOREIGN KEY (product_category_id) REFERENCES source.product_category(id) |
+| 2 | product_pkey           | PRIMARY KEY | PRIMARY KEY (id)                                                         |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| product_pkey | CREATE UNIQUE INDEX product_pkey ON source.product USING btree (id) |
+| # | Name         | Definition                                                          |
+| - | ------------ | ------------------------------------------------------------------- |
+| 1 | product_pkey | CREATE UNIQUE INDEX product_pkey ON source.product USING btree (id) |
 
 ## Relations
 
-![er](source.product.svg)
+```mermaid
+erDiagram
+
+"source.order_detail" }o--|| "source.product" : "FOREIGN KEY (product_id) REFERENCES source.product(id)"
+"source.product_price" }o--o| "source.product" : "FOREIGN KEY (product_id) REFERENCES source.product(id)"
+"source.product" }o--o| "source.product_category" : "FOREIGN KEY (product_category_id) REFERENCES source.product_category(id)"
+
+"source.product" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer product_category_id FK
+  varchar_100_ product_name
+}
+"source.order_detail" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  integer order_id FK
+  integer product_id FK
+  integer product_price_id FK
+  integer quantity
+}
+"source.product_price" {
+  timestamp_without_time_zone created_at
+  integer id
+  boolean is_active
+  timestamp_without_time_zone modified_at
+  numeric_10_2_ price
+  integer product_id FK
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+}
+"source.product_category" {
+  timestamp_without_time_zone created_at
+  integer id
+  timestamp_without_time_zone modified_at
+  varchar_100_ product_category_name
+}
+```
 
 ---
 

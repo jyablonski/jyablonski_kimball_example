@@ -4,31 +4,56 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| alias | varchar(4096) |  | true |  |  |  |
-| checksum | varchar(4096) |  | true |  |  |  |
-| materialization | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| owner | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| depends_on_macros | text |  | true |  |  |  |
-| depends_on_nodes | text |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| patch_path | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| #  | Name              | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ----------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | alias             | varchar(4096) |         | true     |          |         |         |
+| 2  | checksum          | varchar(4096) |         | true     |          |         |         |
+| 3  | database_name     | varchar(4096) |         | true     |          |         |         |
+| 4  | depends_on_macros | text          |         | true     |          |         |         |
+| 5  | depends_on_nodes  | text          |         | true     |          |         |         |
+| 6  | description       | text          |         | true     |          |         |         |
+| 7  | generated_at      | varchar(4096) |         | true     |          |         |         |
+| 8  | materialization   | varchar(4096) |         | true     |          |         |         |
+| 9  | meta              | text          |         | true     |          |         |         |
+| 10 | metadata_hash     | varchar(4096) |         | true     |          |         |         |
+| 11 | name              | varchar(4096) |         | true     |          |         |         |
+| 12 | original_path     | text          |         | true     |          |         |         |
+| 13 | owner             | varchar(4096) |         | true     |          |         |         |
+| 14 | package_name      | varchar(4096) |         | true     |          |         |         |
+| 15 | patch_path        | varchar(4096) |         | true     |          |         |         |
+| 16 | path              | varchar(4096) |         | true     |          |         |         |
+| 17 | schema_name       | varchar(4096) |         | true     |          |         |         |
+| 18 | tags              | text          |         | true     |          |         |         |
+| 19 | unique_id         | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_models.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_models" {
+  varchar_4096_ alias
+  varchar_4096_ checksum
+  varchar_4096_ database_name
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  varchar_4096_ generated_at
+  varchar_4096_ materialization
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ patch_path
+  varchar_4096_ path
+  varchar_4096_ schema_name
+  text tags
+  varchar_4096_ unique_id
+}
+```
 
 ---
 

@@ -4,18 +4,30 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| customer_id | integer |  | true |  |  |  |
-| integration_type | text |  | true |  |  |  |
-| is_active | integer |  | true |  |  |  |
-| valid_from | timestamp without time zone |  | true |  |  |  |
-| valid_to | timestamp without time zone |  | true |  |  |  |
-| is_current_integration_record | integer |  | true |  |  |  |
+| # | Name                          | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | ----------------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | customer_id                   | integer                     |         | true     |          |         |         |
+| 2 | integration_type              | text                        |         | true     |          |         |         |
+| 3 | is_active                     | integer                     |         | true     |          |         |         |
+| 4 | is_current_integration_record | integer                     |         | true     |          |         |         |
+| 5 | valid_from                    | timestamp without time zone |         | true     |          |         |         |
+| 6 | valid_to                      | timestamp without time zone |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.customer_integration_history_scd2.svg)
+```mermaid
+erDiagram
+
+
+"marts.customer_integration_history_scd2" {
+  integer customer_id
+  text integration_type
+  integer is_active
+  integer is_current_integration_record
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
+}
+```
 
 ---
 

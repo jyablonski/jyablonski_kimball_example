@@ -4,33 +4,54 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | varchar(4096) |  | true |  |  |  |
-| full_table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| metric_name | varchar(4096) |  | true |  |  |  |
-| metric_type | varchar(4096) |  | true |  |  |  |
-| metric_value | double precision |  | true |  |  |  |
-| source_value | varchar(4096) |  | true |  |  |  |
-| bucket_start | timestamp without time zone |  | true |  |  |  |
-| bucket_end | timestamp without time zone |  | true |  |  |  |
-| bucket_duration_hours | integer |  | true |  |  |  |
-| updated_at | timestamp without time zone |  | true |  |  |  |
-| dimension | varchar(4096) |  | true |  |  |  |
-| dimension_value | varchar(4096) |  | true |  |  |  |
-| metric_properties | varchar(4096) |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
+| #  | Name                  | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | --------------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | bucket_duration_hours | integer                     |         | true     |          |         |         |
+| 2  | bucket_end            | timestamp without time zone |         | true     |          |         |         |
+| 3  | bucket_start          | timestamp without time zone |         | true     |          |         |         |
+| 4  | column_name           | varchar(4096)               |         | true     |          |         |         |
+| 5  | created_at            | timestamp without time zone |         | true     |          |         |         |
+| 6  | dimension             | varchar(4096)               |         | true     |          |         |         |
+| 7  | dimension_value       | varchar(4096)               |         | true     |          |         |         |
+| 8  | full_table_name       | varchar(4096)               |         | true     |          |         |         |
+| 9  | id                    | varchar(4096)               |         | true     |          |         |         |
+| 10 | metric_name           | varchar(4096)               |         | true     |          |         |         |
+| 11 | metric_properties     | varchar(4096)               |         | true     |          |         |         |
+| 12 | metric_type           | varchar(4096)               |         | true     |          |         |         |
+| 13 | metric_value          | double precision            |         | true     |          |         |         |
+| 14 | source_value          | varchar(4096)               |         | true     |          |         |         |
+| 15 | updated_at            | timestamp without time zone |         | true     |          |         |         |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| 2cd4b1070edc98b5b5d3e75ec5f8ff81 | CREATE INDEX "2cd4b1070edc98b5b5d3e75ec5f8ff81" ON dbt_stg.data_monitoring_metrics USING btree (full_table_name, column_name, metric_name) |
+| # | Name                             | Definition                                                                                                                               |
+| - | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | b4b6a5ae62e13211a50b23551d76bfad | CREATE INDEX b4b6a5ae62e13211a50b23551d76bfad ON dbt_stg.data_monitoring_metrics USING btree (full_table_name, column_name, metric_name) |
 
 ## Relations
 
-![er](dbt_stg.data_monitoring_metrics.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.data_monitoring_metrics" {
+  integer bucket_duration_hours
+  timestamp_without_time_zone bucket_end
+  timestamp_without_time_zone bucket_start
+  varchar_4096_ column_name
+  timestamp_without_time_zone created_at
+  varchar_4096_ dimension
+  varchar_4096_ dimension_value
+  varchar_4096_ full_table_name
+  varchar_4096_ id
+  varchar_4096_ metric_name
+  varchar_4096_ metric_properties
+  varchar_4096_ metric_type
+  double_precision metric_value
+  varchar_4096_ source_value
+  timestamp_without_time_zone updated_at
+}
+```
 
 ---
 

@@ -4,29 +4,40 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.emails_id_seq'::regclass) | false |  |  |  |
-| email_name | varchar(100) |  | true |  |  |  |
-| messages | json |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
-| modified_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| # | Name        | Type                        | Default                                   | Nullable | Children | Parents | Comment |
+| - | ----------- | --------------------------- | ----------------------------------------- | -------- | -------- | ------- | ------- |
+| 1 | created_at  | timestamp without time zone | CURRENT_TIMESTAMP                         | true     |          |         |         |
+| 2 | email_name  | varchar(100)                |                                           | true     |          |         |         |
+| 3 | id          | integer                     | nextval('source.emails_id_seq'::regclass) | false    |          |         |         |
+| 4 | messages    | json                        |                                           | true     |          |         |         |
+| 5 | modified_at | timestamp without time zone | CURRENT_TIMESTAMP                         | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| emails_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name        | Type        | Definition       |
+| - | ----------- | ----------- | ---------------- |
+| 1 | emails_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| emails_pkey | CREATE UNIQUE INDEX emails_pkey ON source.emails USING btree (id) |
+| # | Name        | Definition                                                        |
+| - | ----------- | ----------------------------------------------------------------- |
+| 1 | emails_pkey | CREATE UNIQUE INDEX emails_pkey ON source.emails USING btree (id) |
 
 ## Relations
 
-![er](source.emails.svg)
+```mermaid
+erDiagram
+
+
+"source.emails" {
+  timestamp_without_time_zone created_at
+  varchar_100_ email_name
+  integer id
+  json messages
+  timestamp_without_time_zone modified_at
+}
+```
 
 ---
 

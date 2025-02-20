@@ -4,17 +4,28 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| order_detail_id | integer |  | true |  |  |  |
-| customer_name | varchar(100) |  | true |  |  |  |
-| customer_email | varchar(100) |  | true |  |  |  |
-| product_name | varchar(100) |  | true |  |  |  |
-| product_category_name | varchar(100) |  | true |  |  |  |
+| # | Name                  | Type         | Default | Nullable | Children | Parents | Comment |
+| - | --------------------- | ------------ | ------- | -------- | -------- | ------- | ------- |
+| 1 | customer_email        | varchar(100) |         | true     |          |         |         |
+| 2 | customer_name         | varchar(100) |         | true     |          |         |         |
+| 3 | order_detail_id       | integer      |         | true     |          |         |         |
+| 4 | product_category_name | varchar(100) |         | true     |          |         |         |
+| 5 | product_name          | varchar(100) |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.customers_to_email.svg)
+```mermaid
+erDiagram
+
+
+"marts.customers_to_email" {
+  varchar_100_ customer_email
+  varchar_100_ customer_name
+  integer order_detail_id
+  varchar_100_ product_category_name
+  varchar_100_ product_name
+}
+```
 
 ---
 

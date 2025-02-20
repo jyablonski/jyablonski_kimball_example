@@ -4,18 +4,30 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| email_id | integer |  | true |  |  |  |
-| email_name | varchar(100) |  | true |  |  |  |
-| subjects | text |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| modified_at | timestamp without time zone |  | true |  |  |  |
-| dbt_created_at | timestamp without time zone |  | true |  |  |  |
+| # | Name           | Type                        | Default | Nullable | Children | Parents | Comment |
+| - | -------------- | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1 | created_at     | timestamp without time zone |         | true     |          |         |         |
+| 2 | dbt_created_at | timestamp without time zone |         | true     |          |         |         |
+| 3 | email_id       | integer                     |         | true     |          |         |         |
+| 4 | email_name     | varchar(100)                |         | true     |          |         |         |
+| 5 | modified_at    | timestamp without time zone |         | true     |          |         |         |
+| 6 | subjects       | text                        |         | true     |          |         |         |
 
 ## Relations
 
-![er](marts.emails_subject_concat.svg)
+```mermaid
+erDiagram
+
+
+"marts.emails_subject_concat" {
+  timestamp_without_time_zone created_at
+  timestamp_without_time_zone dbt_created_at
+  integer email_id
+  varchar_100_ email_name
+  timestamp_without_time_zone modified_at
+  text subjects
+}
+```
 
 ---
 

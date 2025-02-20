@@ -4,14 +4,22 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| country_code | text |  | true |  |  |  |
-| country_name | text |  | true |  |  |  |
+| # | Name         | Type | Default | Nullable | Children | Parents | Comment |
+| - | ------------ | ---- | ------- | -------- | -------- | ------- | ------- |
+| 1 | country_code | text |         | true     |          |         |         |
+| 2 | country_name | text |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.country_codes.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.country_codes" {
+  text country_code
+  text country_name
+}
+```
 
 ---
 

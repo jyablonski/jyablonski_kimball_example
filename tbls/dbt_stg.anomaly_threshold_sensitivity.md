@@ -87,33 +87,53 @@ CREATE VIEW anomaly_threshold_sensitivity AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| full_table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| metric_name | varchar(4096) |  | true |  |  |  |
-| latest_metric_value | double precision |  | true |  |  |  |
-| metric_avg | double precision |  | true |  |  |  |
-| metric_stddev | double precision |  | true |  |  |  |
-| anomaly_score | double precision |  | true |  |  |  |
-| is_anomaly_1_5 | boolean |  | true |  |  |  |
-| is_anomaly_2 | boolean |  | true |  |  |  |
-| is_anomaly_2_5 | boolean |  | true |  |  |  |
-| is_anomaly_3 | boolean |  | true |  |  |  |
-| is_anomaly_3_5 | boolean |  | true |  |  |  |
-| is_anomaly_4 | boolean |  | true |  |  |  |
-| is_anomaly_4_5 | boolean |  | true |  |  |  |
+| #  | Name                | Type             | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------- | ---------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | anomaly_score       | double precision |         | true     |          |         |         |
+| 2  | column_name         | varchar(4096)    |         | true     |          |         |         |
+| 3  | full_table_name     | varchar(4096)    |         | true     |          |         |         |
+| 4  | is_anomaly_1_5      | boolean          |         | true     |          |         |         |
+| 5  | is_anomaly_2        | boolean          |         | true     |          |         |         |
+| 6  | is_anomaly_2_5      | boolean          |         | true     |          |         |         |
+| 7  | is_anomaly_3        | boolean          |         | true     |          |         |         |
+| 8  | is_anomaly_3_5      | boolean          |         | true     |          |         |         |
+| 9  | is_anomaly_4        | boolean          |         | true     |          |         |         |
+| 10 | is_anomaly_4_5      | boolean          |         | true     |          |         |         |
+| 11 | latest_metric_value | double precision |         | true     |          |         |         |
+| 12 | metric_avg          | double precision |         | true     |          |         |         |
+| 13 | metric_name         | varchar(4096)    |         | true     |          |         |         |
+| 14 | metric_stddev       | double precision |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.metrics_anomaly_score](dbt_stg.metrics_anomaly_score.md) | 17 |  | VIEW |
-| [score_sensitivity](score_sensitivity.md) | 0 |  |  |
+| # | # | Name                                                              | Columns | Comment | Type |
+| - | - | ----------------------------------------------------------------- | ------- | ------- | ---- |
+| 1 | 1 | [dbt_stg.metrics_anomaly_score](dbt_stg.metrics_anomaly_score.md) | 17      |         | VIEW |
+| 2 | 2 | [score_sensitivity](score_sensitivity.md)                         | 0       |         |      |
 
 ## Relations
 
-![er](dbt_stg.anomaly_threshold_sensitivity.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.anomaly_threshold_sensitivity" {
+  double_precision anomaly_score
+  varchar_4096_ column_name
+  varchar_4096_ full_table_name
+  boolean is_anomaly_1_5
+  boolean is_anomaly_2
+  boolean is_anomaly_2_5
+  boolean is_anomaly_3
+  boolean is_anomaly_3_5
+  boolean is_anomaly_4
+  boolean is_anomaly_4_5
+  double_precision latest_metric_value
+  double_precision metric_avg
+  varchar_4096_ metric_name
+  double_precision metric_stddev
+}
+```
 
 ---
 

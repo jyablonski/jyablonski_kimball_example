@@ -4,32 +4,58 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| maturity | varchar(4096) |  | true |  |  |  |
-| type | varchar(4096) |  | true |  |  |  |
-| owner_email | varchar(4096) |  | true |  |  |  |
-| owner_name | varchar(4096) |  | true |  |  |  |
-| url | text |  | true |  |  |  |
-| depends_on_macros | text |  | true |  |  |  |
-| depends_on_nodes | text |  | true |  |  |  |
-| depends_on_columns | text |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
-| label | varchar(4096) |  | true |  |  |  |
-| raw_queries | text |  | true |  |  |  |
+| #  | Name               | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------ | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | depends_on_columns | text          |         | true     |          |         |         |
+| 2  | depends_on_macros  | text          |         | true     |          |         |         |
+| 3  | depends_on_nodes   | text          |         | true     |          |         |         |
+| 4  | description        | text          |         | true     |          |         |         |
+| 5  | generated_at       | varchar(4096) |         | true     |          |         |         |
+| 6  | label              | varchar(4096) |         | true     |          |         |         |
+| 7  | maturity           | varchar(4096) |         | true     |          |         |         |
+| 8  | meta               | text          |         | true     |          |         |         |
+| 9  | metadata_hash      | varchar(4096) |         | true     |          |         |         |
+| 10 | name               | varchar(4096) |         | true     |          |         |         |
+| 11 | original_path      | text          |         | true     |          |         |         |
+| 12 | owner_email        | varchar(4096) |         | true     |          |         |         |
+| 13 | owner_name         | varchar(4096) |         | true     |          |         |         |
+| 14 | package_name       | varchar(4096) |         | true     |          |         |         |
+| 15 | path               | varchar(4096) |         | true     |          |         |         |
+| 16 | raw_queries        | text          |         | true     |          |         |         |
+| 17 | tags               | text          |         | true     |          |         |         |
+| 18 | type               | varchar(4096) |         | true     |          |         |         |
+| 19 | unique_id          | varchar(4096) |         | true     |          |         |         |
+| 20 | url                | text          |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_exposures.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_exposures" {
+  text depends_on_columns
+  text depends_on_macros
+  text depends_on_nodes
+  text description
+  varchar_4096_ generated_at
+  varchar_4096_ label
+  varchar_4096_ maturity
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ owner_email
+  varchar_4096_ owner_name
+  varchar_4096_ package_name
+  varchar_4096_ path
+  text raw_queries
+  text tags
+  varchar_4096_ type
+  varchar_4096_ unique_id
+  text url
+}
+```
 
 ---
 

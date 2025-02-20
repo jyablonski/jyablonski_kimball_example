@@ -206,7 +206,7 @@ dbt build --exclude-resource-type unit_test
 dbterd run
 
 dbterd run -t mermaid
-dbterd run -t mermaid -s schema:fact
+dbterd run -t mermaid -s schema:dim
 
 echo \`\`\`mermaid > ./erd/erd_output.md
 echo --- >> ./erd/erd_output.md
@@ -229,4 +229,6 @@ sed -i -E 's/source\.//g; s/numeric\([0-9]+,[0-9]+\)/numeric/g' ./erd/erd_output
 tbls doc postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
 
 tbls doc --force
+
+rm -f tbls/schema.json
 ```

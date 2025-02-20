@@ -4,40 +4,74 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | text |  | true |  |  |  |
-| data_issue_id | varchar(4096) |  | true |  |  |  |
-| test_execution_id | text |  | true |  |  |  |
-| test_unique_id | text |  | true |  |  |  |
-| model_unique_id | text |  | true |  |  |  |
-| invocation_id | varchar(4096) |  | true |  |  |  |
-| detected_at | timestamp without time zone |  | true |  |  |  |
-| created_at | timestamp without time zone |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| table_name | varchar(4096) |  | true |  |  |  |
-| column_name | varchar(4096) |  | true |  |  |  |
-| test_type | varchar(4096) |  | true |  |  |  |
-| test_sub_type | varchar(4096) |  | true |  |  |  |
-| test_results_description | text |  | true |  |  |  |
-| owners | varchar(4096) |  | true |  |  |  |
-| tags | varchar(4096) |  | true |  |  |  |
-| test_results_query | text |  | true |  |  |  |
-| other | varchar(4096) |  | true |  |  |  |
-| test_name | text |  | true |  |  |  |
-| test_params | text |  | true |  |  |  |
-| severity | varchar(4096) |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| failures | bigint |  | true |  |  |  |
-| test_short_name | varchar(4096) |  | true |  |  |  |
-| test_alias | varchar(4096) |  | true |  |  |  |
-| result_rows | text |  | true |  |  |  |
-| failed_row_count | bigint |  | true |  |  |  |
+| #  | Name                     | Type                        | Default | Nullable | Children | Parents | Comment |
+| -- | ------------------------ | --------------------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | column_name              | varchar(4096)               |         | true     |          |         |         |
+| 2  | created_at               | timestamp without time zone |         | true     |          |         |         |
+| 3  | data_issue_id            | varchar(4096)               |         | true     |          |         |         |
+| 4  | database_name            | varchar(4096)               |         | true     |          |         |         |
+| 5  | detected_at              | timestamp without time zone |         | true     |          |         |         |
+| 6  | failed_row_count         | bigint                      |         | true     |          |         |         |
+| 7  | failures                 | bigint                      |         | true     |          |         |         |
+| 8  | id                       | text                        |         | true     |          |         |         |
+| 9  | invocation_id            | varchar(4096)               |         | true     |          |         |         |
+| 10 | model_unique_id          | text                        |         | true     |          |         |         |
+| 11 | other                    | varchar(4096)               |         | true     |          |         |         |
+| 12 | owners                   | varchar(4096)               |         | true     |          |         |         |
+| 13 | result_rows              | text                        |         | true     |          |         |         |
+| 14 | schema_name              | varchar(4096)               |         | true     |          |         |         |
+| 15 | severity                 | varchar(4096)               |         | true     |          |         |         |
+| 16 | status                   | varchar(4096)               |         | true     |          |         |         |
+| 17 | table_name               | varchar(4096)               |         | true     |          |         |         |
+| 18 | tags                     | varchar(4096)               |         | true     |          |         |         |
+| 19 | test_alias               | varchar(4096)               |         | true     |          |         |         |
+| 20 | test_execution_id        | text                        |         | true     |          |         |         |
+| 21 | test_name                | text                        |         | true     |          |         |         |
+| 22 | test_params              | text                        |         | true     |          |         |         |
+| 23 | test_results_description | text                        |         | true     |          |         |         |
+| 24 | test_results_query       | text                        |         | true     |          |         |         |
+| 25 | test_short_name          | varchar(4096)               |         | true     |          |         |         |
+| 26 | test_sub_type            | varchar(4096)               |         | true     |          |         |         |
+| 27 | test_type                | varchar(4096)               |         | true     |          |         |         |
+| 28 | test_unique_id           | text                        |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.elementary_test_results.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.elementary_test_results" {
+  varchar_4096_ column_name
+  timestamp_without_time_zone created_at
+  varchar_4096_ data_issue_id
+  varchar_4096_ database_name
+  timestamp_without_time_zone detected_at
+  bigint failed_row_count
+  bigint failures
+  text id
+  varchar_4096_ invocation_id
+  text model_unique_id
+  varchar_4096_ other
+  varchar_4096_ owners
+  text result_rows
+  varchar_4096_ schema_name
+  varchar_4096_ severity
+  varchar_4096_ status
+  varchar_4096_ table_name
+  varchar_4096_ tags
+  varchar_4096_ test_alias
+  text test_execution_id
+  text test_name
+  text test_params
+  text test_results_description
+  text test_results_query
+  varchar_4096_ test_short_name
+  varchar_4096_ test_sub_type
+  varchar_4096_ test_type
+  text test_unique_id
+}
+```
 
 ---
 

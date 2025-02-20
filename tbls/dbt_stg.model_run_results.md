@@ -97,49 +97,84 @@ CREATE VIEW model_run_results AS (
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| model_execution_id | text |  | true |  |  |  |
-| unique_id | text |  | true |  |  |  |
-| invocation_id | varchar(4096) |  | true |  |  |  |
-| query_id | varchar(4096) |  | true |  |  |  |
-| name | text |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| status | varchar(4096) |  | true |  |  |  |
-| full_refresh | boolean |  | true |  |  |  |
-| message | text |  | true |  |  |  |
-| execution_time | double precision |  | true |  |  |  |
-| execute_started_at | varchar(4096) |  | true |  |  |  |
-| execute_completed_at | varchar(4096) |  | true |  |  |  |
-| compile_started_at | varchar(4096) |  | true |  |  |  |
-| compile_completed_at | varchar(4096) |  | true |  |  |  |
-| compiled_code | text |  | true |  |  |  |
-| adapter_response | varchar(4096) |  | true |  |  |  |
-| thread_id | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| materialization | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| owner | varchar(4096) |  | true |  |  |  |
-| alias | varchar(4096) |  | true |  |  |  |
-| model_invocation_reverse_index | bigint |  | true |  |  |  |
-| is_the_first_invocation_of_the_day | boolean |  | true |  |  |  |
-| is_the_last_invocation_of_the_day | boolean |  | true |  |  |  |
+| #  | Name                               | Type             | Default | Nullable | Children | Parents | Comment |
+| -- | ---------------------------------- | ---------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | adapter_response                   | varchar(4096)    |         | true     |          |         |         |
+| 2  | alias                              | varchar(4096)    |         | true     |          |         |         |
+| 3  | compile_completed_at               | varchar(4096)    |         | true     |          |         |         |
+| 4  | compile_started_at                 | varchar(4096)    |         | true     |          |         |         |
+| 5  | compiled_code                      | text             |         | true     |          |         |         |
+| 6  | database_name                      | varchar(4096)    |         | true     |          |         |         |
+| 7  | execute_completed_at               | varchar(4096)    |         | true     |          |         |         |
+| 8  | execute_started_at                 | varchar(4096)    |         | true     |          |         |         |
+| 9  | execution_time                     | double precision |         | true     |          |         |         |
+| 10 | full_refresh                       | boolean          |         | true     |          |         |         |
+| 11 | generated_at                       | varchar(4096)    |         | true     |          |         |         |
+| 12 | invocation_id                      | varchar(4096)    |         | true     |          |         |         |
+| 13 | is_the_first_invocation_of_the_day | boolean          |         | true     |          |         |         |
+| 14 | is_the_last_invocation_of_the_day  | boolean          |         | true     |          |         |         |
+| 15 | materialization                    | varchar(4096)    |         | true     |          |         |         |
+| 16 | message                            | text             |         | true     |          |         |         |
+| 17 | model_execution_id                 | text             |         | true     |          |         |         |
+| 18 | model_invocation_reverse_index     | bigint           |         | true     |          |         |         |
+| 19 | name                               | text             |         | true     |          |         |         |
+| 20 | original_path                      | text             |         | true     |          |         |         |
+| 21 | owner                              | varchar(4096)    |         | true     |          |         |         |
+| 22 | package_name                       | varchar(4096)    |         | true     |          |         |         |
+| 23 | path                               | varchar(4096)    |         | true     |          |         |         |
+| 24 | query_id                           | varchar(4096)    |         | true     |          |         |         |
+| 25 | schema_name                        | varchar(4096)    |         | true     |          |         |         |
+| 26 | status                             | varchar(4096)    |         | true     |          |         |         |
+| 27 | tags                               | text             |         | true     |          |         |         |
+| 28 | thread_id                          | varchar(4096)    |         | true     |          |         |         |
+| 29 | unique_id                          | text             |         | true     |          |         |         |
 
 ## Referenced Tables
 
-| Name | Columns | Comment | Type |
-| ---- | ------- | ------- | ---- |
-| [dbt_stg.dbt_run_results](dbt_stg.dbt_run_results.md) | 22 |  | BASE TABLE |
-| [dbt_stg.dbt_models](dbt_stg.dbt_models.md) | 19 |  | BASE TABLE |
-| [dbt_models](dbt_models.md) | 0 |  |  |
+| # | # | Name                                                  | Columns | Comment | Type       |
+| - | - | ----------------------------------------------------- | ------- | ------- | ---------- |
+| 1 | 1 | [dbt_stg.dbt_run_results](dbt_stg.dbt_run_results.md) | 22      |         | BASE TABLE |
+| 2 | 2 | [dbt_stg.dbt_models](dbt_stg.dbt_models.md)           | 19      |         | BASE TABLE |
+| 3 | 3 | [dbt_models](dbt_models.md)                           | 0       |         |            |
 
 ## Relations
 
-![er](dbt_stg.model_run_results.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.model_run_results" {
+  varchar_4096_ adapter_response
+  varchar_4096_ alias
+  varchar_4096_ compile_completed_at
+  varchar_4096_ compile_started_at
+  text compiled_code
+  varchar_4096_ database_name
+  varchar_4096_ execute_completed_at
+  varchar_4096_ execute_started_at
+  double_precision execution_time
+  boolean full_refresh
+  varchar_4096_ generated_at
+  varchar_4096_ invocation_id
+  boolean is_the_first_invocation_of_the_day
+  boolean is_the_last_invocation_of_the_day
+  varchar_4096_ materialization
+  text message
+  text model_execution_id
+  bigint model_invocation_reverse_index
+  text name
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ path
+  varchar_4096_ query_id
+  varchar_4096_ schema_name
+  varchar_4096_ status
+  text tags
+  varchar_4096_ thread_id
+  text unique_id
+}
+```
 
 ---
 

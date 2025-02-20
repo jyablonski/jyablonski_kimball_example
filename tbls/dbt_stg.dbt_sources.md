@@ -4,34 +4,62 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| unique_id | varchar(4096) |  | true |  |  |  |
-| database_name | varchar(4096) |  | true |  |  |  |
-| schema_name | varchar(4096) |  | true |  |  |  |
-| source_name | varchar(4096) |  | true |  |  |  |
-| name | varchar(4096) |  | true |  |  |  |
-| identifier | varchar(4096) |  | true |  |  |  |
-| loaded_at_field | varchar(4096) |  | true |  |  |  |
-| freshness_warn_after | varchar(4096) |  | true |  |  |  |
-| freshness_error_after | varchar(4096) |  | true |  |  |  |
-| freshness_filter | text |  | true |  |  |  |
-| freshness_description | text |  | true |  |  |  |
-| relation_name | varchar(4096) |  | true |  |  |  |
-| tags | text |  | true |  |  |  |
-| meta | text |  | true |  |  |  |
-| owner | varchar(4096) |  | true |  |  |  |
-| package_name | varchar(4096) |  | true |  |  |  |
-| original_path | text |  | true |  |  |  |
-| path | varchar(4096) |  | true |  |  |  |
-| source_description | text |  | true |  |  |  |
-| description | text |  | true |  |  |  |
-| generated_at | varchar(4096) |  | true |  |  |  |
-| metadata_hash | varchar(4096) |  | true |  |  |  |
+| #  | Name                  | Type          | Default | Nullable | Children | Parents | Comment |
+| -- | --------------------- | ------------- | ------- | -------- | -------- | ------- | ------- |
+| 1  | database_name         | varchar(4096) |         | true     |          |         |         |
+| 2  | description           | text          |         | true     |          |         |         |
+| 3  | freshness_description | text          |         | true     |          |         |         |
+| 4  | freshness_error_after | varchar(4096) |         | true     |          |         |         |
+| 5  | freshness_filter      | text          |         | true     |          |         |         |
+| 6  | freshness_warn_after  | varchar(4096) |         | true     |          |         |         |
+| 7  | generated_at          | varchar(4096) |         | true     |          |         |         |
+| 8  | identifier            | varchar(4096) |         | true     |          |         |         |
+| 9  | loaded_at_field       | varchar(4096) |         | true     |          |         |         |
+| 10 | meta                  | text          |         | true     |          |         |         |
+| 11 | metadata_hash         | varchar(4096) |         | true     |          |         |         |
+| 12 | name                  | varchar(4096) |         | true     |          |         |         |
+| 13 | original_path         | text          |         | true     |          |         |         |
+| 14 | owner                 | varchar(4096) |         | true     |          |         |         |
+| 15 | package_name          | varchar(4096) |         | true     |          |         |         |
+| 16 | path                  | varchar(4096) |         | true     |          |         |         |
+| 17 | relation_name         | varchar(4096) |         | true     |          |         |         |
+| 18 | schema_name           | varchar(4096) |         | true     |          |         |         |
+| 19 | source_description    | text          |         | true     |          |         |         |
+| 20 | source_name           | varchar(4096) |         | true     |          |         |         |
+| 21 | tags                  | text          |         | true     |          |         |         |
+| 22 | unique_id             | varchar(4096) |         | true     |          |         |         |
 
 ## Relations
 
-![er](dbt_stg.dbt_sources.svg)
+```mermaid
+erDiagram
+
+
+"dbt_stg.dbt_sources" {
+  varchar_4096_ database_name
+  text description
+  text freshness_description
+  varchar_4096_ freshness_error_after
+  text freshness_filter
+  varchar_4096_ freshness_warn_after
+  varchar_4096_ generated_at
+  varchar_4096_ identifier
+  varchar_4096_ loaded_at_field
+  text meta
+  varchar_4096_ metadata_hash
+  varchar_4096_ name
+  text original_path
+  varchar_4096_ owner
+  varchar_4096_ package_name
+  varchar_4096_ path
+  varchar_4096_ relation_name
+  varchar_4096_ schema_name
+  text source_description
+  varchar_4096_ source_name
+  text tags
+  varchar_4096_ unique_id
+}
+```
 
 ---
 

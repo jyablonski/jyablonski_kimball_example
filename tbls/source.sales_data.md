@@ -4,35 +4,52 @@
 
 ## Columns
 
-| Name | Type | Default | Nullable | Children | Parents | Comment |
-| ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | integer | nextval('source.sales_data_id_seq'::regclass) | false |  |  |  |
-| name | varchar(100) |  | true |  |  |  |
-| address | varchar(100) |  | true |  |  |  |
-| username | varchar(100) |  | true |  |  |  |
-| email | varchar(100) |  | true |  |  |  |
-| hire_date | date |  | true |  |  |  |
-| status | varchar(100) |  | true |  |  |  |
-| color | varchar(100) |  | true |  |  |  |
-| salary | numeric(10,2) |  | true |  |  |  |
-| store_id | integer |  | true |  |  |  |
-| created_at | timestamp without time zone | CURRENT_TIMESTAMP | true |  |  |  |
+| #  | Name       | Type                        | Default                                       | Nullable | Children | Parents | Comment |
+| -- | ---------- | --------------------------- | --------------------------------------------- | -------- | -------- | ------- | ------- |
+| 1  | address    | varchar(100)                |                                               | true     |          |         |         |
+| 2  | color      | varchar(100)                |                                               | true     |          |         |         |
+| 3  | created_at | timestamp without time zone | CURRENT_TIMESTAMP                             | true     |          |         |         |
+| 4  | email      | varchar(100)                |                                               | true     |          |         |         |
+| 5  | hire_date  | date                        |                                               | true     |          |         |         |
+| 6  | id         | integer                     | nextval('source.sales_data_id_seq'::regclass) | false    |          |         |         |
+| 7  | name       | varchar(100)                |                                               | true     |          |         |         |
+| 8  | salary     | numeric(10,2)               |                                               | true     |          |         |         |
+| 9  | status     | varchar(100)                |                                               | true     |          |         |         |
+| 10 | store_id   | integer                     |                                               | true     |          |         |         |
+| 11 | username   | varchar(100)                |                                               | true     |          |         |         |
 
 ## Constraints
 
-| Name | Type | Definition |
-| ---- | ---- | ---------- |
-| sales_data_pkey | PRIMARY KEY | PRIMARY KEY (id) |
+| # | Name            | Type        | Definition       |
+| - | --------------- | ----------- | ---------------- |
+| 1 | sales_data_pkey | PRIMARY KEY | PRIMARY KEY (id) |
 
 ## Indexes
 
-| Name | Definition |
-| ---- | ---------- |
-| sales_data_pkey | CREATE UNIQUE INDEX sales_data_pkey ON source.sales_data USING btree (id) |
+| # | Name            | Definition                                                                |
+| - | --------------- | ------------------------------------------------------------------------- |
+| 1 | sales_data_pkey | CREATE UNIQUE INDEX sales_data_pkey ON source.sales_data USING btree (id) |
 
 ## Relations
 
-![er](source.sales_data.svg)
+```mermaid
+erDiagram
+
+
+"source.sales_data" {
+  varchar_100_ address
+  varchar_100_ color
+  timestamp_without_time_zone created_at
+  varchar_100_ email
+  date hire_date
+  integer id
+  varchar_100_ name
+  numeric_10_2_ salary
+  varchar_100_ status
+  integer store_id
+  varchar_100_ username
+}
+```
 
 ---
 
