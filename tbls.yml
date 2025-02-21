@@ -23,4 +23,4 @@ relations:
     # this just adjusts the label
     # Relation definition
     # Default is `Additional Relation`
-    def: id -> customer_id
+    def: customer.id -> customer_changes_agg.customer_id
