@@ -15,7 +15,7 @@
 ```mermaid
 erDiagram
 
-"dbt_stg.customer_changes_agg" }o--o| "source.customer" : "customer.id -> customer_changes_agg.customer_id"
+"dbt_stg.customer_changes_agg" ||--|{ "source.customer" : "customer.id -> customer_changes_agg.customer_id"
 
 "dbt_stg.customer_changes_agg" {
   integer customer_id

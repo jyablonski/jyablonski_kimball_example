@@ -242,3 +242,15 @@ tbls doc --force
 
 rm -f tbls/schema.json
 ```
+
+
+``` go
+const (
+	ZeroOrOne          Cardinality = "zero_or_one"
+	ExactlyOne         Cardinality = "exactly_one"
+	ZeroOrMore         Cardinality = "zero_or_more"
+	OneOrMore          Cardinality = "one_or_more"
+	UnknownCardinality Cardinality = ""
+)
+
+```

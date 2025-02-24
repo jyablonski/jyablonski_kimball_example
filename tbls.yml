@@ -17,7 +17,9 @@ relations:
   - table: dbt_stg.customer_changes_agg
     columns:
       - customer_id
+    cardinality: exactly_one
     parentTable: source.customer
+    parentCardinality: one_or_more
     parentColumns:
       - id
     # this just adjusts the label

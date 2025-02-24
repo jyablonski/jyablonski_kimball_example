@@ -94,7 +94,7 @@
 ```mermaid
 erDiagram
 
-"dbt_stg.customer_changes_agg" }o--o| "source.customer" : "customer.id -> customer_changes_agg.customer_id"
+"dbt_stg.customer_changes_agg" ||--|{ "source.customer" : "customer.id -> customer_changes_agg.customer_id"
 "source.invoice" }o--o| "source.order" : "FOREIGN KEY (order_id) REFERENCES source."order"(id)"
 "source.order" }o--o| "source.customer" : "FOREIGN KEY (customer_id) REFERENCES source.customer(id)"
 "source.order" }o--o| "source.store" : "FOREIGN KEY (store_id) REFERENCES source.store(id)"
