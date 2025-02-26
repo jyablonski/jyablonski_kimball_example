@@ -1,0 +1,9 @@
+- table: marts.customer_integration_history_scd2
+  columns:
+  - customer_id
+  cardinality: one_or_more
+  parentTable: source.customer
+  parentCardinality: exactly_one
+  parentColumns:
+  - id
+  def: id -> customer_id

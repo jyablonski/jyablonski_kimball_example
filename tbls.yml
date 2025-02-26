@@ -14,15 +14,12 @@ er:
   format: mermaid
 
 relations:
-  - table: dbt_stg.customer_changes_agg
+  - table: marts.customer_integration_history_scd2
     columns:
       - customer_id
-    cardinality: exactly_one
+    cardinality: one_or_more
     parentTable: source.customer
-    parentCardinality: one_or_more
+    parentCardinality: exactly_one
     parentColumns:
       - id
-    # this just adjusts the label
-    # Relation definition
-    # Default is `Additional Relation`
-    def: customer.id -> customer_changes_agg.customer_id
+    def: id -> customer_id
