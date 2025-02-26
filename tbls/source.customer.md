@@ -4,19 +4,19 @@
 
 ## Columns
 
-| #  | Name           | Type                        | Default                                     | Nullable | Children                                                                                        | Parents | Comment |
-| -- | -------------- | --------------------------- | ------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- | ------- | ------- |
-| 1  | address        | varchar(100)                |                                             | true     |                                                                                                 |         |         |
-| 2  | address_2      | varchar(100)                |                                             | true     |                                                                                                 |         |         |
-| 3  | city           | varchar(50)                 |                                             | true     |                                                                                                 |         |         |
-| 4  | country        | varchar(50)                 |                                             | true     |                                                                                                 |         |         |
-| 5  | created_at     | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                 |         |         |
-| 6  | customer_email | varchar(100)                |                                             | true     |                                                                                                 |         |         |
-| 7  | customer_name  | varchar(100)                |                                             | true     |                                                                                                 |         |         |
-| 8  | id             | integer                     | nextval('source.customer_id_seq'::regclass) | false    | [dbt_stg.customer_changes_agg](dbt_stg.customer_changes_agg.md) [source.order](source.order.md) |         |         |
-| 9  | modified_at    | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                 |         |         |
-| 10 | state          | varchar(3)                  |                                             | true     |                                                                                                 |         |         |
-| 11 | zip_code       | integer                     |                                             | true     |                                                                                                 |         |         |
+| #  | Name           | Type                        | Default                                     | Nullable | Children                                                                                                              | Parents | Comment |
+| -- | -------------- | --------------------------- | ------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- | ------- | ------- |
+| 1  | address        | varchar(100)                |                                             | true     |                                                                                                                       |         |         |
+| 2  | address_2      | varchar(100)                |                                             | true     |                                                                                                                       |         |         |
+| 3  | city           | varchar(50)                 |                                             | true     |                                                                                                                       |         |         |
+| 4  | country        | varchar(50)                 |                                             | true     |                                                                                                                       |         |         |
+| 5  | created_at     | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                                       |         |         |
+| 6  | customer_email | varchar(100)                |                                             | true     |                                                                                                                       |         |         |
+| 7  | customer_name  | varchar(100)                |                                             | true     |                                                                                                                       |         |         |
+| 8  | id             | integer                     | nextval('source.customer_id_seq'::regclass) | false    | [marts.customer_integration_history_scd2](marts.customer_integration_history_scd2.md) [source.order](source.order.md) |         |         |
+| 9  | modified_at    | timestamp without time zone | CURRENT_TIMESTAMP                           | true     |                                                                                                                       |         |         |
+| 10 | state          | varchar(3)                  |                                             | true     |                                                                                                                       |         |         |
+| 11 | zip_code       | integer                     |                                             | true     |                                                                                                                       |         |         |
 
 ## Constraints
 
@@ -35,7 +35,7 @@
 ```mermaid
 erDiagram
 
-"dbt_stg.customer_changes_agg" ||--|{ "source.customer" : "customer.id -> customer_changes_agg.customer_id"
+"marts.customer_integration_history_scd2" }|--|| "source.customer" : "id -> customer_id"
 "source.order" }o--o| "source.customer" : "FOREIGN KEY (customer_id) REFERENCES source.customer(id)"
 
 "source.customer" {
@@ -51,10 +51,13 @@ erDiagram
   varchar_3_ state
   integer zip_code
 }
-"dbt_stg.customer_changes_agg" {
+"marts.customer_integration_history_scd2" {
   integer customer_id
-  timestamp_without_time_zone max_modified_at
-  bigint num_records
+  text integration_type
+  integer is_active
+  integer is_current_integration_record
+  timestamp_without_time_zone valid_from
+  timestamp_without_time_zone valid_to
 }
 "source.order" {
   timestamp_without_time_zone created_at

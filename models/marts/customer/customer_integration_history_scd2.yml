@@ -14,6 +14,21 @@ models:
               # this where clause isnt needed, but for performance purposes i think you want it in there
               # where: is_current_integration_record = 1
               enabled: true
+        meta:
+          fides:
+            data_categories:
+              - user.unique_id.pseudonymous
+            fides_meta:
+              primary_key: true
+              data_type: string
+          table_relationships:
+            - to_table: source.customer
+              to_field: id
+              cardinality: one_or_more
+              parent_cardinality: exactly_one
+            # - to_table: example_table
+            #   to_field: customer_id
+            #   cardinality: one_or_more
       - name: is_active
         data_tests:
           - dbt_expectations.expect_column_values_to_be_between:
