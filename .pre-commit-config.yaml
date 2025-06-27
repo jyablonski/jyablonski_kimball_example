@@ -5,6 +5,9 @@ repos:
       - id: sqlfluff-lint
         entry: env DBT_PRAC_KEY=hooks sqlfluff lint --processes 0
         additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
+        types: [sql]
+        require_serial: true
+        language: python
       - id: sqlfluff-fix
         # Set a couple of default flags:
         #  - `--force` to disable confirmation
@@ -14,6 +17,9 @@ repos:
         # stages: [manual]  # this command is available only to run manually
         entry: env DBT_PRAC_KEY=hooks sqlfluff fix --force --show-lint-violations --processes 0
         additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
+        types: [sql]
+        require_serial: true
+        language: python
     # can add more hooks here https://github.com/dbt-checkpoint/dbt-checkpoint/blob/main/HOOKS.md
   # - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
   #   rev: v2.0.4
