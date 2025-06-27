@@ -38,6 +38,12 @@ repos:
         entry: uv run sqlfluff fix --config pyproject.toml models/
         pass_filenames: false
 
+      - id: sqlfluff-lint
+        language: system
+        name: sqlfluff fix
+        entry: uv run sqlfluff lint --config pyproject.toml models/
+        pass_filenames: false
+
   # - id: sqlfluff-lint
   #   language: system
   #   name: sqlfluff lint

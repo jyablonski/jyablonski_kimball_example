@@ -54,3 +54,20 @@ extended_capitalisation_policy = "lower"
 
 [tool.sqlfluff.indentation]
 indented_joins = true
+allow_implicit_indents = false
+
+[tool.sqlfluff.layout.type.comma]
+spacing_before = "touch"
+line_position = "trailing"
+
+[tool.sqlfluff.layout.type.where_clause]
+keyword_line_position = "alone"
+
+[tool.sqlfluff.layout.type.group_by_clause]
+keyword_line_position = "alone"
+
+[tool.sqlfluff.layout.type.order_by_clause]
+keyword_line_position = "alone"
+
+[tool.sqlfluff.rules.ambiguous.column_references] # Number in group by
+group_by_and_order_by_style = "explicit"

@@ -16,10 +16,11 @@ with failed_tests as (
         detected_at as generated_at,
         current_timestamp as __created_at
     from {{ ref('elementary_test_results') }}
-    where status = 'fail'
+    where
+        status = 'fail'
     {% if is_incremental() %}
-            and id not in (select id from {{ this }})
-        {% endif %}
+        and id not in (select id from {{ this }})
+    {% endif %}
 
 )
 
