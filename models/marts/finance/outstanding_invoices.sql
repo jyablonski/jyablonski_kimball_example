@@ -15,7 +15,6 @@ customer_last_payment_on_invoice as (
         left join {{ ref('fact_payments') }} on outstanding_invoices.invoice_id = fact_payments.invoice_id
     group by fact_payments.invoice_id
 
-
 ),
 
 final as (

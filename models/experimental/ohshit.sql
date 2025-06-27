@@ -17,6 +17,6 @@ select
     start_date,
     end_date,
     {%- if run_date >= cutoff_date %} modified_at
-    {%- else %} created_at
+{%- else %} created_at
     {%- endif %}
 from my_cte

@@ -17,7 +17,7 @@ with failed_tests as (
     from {{ ref('elementary_test_results') }}
     where
         status = 'fail'
-        {% if is_incremental() %}
+    {% if is_incremental() %}
             and id not in (select id from {{ this }})
         {% endif %}
 

@@ -17,8 +17,8 @@ dbt-artifacts-parser = "^0.8.2"
 
 
 [tool.poetry.group.dev.dependencies]
-sqlfluff = "3.3.0"
-sqlfluff-templater-dbt = "3.3.0"
+sqlfluff = "^3.4.1"
+sqlfluff-templater-dbt = "^3.4.1"
 ipykernel = "^6.29.0"
 
 [build-system]

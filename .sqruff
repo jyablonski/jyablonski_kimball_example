@@ -1,0 +1,39 @@
+# # LT05 - line too long gahbage
+# # RF01 - some dumbass shit about not using table aliases idk bruh
+# # RFO2 - i do select a, b instead of foo.a, vee.b - bad habit but excluding for now
+# # RF04 - no sql-reserved keywords as aliases - bad habit but excluding for now
+# # ST07 - no `using` keyword for joins - this is fine imo so fuqqit
+# # ST06 - Select wildcards then simple targets before calculations and aggregates.
+# #      - this rule can literally break your sql so fuck that
+
+# this just didnt work, the linux install borked w/ `Illegal instruction (core dumped)`
+# and it's completely unclear why some of these are sqruff and some of the configs are
+# sqlfluff still
+[sqruff]
+dialect = postgres
+exclude_rules = LT05,RF01,RF02,RF04,ST07,ST06
+rules = all
+capitalization.keywords = lower
+
+[sqruff:indentation]
+indent_unit = space
+tab_space_size = 4
+indented_joins = True
+
+[sqruff:templater:jinja]
+apply_dbt_builtins = True
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
