@@ -57,8 +57,10 @@ capitalisation_policy = "lower"
 extended_capitalisation_policy = "lower"
 
 [tool.sqlfluff.indentation]
+tab_space_size = 4
 indented_joins = true
 allow_implicit_indents = false
+indented_using_on = true
 
 [tool.sqlfluff.layout.type.comma]
 spacing_before = "touch"
@@ -72,6 +74,7 @@ keyword_line_position = "alone"
 
 [tool.sqlfluff.layout.type.order_by_clause]
 keyword_line_position = "alone"
+
 
 # force explicit column references in group by and order by clauses
 # like `GROUP BY user_id, customer_id` instead of `GROUP BY 1, 2`
