@@ -69,5 +69,7 @@ keyword_line_position = "alone"
 [tool.sqlfluff.layout.type.order_by_clause]
 keyword_line_position = "alone"
 
-[tool.sqlfluff.rules.ambiguous.column_references] # Number in group by
+# force explicit column references in group by and order by clauses
+# like `GROUP BY user_id, customer_id` instead of `GROUP BY 1, 2`
+[tool.sqlfluff.rules.ambiguous.column_references]
 group_by_and_order_by_style = "explicit"

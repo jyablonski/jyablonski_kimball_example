@@ -1,25 +1,17 @@
 repos:
-  # - repo: https://github.com/sqlfluff/sqlfluff
-  #   rev: 3.4.1
-  #   hooks:
-  #     - id: sqlfluff-lint
-  #       entry: env DBT_PRAC_KEY=hooks sqlfluff lint --processes 0
-  #       additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
-  #       types: [sql]
-  #       require_serial: true
-  #       language: python
-  #     - id: sqlfluff-fix
-  #       # Set a couple of default flags:
-  #       #  - `--force` to disable confirmation
-  #       #  - `--show-lint-violations` shows issues to not require running `sqlfluff lint`
-  #       #  - `--processes 0` to use maximum parallelism
-  #       # By default, this hook applies all rules.
-  #       # stages: [manual]  # this command is available only to run manually
-  #       entry: env DBT_PRAC_KEY=hooks sqlfluff fix --force --show-lint-violations --processes 0
-  #       additional_dependencies: ["dbt-postgres", "sqlfluff-templater-dbt"]
-  #       types: [sql]
-  #       require_serial: true
-  #       language: python
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.4.1
+    hooks:
+      - id: sqlfluff-fix
+        additional_dependencies: ["sqlfluff-templater-dbt==3.4.1"]
+        language: python
+        args: [--config=pyproject.toml]
+        files: ^models/.*\.sql$
+      - id: sqlfluff-lint
+        additional_dependencies: ["sqlfluff-templater-dbt==3.4.1"]
+        args: [--config=pyproject.toml]
+        files: ^models/.*\.sql$
+
   # can add more hooks here https://github.com/dbt-checkpoint/dbt-checkpoint/blob/main/HOOKS.md
   # - repo: https://github.com/dbt-checkpoint/dbt-checkpoint
   #   rev: v2.0.4
@@ -30,19 +22,19 @@ repos:
   #     - id: check-column-desc-are-same
   #     - id: check-model-has-tests
   #       args: ["--test-cnt", "1", "--"]
-  - repo: local
-    hooks:
-      - id: sqlfluff-fix
-        language: system
-        name: sqlfluff fix
-        entry: uv run sqlfluff fix --config pyproject.toml models/
-        pass_filenames: false
+  # - repo: local
+  #   hooks:
+  # - id: sqlfluff-fix
+  #   language: system
+  #   name: sqlfluff fix
+  #   entry: uv run sqlfluff fix --config pyproject.toml models/
+  #   pass_filenames: false
 
-      - id: sqlfluff-lint
-        language: system
-        name: sqlfluff fix
-        entry: uv run sqlfluff lint --config pyproject.toml models/
-        pass_filenames: false
+  # - id: sqlfluff-lint
+  #   language: system
+  #   name: sqlfluff fix
+  #   entry: uv run sqlfluff lint --config pyproject.toml models/
+  #   pass_filenames: false
 
   # - id: sqlfluff-lint
   #   language: system
