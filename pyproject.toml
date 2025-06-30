@@ -1,42 +1,54 @@
-[tool.poetry]
+[project]
 name = "jyablonski-kimball-example"
 version = "0.0.1"
 description = "Example Kimball Modeling Project"
-authors = ["jyablonski9 <jyablonski9@gmail.com>"]
+authors = [{ name = "jyablonski9", email = "jyablonski9@gmail.com" }]
+requires-python = ">=3.12,<3.13"
 readme = "README.md"
-package-mode = false
+dependencies = [
+    "dbt-core==1.9.1",
+    "dbt-postgres==1.9.0",
+    "dbt-snowflake>=1.8.3,<2",
+    "dbt-coverage>=0.3.8,<0.4",
+    "dbterd>=1.18.0,<2",
+    "dbt-artifacts-parser>=0.8.2,<0.9",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.12,<4.0"
-dbt-core = "1.9.1"
-dbt-postgres = "1.9.0"
-dbt-snowflake = "^1.8.3"
-dbt-coverage = "^0.3.8"
-dbterd = "^1.18.0"
-dbt-artifacts-parser = "^0.8.2"
+[dependency-groups]
+dev = [
+    "sqlfluff>=3.4.1,<4",
+    "sqlfluff-templater-dbt>=3.4.1,<4",
+    "ipykernel>=6.29.0,<7",
+]
 
-
-[tool.poetry.group.dev.dependencies]
-sqlfluff = "3.3.0"
-sqlfluff-templater-dbt = "3.3.0"
-ipykernel = "^6.29.0"
+[tool.uv]
+package = false
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+# https://docs.sqlfluff.com/en/stable/reference/rules.html#rule-references.keywords
 [tool.sqlfluff.core]
 dialect = "postgres"
 templater = "dbt"
-exclude_rules = ["RF03", "L016", "L026", "L027", "L029", "L032", "L034"]
+exclude_rules = [
+    "references.consistent",
+    "layout.long_lines",
+    "references.from",
+    "references.qualification",
+    "references.keywords",
+    "structure.using",
+    "structure.column_order",
+]
 
-# L016 - line too long gahbage
-# L026 - some dumbass shit about not using table aliases idk bruh
-# L027 - i do select a, b instead of foo.a, vee.b - bad habit but excluding for now
-# L029 - no sql-reserved keywords as aliases - bad habit but excluding for now
-# L032 - no `using` keyword for joins - this is fine imo so fuqqit
-# L034 - Select wildcards then simple targets before calculations and aggregates.
-#      - this rule can literally break your sql so fuck that
+[tool.sqlfluff.templater.dbt]
+project_dir = "./"
+profiles_dir = "./profiles"
+
+[tool.sqlfluff.templater.jinja]
+apply_dbt_builtins = true
+load_macros_from_path = "./macros"
 
 [tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
@@ -54,4 +66,26 @@ capitalisation_policy = "lower"
 extended_capitalisation_policy = "lower"
 
 [tool.sqlfluff.indentation]
+tab_space_size = 4
 indented_joins = true
+allow_implicit_indents = false
+indented_using_on = true
+
+[tool.sqlfluff.layout.type.comma]
+spacing_before = "touch"
+line_position = "trailing"
+
+[tool.sqlfluff.layout.type.where_clause]
+keyword_line_position = "alone"
+
+[tool.sqlfluff.layout.type.group_by_clause]
+keyword_line_position = "alone"
+
+[tool.sqlfluff.layout.type.order_by_clause]
+keyword_line_position = "alone"
+
+
+# force explicit column references in group by and order by clauses
+# like `GROUP BY user_id, customer_id` instead of `GROUP BY 1, 2`
+[tool.sqlfluff.rules.ambiguous.column_references]
+group_by_and_order_by_style = "explicit"

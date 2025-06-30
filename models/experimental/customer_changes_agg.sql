@@ -54,7 +54,6 @@ new_records_to_insert as (
 
 {% endif %}
 
-
 select * from new_records_to_insert
 {% if is_incremental() %}
     union all

@@ -19,8 +19,7 @@ max_dates as (
         max(created_at) as max_created_at
     from customer_records
     group by
-        customer_id,
-        integration_type
+        customer_id, integration_type
 ),
 
 windowed as (
@@ -30,8 +29,7 @@ windowed as (
         is_active,
         created_at as valid_from,
         lag(created_at, 1) over (
-            partition by customer_id, integration_type
-            order by created_at desc
+            partition by customer_id, integration_type order by created_at desc
         ) as valid_to
     from customer_records
 
