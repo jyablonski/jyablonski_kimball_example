@@ -28,10 +28,19 @@ package = false
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# https://docs.sqlfluff.com/en/stable/reference/rules.html#rule-references.keywords
 [tool.sqlfluff.core]
 dialect = "postgres"
 templater = "dbt"
-exclude_rules = ["RF03", "L016", "L026", "L027", "L029", "L032", "L034"]
+exclude_rules = [
+    "references.consistent",
+    "layout.long_lines",
+    "references.from",
+    "references.qualification",
+    "references.keywords",
+    "structure.using",
+    "structure.column_order",
+]
 
 [tool.sqlfluff.templater.dbt]
 project_dir = "./"
