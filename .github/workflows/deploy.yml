@@ -14,6 +14,7 @@ env:
   DBT_PASS_STG: hiv2
   DBT_USER_PROD: aa
   DBT_PASS_PROD: aav2
+  UV_VERSION: "0.7.17"
 
 
 permissions:
@@ -27,11 +28,13 @@ jobs:
   
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.11"
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
 
       - name: Configure Aws Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -55,14 +58,9 @@ jobs:
             echo "DBT_PASS=$DBT_PASS_PROD" >> "$GITHUB_ENV"
             fi
 
-      - name: Install Requirements
-        run: |
-          pip install poetry
-          poetry install
-
       - name: Install dbt Dependencies
         run: |
-          poetry run dbt deps --target dev --profiles-dir profiles/
+          uv run dbt deps --target dev --profiles-dir profiles/
 
       - name: Get Manifest File
         env:
@@ -76,7 +74,7 @@ jobs:
           DBT_ENV: ${{ env.DBT_ENV}}
         run: |
           make up
-          poetry run dbt build --target ${{ env.DBT_ENV }} --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
+          uv run dbt build --target ${{ env.DBT_ENV }} --profiles-dir profiles/ --profile dbt_ci --select +state:modified+ --state ./
           make down
 
       - name: Upload Manifest to S3
