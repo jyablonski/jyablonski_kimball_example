@@ -3,7 +3,7 @@ jyablonski_kimball_example:
 
     dev:
       type: postgres
-      threads: 1
+      threads: 8
       host: localhost
       port: 5432
       user: postgres
@@ -13,7 +13,7 @@ jyablonski_kimball_example:
 
     prod:
       type: postgres
-      threads: 1
+      threads: 8
       host: localhost
       port: 5432
       user: postgres

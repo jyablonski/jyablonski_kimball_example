@@ -11,7 +11,8 @@ with emails_to_process as (
     from {{ ref('fact_emails') }}
     {% if is_incremental() %}
 
-        where dbt_created_at > (select max(dbt_created_at) from {{ this }})
+        where
+            dbt_created_at > (select max(dbt_created_at) from {{ this }})
 
     {% endif %}
 ),
@@ -58,6 +59,10 @@ select
     messages_subject_cols.subject_4,
     emails_to_process.created_at,
     emails_to_process.modified_at,
+    '{{ var("my_var") }}' as dbt_var,         -- HAS to be defined in dbt_project.yml which is where the default comes from
+    '{{ env_var("MY_ENV_VAR", "yikesv2") }}' as env_var, -- doesn't have to be defined in dbt_project.yml
+    '{{ env_var("MY_INT_VAR", 5) }}' as env_var_str_bad,
+    '{{ env_var("MY_INT_VAR", 5) }}'::integer as env_var_int,
     current_timestamp as dbt_created_at
 from emails_to_process
     left join messages_subject_cols

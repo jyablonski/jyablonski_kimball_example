@@ -10,6 +10,7 @@ config-version: 2
 
 vars:
   run_date: "{{ (modules.datetime.date.today() - modules.datetime.timedelta(1)).isoformat() }}"
+  my_var: yikes
 
 # lines 16 - 25 are for the dbt_snowflake_monitoring package
 # dispatch:
