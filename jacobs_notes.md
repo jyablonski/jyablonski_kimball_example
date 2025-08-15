@@ -254,3 +254,142 @@ const (
 )
 
 ```
+
+
+## Large Data Model Backfills
+
+
+This `is_incremental()` block loads data 1 month at a time. The filters work as follows:
+
+- It only grabs rows w/ a timestamp greater than what's already in the table
+- And it will only grab rows that are 1 month greater than the max timestamp that's already in the table
+- This lets you process it 1 month at a time until you're all caught up
+- Once you're all caught up, that 1 month filter is still fine. 
+	- If it's August 15 and we run it, we'll only have data from August 15th so even though our query will try to grab everything between August 15 and September 15, we only have 1 day of data to load
+- Downside is for initial runs, we have to run this repeatedly dozens of times until we're caught up
+
+``` sql
+{{ config(
+    materialized='incremental'
+) }}
+
+with source_data as (
+
+    select *
+    from {{ ref('raw_events') }}
+
+    {% if is_incremental() %}
+    -- Incremental run: load 1-month block after max date in table
+    where 
+		date >= (select max(date) from {{ this }} )
+      	and date < dateadd('month', 1, (select max(date) from {{ this }} ))
+    {% else %}
+    -- Full-refresh / first run: only load January 2021
+    where 
+		date >= '2021-01-01' and date < '2021-02-01'
+    {% endif %}
+
+)
+
+select *
+from source_data
+```
+
+- Can use `swap_warehouse` macro on large dbt models to use a bigger warehouse for the initial full refresh
+
+``` sql
+-- only swap on full refreshess
+{% if not is_incremental() %}
+    {{ swap_warehouse('dbt_warehouse_2xl_prod') }} -- only swap on full refresh
+{% endif %}
+
+-- or do this 
+-- on a bigger model, swap to a large warehouse for incremental runs, or 2xl for full refreshes
+{% if is_incremental() %}
+{{ swap_warehouse('dbt_warehouse_large_prod') }} -- incremental
+{% else %}
+{{ swap_warehouse('dbt_warehouse_2xl_prod') }} --full refresh
+{% endif %}
+```
+
+```sql
+# override the Snowflake virtual warehouse for just this model
+{{
+  config(
+    materialized='table',
+    snowflake_warehouse='dbt_warehouse_large_prod'
+  )
+}}
+
+```
+- You can do this too, but you'll be using the same warehouse on full refreshes as well as incremental runs
+
+## Vars
+
+
+- `dbt build --full-refresh --vars '{"my_var": "value"}'`
+- `var` has to be defined in `dbt_project.yml`
+- `env_var` does not have to be defined as long as you provide an inline default value for it
+- Setting dynamic env vars with Airflow is possible but could be a bit tricky
+
+``` sql
+    '{{ var("my_var") }}' as dbt_var,         -- HAS to be defined in dbt_project.yml which is where the default comes from
+    '{{ env_var("MY_ENV_VAR", "yikesv2") }}' as env_var, -- doesn't have to be defined in dbt_project.yml
+
+```
+
+## Microbatch
+
+Microbatch basically automatically applies timestamp filters for backfilling large tables. You specify metadata related to the model
+
+- For the source or ref table you query from in the microbatch dbt model, that parent model must have a `config` `event_time` block set for the timestamp to use in order for microbatch to work as expected
+- The actual microbatch model has no `incremental_block`, it's handled for you
+
+``` sql
+{{ config(
+    materialized='incremental',
+    incremental_strategy='microbatch',
+    event_time='session_end',
+    begin='2020-01-01',
+    batch_size='month',
+    unique_key="session_id"
+) }}
+```
+
+``` yml
+      - name: user_sessions
+        config:
+          event_time: session_end
+```
+
+``` sql
+-- the page_sessions_microbatch_2020-01-01.sql run which covers jan 1 2020 between jan 31 2020
+with user_sessions_detailed as (
+    select
+        session_id,
+        user_id,
+        session_start,
+        session_end,
+        device,
+        country,
+
+        -- duration in minutes (interval -> seconds -> minutes)
+        (extract(epoch from (session_end - session_start)) / 60.0) as session_duration_min,
+
+        -- FIXED CASE: compare numbers, not an interval
+        case
+            when (extract(epoch from (session_end - session_start)) / 60.0) <= 5 then 'Short'
+            else 'Long'
+        end as session_length_type,
+
+        date_trunc('day',   session_start) as session_date,
+        date_trunc('month', session_start) as session_month,
+        to_char(session_start, 'DY')        as session_dow,
+        (extract(dow from session_start) in (0,6)) as is_weekend,  -- 0=Sun,6=Sat in PG
+        NOW() as __created_at
+    from (select * from "postgres"."source"."user_sessions" where session_end >= '2020-01-01 00:00:00+00:00' and session_end < '2020-02-01 00:00:00+00:00') _dbt_et_filter_subq_user_sessions
+)
+
+select *
+from user_sessions_detailed
+```

@@ -362,4 +362,29 @@ INSERT INTO source.order_json (external_data)
 VALUES
     ('{"id": 1000, "source": {"address": "123 Wells Way", "store": "Walgreens", "state": "IL", "zip_code": 60601, "transaction_timestamp": "2023-09-17 20:00:00.000000"}, "sale_id": 4}');
 
+CREATE TABLE user_sessions (
+    session_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    session_start TIMESTAMP NOT NULL,
+    session_end TIMESTAMP NOT NULL,
+    device TEXT NOT NULL,
+    country TEXT NOT NULL
+);
+
+-- Insert 100 random rows
+INSERT INTO user_sessions (user_id, session_start, session_end, device, country)
+SELECT
+    (random() * 1000)::INT + 1 AS user_id, -- Random user IDs between 1 and 1000
+    ts AS session_start,
+    ts + (INTERVAL '1 minute' * (10 + (random() * 350))) AS session_end, -- 10–360 minutes long
+    (ARRAY['desktop', 'mobile', 'tablet'])[floor(random() * 3 + 1)] AS device,
+    (ARRAY['US', 'CA', 'GB', 'AU', 'DE'])[floor(random() * 5 + 1)] AS country
+FROM (
+    SELECT
+        TIMESTAMP '2020-01-01'
+        + (random() * EXTRACT(EPOCH FROM TIMESTAMP '2025-08-15' - TIMESTAMP '2020-01-01')) * INTERVAL '1 second'
+        AS ts
+    FROM generate_series(1, 100)
+);
+
 COMMIT;
