@@ -20,7 +20,6 @@ with user_sessions_detailed as (
         -- duration in minutes (interval -> seconds -> minutes)
         (extract(epoch from (session_end - session_start)) / 60.0) as session_duration_min,
 
-        -- FIXED CASE: compare numbers, not an interval
         case
             when (extract(epoch from (session_end - session_start)) / 60.0) <= 5 then 'Short'
             else 'Long'
