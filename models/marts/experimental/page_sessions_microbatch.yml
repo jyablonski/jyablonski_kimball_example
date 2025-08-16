@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: page_sessions_microbatch
+    columns:
+      - name: session_id
+        data_tests:
+          - unique
+      - name: session_length_type
+        data_tests:
+          - not_null

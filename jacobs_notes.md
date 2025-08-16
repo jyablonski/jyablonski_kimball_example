@@ -324,6 +324,23 @@ from source_data
 ```
 - You can do this too, but you'll be using the same warehouse on full refreshes as well as incremental runs
 
+
+``` sql
+-- BEFORE
+config(
+ ...
+ unique_key = 'my_surrogate_key'
+)
+
+-- AFTER
+config(
+ ..
+ unique_key = ['my_surrogate_key', 'my_timestamp']
+)
+```
+
+- Performance improvement on `merge` by specifying another column in the unique key (such as one you used as part of the surrogate key). It allows Snowflake to automatically do some pruning on the existing table before attempting the join
+
 ## Vars
 
 
@@ -393,3 +410,88 @@ with user_sessions_detailed as (
 select *
 from user_sessions_detailed
 ```
+
+Data Tests on Microbatch models only run after the current set of batches are all completed
+
+- So if you rebuild like 50 batches, you dont run the tests 50 times. They only run at the end.
+
+Problems with microbatch:
+
+- Hidden complexity with dbt-build macro, timestamp shenangians, late arriving data. You control less of the process
+- Scheduling gets weird - if you schedule your dbt DAGs to run daily and you set these microbatch models to anything other than daily, then you'll be reprocessing a ton of data on every dbt build
+- The backfill / retry functionality on "failed" batches isn't really needed in the vast majority of cases unless you somehow think you'll come across bad data that needs to be caught w/ this feature
+
+## Incremental
+
+Append
+
+- Use when you truly have append-only incremental tables w/ logs or events
+- Much more performant than `merge` because you don't have to go update and rewrite entire parititons of data
+
+Merge
+
+- Most flexible to handle duplicates, great on small tables
+- Not so performant on large tables
+- Large table scans and many small writes - not great
+- `incremental_predicates` allow the merge to basically have a filter condition incase you expect to only have to update data with a certain condition (like last 7 days etc)
+- `incremental_predicates: ["DBT_INTERNAL_DEST.session_start > dateadd(day, -7, current_date)"]` 
+
+Insert Overwrite
+
+- Instead of updating existing partitioned tables, this strategy involves actually deleting the partitions for the existing records found within the incremental query, and then rebuilding them
+- If we partition by day and our most recent run has data for 2022-01-01 and 2022-01-02, then we delete both of those partitions and rebuild them
+- High complexity, can generate duplicates if you're not setting things up right.
+- But, can be much more performant at large scale
+- It's ideal for tables partitioned by date or another key and useful for refreshing recent or corrected data without full table rebuilds.
+
+
+Delete + Insert
+
+- Deletes existing records and inserts both new and existing records that were in the incremental query
+- This effectively gets around the duplicate problem without having to use `merge` statement
+- Built for legacy purposes before `merge` was available in databases like Postgres etc, or when you might occassionally get dupes on `unique_key` and want to avoid a merge strategy
+
+## Incremental Across multiple Tables
+
+[Post](https://medium.com/@wuppschlandermuller/dbt-incremental-models-advanced-examples-part-1-6e8dac724153)
+
+``` sql
+with table_b as (
+  select *
+  from {{ ref('table_b') }}
+),
+
+{% if is_incremental() %}
+table_b_updates as (
+  select key_1
+  from table_b
+  where updated_at > (select max(updated_at) from {{ this }})
+),
+{% endif %}
+
+table_a as (
+  select *
+  from {{ ref('table_a') }}
+  {% if is_incremental() %}
+  where
+    updated_at > (select max(updated_at) from {{ this }})
+    or key_1 in (select key_1 from table_b_updates)
+  {% endif %}
+),
+
+final as (
+  select
+    table_a.key_1,
+    table_a.value_a,
+    table_b.value_b,
+    current_timestamp() as updated_at
+  from
+    table_a
+    left join table_b using (key_1)
+)
+
+select * from final
+```
+
+- The idea is you have a 1:1 mapping between 2 tables, but perhaps only 1 of the tables has a new key coming in.
+- So you always grab new IDs in `table_b`, and then the `table_a` CTE always pulls either new records in its source table, or any existing records w/ IDs that are new in that `table_b` CTE
