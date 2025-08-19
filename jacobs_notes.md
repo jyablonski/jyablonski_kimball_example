@@ -495,3 +495,14 @@ select * from final
 
 - The idea is you have a 1:1 mapping between 2 tables, but perhaps only 1 of the tables has a new key coming in.
 - So you always grab new IDs in `table_b`, and then the `table_a` CTE always pulls either new records in its source table, or any existing records w/ IDs that are new in that `table_b` CTE
+
+
+`backfill_var_test.sql`
+
+``` sh
+
+dbt build --select backfill_var_test
+dbt build --select backfill_var_test --vars '{BACKFILL_FROM_DATE: "2020-01-01", BACKFILL_TO_DATE: "2022-01-01"}'
+
+# Backfill sessions for a specific day
+dbt build --select backfill_var_test --vars '{BACKFILL_FROM_DATE: "2020-01-01", BACKFILL_TO_DATE: "2026-01-01"}'
