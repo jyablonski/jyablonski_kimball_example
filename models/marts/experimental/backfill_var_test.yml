@@ -1,0 +1,157 @@
+unit_tests:
+  - name: backfill_var_test_unit_test_vars
+    description: "When BACKFILL_FROM_DATE and BACKFILL_TO_DATE are set, only that session_start window is processed."
+    model: backfill_var_test
+    overrides:
+      macros:
+        is_incremental: false
+      vars:
+        BACKFILL_FROM_DATE: "2020-06-01"
+        BACKFILL_TO_DATE: "2021-01-01"
+    given:
+      - input: source('application_db', 'user_sessions')
+        rows:
+          - {
+              session_id: 1,
+              user_id: 10,
+              session_start: "2019-12-31 23:00:00",
+              session_end: "2020-01-01 00:00:00",
+              device: "ios",
+              country: "US",
+            }
+          - {
+              session_id: 2,
+              user_id: 11,
+              session_start: "2020-06-15 09:30:00",
+              session_end: "2020-06-15 10:45:00",
+              device: "android",
+              country: "US",
+            }
+          - {
+              session_id: 3,
+              user_id: 12,
+              session_start: "2020-12-31 14:30:00",
+              session_end: "2020-12-31 15:00:00",
+              device: "web",
+              country: "CA",
+            }
+          - {
+              session_id: 4,
+              user_id: 13,
+              session_start: "2025-01-01 00:00:00",
+              session_end: "2025-01-01 00:30:00",
+              device: "ios",
+              country: "US",
+            }
+    expect:
+      rows:
+        - {
+            session_id: 2,
+            user_id: 11,
+            session_start: "2020-06-15 09:30:00",
+            session_end: "2020-06-15 10:45:00",
+            device: "android",
+            country: "US",
+          }
+        - {
+            session_id: 3,
+            user_id: 12,
+            session_start: "2020-12-31 14:30:00",
+            session_end: "2020-12-31 15:00:00",
+            device: "web",
+            country: "CA",
+          }
+  - name: backfill_var_test_unit_test_full_refresh
+    model: backfill_var_test
+    overrides:
+      macros:
+        is_incremental: false
+    given:
+      - input: source('application_db', 'user_sessions')
+        rows:
+          - {
+              session_id: 2,
+              user_id: 11,
+              session_start: "2020-06-15 09:30:00",
+              session_end: "2020-06-15 10:45:00",
+              device: "android",
+              country: "US",
+            }
+          - {
+              session_id: 3,
+              user_id: 12,
+              session_start: "2020-12-31 23:59:00",
+              session_end: "2021-01-01 01:00:00",
+              device: "web",
+              country: "CA",
+            }
+    expect:
+      rows:
+        - {
+            session_id: 2,
+            user_id: 11,
+            session_start: "2020-06-15 09:30:00",
+            session_end: "2020-06-15 10:45:00",
+            device: "android",
+            country: "US",
+          }
+        - {
+            session_id: 3,
+            user_id: 12,
+            session_start: "2020-12-31 23:59:00",
+            session_end: "2021-01-01 01:00:00",
+            device: "web",
+            country: "CA",
+          }
+  - name: backfill_var_test_unit_test_incremental
+    model: backfill_var_test
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: this
+        rows:
+          - {
+              session_id: 2,
+              user_id: 11,
+              session_start: "2020-06-14 09:30:00",
+              session_end: "2020-06-15 10:45:00",
+              device: "android",
+              country: "US",
+            }
+      - input: source('application_db', 'user_sessions')
+        rows:
+          - {
+              session_id: 2,
+              user_id: 11,
+              session_start: "2020-06-15 09:30:00",
+              session_end: "2020-06-15 10:45:00",
+              device: "android",
+              country: "US",
+            }
+          - {
+              session_id: 3,
+              user_id: 12,
+              session_start: "2020-12-31 23:59:00",
+              session_end: "2021-01-01 01:00:00",
+              device: "web",
+              country: "CA",
+            }
+    expect:
+      rows:
+        - {
+            session_id: 2,
+            user_id: 11,
+            session_start: "2020-06-15 09:30:00",
+            session_end: "2020-06-15 10:45:00",
+            device: "android",
+            country: "US",
+          }
+        - {
+            session_id: 3,
+            user_id: 12,
+            session_start: "2020-12-31 23:59:00",
+            session_end: "2021-01-01 01:00:00",
+            device: "web",
+            country: "CA",
+          }
