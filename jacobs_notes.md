@@ -495,3 +495,75 @@ select * from final
 
 - The idea is you have a 1:1 mapping between 2 tables, but perhaps only 1 of the tables has a new key coming in.
 - So you always grab new IDs in `table_b`, and then the `table_a` CTE always pulls either new records in its source table, or any existing records w/ IDs that are new in that `table_b` CTE
+
+
+`backfill_var_test.sql`
+
+``` sh
+
+dbt build --select backfill_var_test
+dbt build --select backfill_var_test --vars '{BACKFILL_FROM_DATE: "2020-01-01", BACKFILL_TO_DATE: "2022-01-01"}'
+
+# Backfill sessions for a specific day
+dbt build --select backfill_var_test --vars '{BACKFILL_FROM_DATE: "2020-01-01", BACKFILL_TO_DATE: "2026-01-01"}'
+
+```
+
+## dbt Unit Tests
+
+dbt Unit tests are great but there's some dogshit defaults set to them. By default, unit tests run during dbt build
+
+- You can work around this by setting the flag `dbt build --exclude-resource-type unit_test`
+- You can also set an Environment Variable as a workaround in production
+- So in CI or Dev, they'll run automatically but be skipped in production builds
+
+``` sh
+# by default, unit tests run during dbt build
+# so in slim ci just run dbt build and let it do its thing
+# in prod run this with the exclude unit test flag
+dbt build --exclude-resource-type unit_test
+
+# set this environment variable to avoid
+# running unit tests during dbt
+export DBT_EXCLUDE_RESOURCE_TYPES=unit_test
+
+```
+
+
+### LLM Template
+
+Please generate dbt unit tests in this YML Format given this table ddl
+
+- There should be 1 for `is_incremental` set to true, and 1 for false
+- Only 5 rows are needed
+
+``` md
+unit_tests:
+  - name: <model_name>_<test_case>
+    description: "<short description of the behavior being tested>"
+    model: <model_name>
+    overrides:
+      macros:
+        is_incremental: <true|false>
+    given:
+      - input: <dbt source_or_ref>
+        rows:
+          - { <col1>: <val1>, <col2>: <val2>, ... }
+          - { ... }
+    expect:
+      rows:
+        - { <col1>: <val1>, <col2>: <val2>, ... }
+        - { ... }
+```
+
+``` sql
+create table application_db.user_sessions (
+  session_id int,
+  user_id int,
+  session_start timestamp,
+  session_end timestamp,
+  device string,
+  country string
+);
+
+```
