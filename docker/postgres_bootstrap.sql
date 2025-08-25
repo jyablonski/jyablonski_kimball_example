@@ -23,6 +23,7 @@ grant all privileges on database postgres to test_user;
 
 -- default directory for every statement in this bootstrap
 SET search_path TO source;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TYPE payment_enum AS ENUM ('Cash', 'Credit Card', 'Debit Card', 'Gift Card');
 CREATE TABLE payment_type (
@@ -388,3 +389,111 @@ FROM (
 );
 
 COMMIT;
+
+
+CREATE TABLE user_actions (
+    id UUID primary key default uuid_generate_v4(),
+    user_id VARCHAR,
+    event VARCHAR, -- click, page_view or something etc
+    email VARCHAR,
+    created_at timestamp default current_timestamp
+);
+
+
+-- Sample data for user_actions table
+-- Demonstrates scenarios where:
+-- 1. Multiple user_ids can share the same email (shared/family emails)
+-- 2. One user_id can have multiple emails (email changes)
+
+INSERT INTO user_actions (user_id, event, email, created_at) VALUES
+-- Person 1: John - changed his email from gmail to work email
+('user_001', 'signup', 'john.doe@gmail.com', '2023-01-15 10:30:00'),
+('user_001', 'login', 'john.doe@gmail.com', '2023-02-01 14:20:00'),
+('user_001', 'email_change', 'john.doe@techcorp.com', '2023-03-15 09:15:00'),
+('user_001', 'purchase', 'john.doe@techcorp.com', '2023-04-22 16:45:00'),
+
+-- Person 2: Sarah - uses family email initially, then gets her own
+('user_002', 'signup', 'family.smith@yahoo.com', '2023-01-20 11:00:00'),
+('user_002', 'email_change', 'sarah.smith@outlook.com', '2023-05-10 13:30:00'),
+
+-- Person 3: Mike - different user_id but uses John's old email (maybe bought account or email was reassigned)
+('user_003', 'signup', 'john.doe@gmail.com', '2023-06-01 08:45:00'),
+('user_003', 'login', 'john.doe@gmail.com', '2023-06-03 08:45:00'),
+('user_003', 'delete', 'john.doe@gmail.com', '2023-06-05 08:45:00'),
+
+-- Person 4: Lisa - uses the same family email that Sarah initially used
+('user_004', 'signup', 'family.smith@yahoo.com', '2023-02-28 19:20:00'),
+('user_004', 'login', 'family.smith@yahoo.com', '2023-03-05 12:10:00'),
+
+-- Person 5: Alex - consistent email usage
+('user_005', 'signup', 'alex.johnson@protonmail.com', '2023-04-10 15:25:00'),
+
+
+-- person 3 again, but this time on a new user_id
+('user_006', 'signup', 'john.doe@gmail.com', '2025-08-25 08:45:00');
+
+INSERT INTO user_actions (user_id, event, email, created_at) VALUES
+
+-- Edge Case 1: Chain of 3+ deletions/signups (A→B→C)
+('user_007', 'signup', 'recycled@email.com', '2023-07-01 10:00:00'),
+('user_007', 'delete', 'recycled@email.com', '2023-08-01 10:00:00'),
+('user_008', 'signup', 'recycled@email.com', '2023-08-15 10:00:00'),
+('user_008', 'delete', 'recycled@email.com', '2023-09-01 10:00:00'),
+('user_009', 'signup', 'recycled@email.com', '2023-09-15 10:00:00'),
+
+-- Edge Case 2: User deletes, someone else uses email briefly, original user comes back
+('user_010', 'signup', 'temp@email.com', '2023-10-01 10:00:00'),
+('user_010', 'delete', 'temp@email.com', '2023-11-01 10:00:00'),
+('user_011', 'signup', 'temp@email.com', '2023-11-15 10:00:00'),  -- Different person
+('user_011', 'delete', 'temp@email.com', '2023-12-01 10:00:00'),
+('user_012', 'signup', 'temp@email.com', '2024-01-01 10:00:00'),  -- Original person back?
+
+-- Edge Case 3: Multiple emails, user deletes one account but keeps another active
+('user_013', 'signup', 'primary@email.com', '2023-05-01 10:00:00'),
+('user_014', 'signup', 'secondary@email.com', '2023-05-02 10:00:00'),  -- Same person, different email
+('user_014', 'delete', 'secondary@email.com', '2023-06-01 10:00:00'),  -- Deletes secondary
+('user_015', 'signup', 'secondary@email.com', '2023-06-15 10:00:00'),  -- New person uses deleted email
+
+-- Edge Case 4: User changes email, THEN deletes, new user uses the changed-to email
+('user_016', 'signup', 'original@email.com', '2023-03-01 10:00:00'),
+('user_016', 'email_change', 'changed@email.com', '2023-04-01 10:00:00'),
+('user_016', 'delete', 'changed@email.com', '2023-05-01 10:00:00'),
+('user_017', 'signup', 'changed@email.com', '2023-05-15 10:00:00'),  -- Uses the changed-to email
+
+-- Edge Case 5: Same user deletes and re-signs up multiple times (serial deleter)
+('user_018', 'signup', 'serial@email.com', '2023-01-01 10:00:00'),
+('user_018', 'delete', 'serial@email.com', '2023-02-01 10:00:00'),
+('user_019', 'signup', 'serial@email.com', '2023-02-15 10:00:00'),  -- Same person back
+('user_019', 'delete', 'serial@email.com', '2023-03-01 10:00:00'),
+('user_020', 'signup', 'serial@email.com', '2023-03-15 10:00:00'),  -- Same person again
+
+-- Edge Case 6: Two different people alternating with same email
+('user_021', 'signup', 'shared@company.com', '2023-01-01 09:00:00'),  -- Person A
+('user_021', 'delete', 'shared@company.com', '2023-03-01 09:00:00'),
+('user_022', 'signup', 'shared@company.com', '2023-03-15 09:00:00'),  -- Person B
+('user_022', 'delete', 'shared@company.com', '2023-06-01 09:00:00'),
+('user_023', 'signup', 'shared@company.com', '2023-06-15 09:00:00'),  -- Person A again
+('user_023', 'delete', 'shared@company.com', '2023-09-01 09:00:00'),
+('user_024', 'signup', 'shared@company.com', '2023-09-15 09:00:00'),  -- Person B again
+
+-- Edge Case 7: Gap in activity - did they come back or is it someone else?
+('user_025', 'signup', 'gap@email.com', '2020-01-01 10:00:00'),
+('user_025', 'delete', 'gap@email.com', '2020-02-01 10:00:00'),
+-- Long gap (3+ years)
+('user_026', 'signup', 'gap@email.com', '2024-01-01 10:00:00'),  -- Same person or coincidence?
+
+-- Edge Case 8: User changes email, deletes, then comes back with the changed-to email
+('user_027', 'signup', 'start@email.com', '2023-01-01 10:00:00'),
+('user_027', 'email_change', 'final@email.com', '2023-02-01 10:00:00'),
+('user_027', 'delete', 'final@email.com', '2023-03-01 10:00:00'),
+('user_028', 'signup', 'final@email.com', '2023-03-15 10:00:00');  -- Same person back with their changed-to email
+
+-- incremental test if needed
+/* 
+INSERT INTO source.user_actions (user_id, event, email, created_at) VALUES
+
+-- Edge Case 1: Chain of 3+ deletions/signups (A→B→C)
+('user_050', 'signup', 'babygirl@email.com', '2023-08-25 10:00:00'),
+('user_050', 'delete', 'babygirl@email.com', '2023-08-28 10:00:00'),
+('user_051', 'signup', 'babygirl@email.com', '2023-08-29 10:00:00');
+*/

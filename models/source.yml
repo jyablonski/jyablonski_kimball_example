@@ -27,6 +27,7 @@ sources:
       - name: sale
       - name: sales_data
       - name: store
+      - name: user_actions
       - name: user_sessions
         config:
           event_time: session_end
