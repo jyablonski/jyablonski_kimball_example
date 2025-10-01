@@ -399,6 +399,37 @@ CREATE TABLE user_actions (
     created_at timestamp default current_timestamp
 );
 
+-- NOTE: this is completely separate from the actual `store` table and is only used to practice the SCD2 macro
+CREATE TABLE store_audit (
+    id SERIAL PRIMARY KEY,
+    store_id INTEGER NOT NULL,
+    store_name VARCHAR(100) NOT NULL,
+    manager_name VARCHAR(100),
+    region VARCHAR(50),
+    square_footage INTEGER,
+    store_type VARCHAR(50), -- 'flagship', 'standard', 'outlet'
+    monthly_rent DECIMAL(10, 2),
+    opened_date DATE,
+    audit_type INTEGER, -- 1 = insert, 2 = update, 3 = delete
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_geolocation_audit (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    zip_code VARCHAR(10),
+    city VARCHAR(100),
+    state VARCHAR(50),
+    country VARCHAR(50),
+    device_type VARCHAR(50), -- 'mobile', 'desktop', 'tablet'
+    device_os VARCHAR(50),
+    browser VARCHAR(50),
+    ip_address VARCHAR(45),
+    is_vpn BOOLEAN DEFAULT FALSE,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
 
 -- Sample data for user_actions table
 -- Demonstrates scenarios where:
@@ -497,3 +528,66 @@ INSERT INTO source.user_actions (user_id, event, email, created_at) VALUES
 ('user_050', 'delete', 'babygirl@email.com', '2023-08-28 10:00:00'),
 ('user_051', 'signup', 'babygirl@email.com', '2023-08-29 10:00:00');
 */
+
+-- Store 101: Standard lifecycle with updates
+INSERT INTO store_audit (store_id, store_name, manager_name, region, square_footage, store_type, monthly_rent, opened_date, audit_type, modified_at)
+VALUES 
+    (101, 'Downtown Seattle', 'Alice Johnson', 'Pacific Northwest', 5000, 'standard', 12000.00, '2023-01-15', 1, '2023-01-15 08:00:00'),
+    (101, 'Downtown Seattle', 'Bob Wilson', 'Pacific Northwest', 5000, 'standard', 12000.00, '2023-01-15', 1, '2023-06-01 10:30:00'), -- manager change
+    (101, 'Downtown Seattle Flagship', 'Bob Wilson', 'Pacific Northwest', 7500, 'flagship', 18000.00, '2023-01-15', 1, '2024-03-15 14:20:00'); -- remodel + rent increase
+
+-- Store 102: Closed store
+INSERT INTO store_audit (store_id, store_name, manager_name, region, square_footage, store_type, monthly_rent, opened_date, audit_type, modified_at)
+VALUES 
+    (102, 'Portland Mall', 'Carol Davis', 'Pacific Northwest', 4200, 'standard', 9500.00, '2022-08-01', 1, '2022-08-01 09:00:00'),
+    (102, 'Portland Mall', 'Carol Davis', 'Pacific Northwest', 4200, 'outlet', 7000.00, '2022-08-01', 1, '2023-11-10 11:00:00'), -- converted to outlet
+    (102, 'Portland Mall', 'Carol Davis', 'Pacific Northwest', 4200, 'outlet', 7000.00, '2022-08-01', 3, '2024-09-30 17:00:00'); -- store closed
+
+-- Store 103: New store with one update
+INSERT INTO store_audit (store_id, store_name, manager_name, region, square_footage, store_type, monthly_rent, opened_date, audit_type, modified_at)
+VALUES 
+    (103, 'San Francisco Bay', 'David Martinez', 'Northern California', 6000, 'flagship', 25000.00, '2024-01-10', 1, '2024-01-10 08:00:00'),
+    (103, 'San Francisco Bay', 'David Martinez', 'Northern California', 6000, 'flagship', 28000.00, '2024-01-10', 1, '2024-10-01 09:00:00'); -- rent increase
+
+-- Store 104: No changes yet
+INSERT INTO store_audit (store_id, store_name, manager_name, region, square_footage, store_type, monthly_rent, opened_date, audit_type, modified_at)
+VALUES 
+    (104, 'Austin Central', 'Emma Thompson', 'Southwest', 5500, 'standard', 11000.00, '2024-05-01', 1, '2024-05-01 10:00:00');
+
+
+
+-- User 1001: Multiple relocations and device changes
+INSERT INTO user_geolocation_audit (user_id, zip_code, city, state, country, device_type, device_os, browser, ip_address, is_vpn, modified_at)
+VALUES 
+    (1001, '10001', 'New York', 'New York', 'USA', 'desktop', 'Windows 11', 'Chrome', '192.168.1.100', FALSE, '2023-03-01 12:00:00'),
+    (1001, '10001', 'New York', 'New York', 'USA', 'mobile', 'iOS 16', 'Safari', '192.168.1.101', FALSE, '2023-05-15 08:30:00'), -- got new phone
+    (1001, '94102', 'San Francisco', 'California', 'USA', 'mobile', 'iOS 17', 'Safari', '10.0.0.50', FALSE, '2024-01-20 14:00:00'), -- moved to SF + OS update
+    (1001, '94102', 'San Francisco', 'California', 'USA', 'desktop', 'macOS', 'Chrome', '10.0.0.51', FALSE, '2024-08-10 09:00:00'); -- new computer
+
+-- User 1002: VPN usage and international travel
+INSERT INTO user_geolocation_audit (user_id, zip_code, city, state, country, device_type, device_os, browser, ip_address, is_vpn, modified_at)
+VALUES 
+    (1002, '98101', 'Seattle', 'Washington', 'USA', 'desktop', 'macOS', 'Firefox', '172.16.0.10', FALSE, '2023-06-01 10:00:00'),
+    (1002, '98101', 'Seattle', 'Washington', 'USA', 'desktop', 'macOS', 'Firefox', '203.0.113.42', TRUE, '2023-09-12 15:30:00'), -- started using VPN
+    (1002, 'SW1A 1AA', 'London', 'England', 'UK', 'mobile', 'Android 13', 'Chrome', '198.51.100.20', FALSE, '2024-02-14 07:00:00'), -- temporary relocation
+    (1002, '98101', 'Seattle', 'Washington', 'USA', 'desktop', 'macOS', 'Firefox', '203.0.113.42', TRUE, '2024-03-01 11:00:00'); -- returned home
+
+-- User 1003: Simple device upgrade
+INSERT INTO user_geolocation_audit (user_id, zip_code, city, state, country, device_type, device_os, browser, ip_address, is_vpn, modified_at)
+VALUES 
+    (1003, '60601', 'Chicago', 'Illinois', 'USA', 'mobile', 'Android 12', 'Chrome', '198.18.0.30', FALSE, '2023-11-05 13:00:00'),
+    (1003, '60601', 'Chicago', 'Illinois', 'USA', 'mobile', 'Android 14', 'Chrome', '198.18.0.30', FALSE, '2024-09-22 16:45:00'); -- OS upgrade
+
+-- User 1004: Frequent traveler
+INSERT INTO user_geolocation_audit (user_id, zip_code, city, state, country, device_type, device_os, browser, ip_address, is_vpn, modified_at)
+VALUES 
+    (1004, '33139', 'Miami', 'Florida', 'USA', 'tablet', 'iOS 16', 'Safari', '192.0.2.10', FALSE, '2024-01-15 09:00:00'),
+    (1004, '75001', 'Paris', 'Île-de-France', 'France', 'tablet', 'iOS 16', 'Safari', '198.51.100.100', FALSE, '2024-02-20 06:00:00'), -- travel
+    (1004, '28001', 'Madrid', 'Madrid', 'Spain', 'tablet', 'iOS 16', 'Safari', '203.0.113.75', FALSE, '2024-03-05 10:30:00'), -- more travel
+    (1004, '33139', 'Miami', 'Florida', 'USA', 'tablet', 'iOS 17', 'Safari', '192.0.2.10', FALSE, '2024-04-01 14:00:00'); -- back home + update
+
+-- User 1005: No changes yet
+INSERT INTO user_geolocation_audit (user_id, zip_code, city, state, country, device_type, device_os, browser, ip_address, is_vpn, modified_at)
+VALUES 
+    (1005, '02101', 'Boston', 'Massachusetts', 'USA', 'desktop', 'Windows 11', 'Edge', '198.18.5.25', FALSE, '2024-07-01 11:30:00');
+
