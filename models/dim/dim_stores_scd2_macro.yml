@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: dim_stores_scd2_macro
+    description: "SCD2 table tracking historical changes to store attributes"
+
+    tests:
+      # ========================================================================
+      # Validity Period Tests
+      # ========================================================================
+
+      # Test: valid_from should always be <= valid_to
+      - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+          column_A: valid_to
+          column_B: valid_from
+          or_equal: true
+          name: store_scd2_valid_to_gte_valid_from
+
+      # Test: No gaps in validity periods for each store
+      - dbt_expectations.expect_compound_columns_to_be_unique:
+          column_list: ["store_id", "valid_from"]
+          name: store_scd2_no_duplicate_valid_from_per_store
+
+      # Test: Exactly one current record per active store
+      - dbt_utils.expression_is_true:
+          expression: "is_current_record in (0, 1)"
+          name: store_scd2_is_current_record_binary
+
+      # Test: Exactly one latest record per store
+      - dbt_utils.expression_is_true:
+          expression: "is_latest_record in (0, 1)"
+          name: store_scd2_is_latest_record_binary
+
+      # ========================================================================
+      # Flag Consistency Tests
+      # ========================================================================
+
+      # Test: is_deleted should be binary
+      - dbt_utils.expression_is_true:
+          expression: "is_deleted in (0, 1)"
+          name: store_scd2_is_deleted_binary
+
+      # Test: Current records should have valid_to = '9999-12-31'
+      - dbt_utils.expression_is_true:
+          expression: "valid_to::date = '9999-12-31'::date"
+          config:
+            where: "is_current_record = 1"
+          name: store_scd2_current_records_open_ended
+
+      # Test: Deleted records should have valid_from = valid_to
+      - dbt_utils.expression_is_true:
+          expression: "valid_from = valid_to"
+          config:
+            where: "is_deleted = 1"
+          name: store_scd2_deleted_records_point_in_time
+
+      # Test: Current records should not be deleted
+      - dbt_utils.expression_is_true:
+          expression: "is_deleted = 0"
+          config:
+            where: "is_current_record = 1"
+          name: store_scd2_current_records_not_deleted
+
+      # ========================================================================
+      # Data Quality Tests
+      # ========================================================================
+
+      # Test: Valid store types
+      - dbt_expectations.expect_column_values_to_be_in_set:
+          column_name: store_type
+          value_set: ["flagship", "standard", "outlet"]
+          name: store_scd2_valid_store_types
+
+      # Test: Rent should be positive
+      - dbt_expectations.expect_column_values_to_be_between:
+          column_name: monthly_rent
+          min_value: 0
+          strictly: false
+          name: store_scd2_positive_rent
+
+      # Test: Square footage should be reasonable
+      - dbt_expectations.expect_column_values_to_be_between:
+          column_name: square_footage
+          min_value: 100
+          max_value: 100000
+          name: store_scd2_reasonable_square_footage
+
+    columns:
+      - name: id
+        description: "Primary key - audit record ID"
+        tests:
+          - unique
+          - not_null
+
+      - name: store_id
+        description: "Business key - identifies the store entity"
+        tests:
+          - not_null
+
+      - name: valid_from
+        description: "Start of validity period"
+        tests:
+          - not_null
+
+      - name: valid_to
+        description: "End of validity period (9999-12-31 for current records)"
+        tests:
+          - not_null
+
+      - name: is_current_record
+        description: "Flag indicating the most recent active record (1) or not (0)"
+
+      - name: is_latest_record
+        description: "Flag indicating the most recent record regardless of deletion status"
+
+      - name: is_deleted
+        description: "Flag indicating if the store has been deleted (1) or not (0)"
