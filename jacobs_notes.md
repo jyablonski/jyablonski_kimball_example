@@ -1,31 +1,39 @@
 # Why Kimball Modeling
-Goal is to make consuming & analyzing data easier.  Source Data in Application Databases may be setup to be efficient for Applications + adhere to traditional OLTP principles, but it's probably not optimized for Reporting.
+
+Goal is to make consuming & analyzing data easier. Source Data in Application Databases may be setup to be efficient for Applications + adhere to traditional OLTP principles, but it's probably not optimized for Reporting.
+
 - Improves the structure, quality, and ease-of-use of the data to optimize it for downstream uses like BI & Reporting.
-- Introduces a common, standardized way of modeling data.  New people can come in and be familiar with what Fact, Dim, and SCD2 tables all do.
+- Introduces a common, standardized way of modeling data. New people can come in and be familiar with what Fact, Dim, and SCD2 tables all do.
 - Helps organize the data landscape when you have tons of different data sources flowing in.
 
 Kimball is not 100% necessary; at the end of the day as long as you can efficiently provide business value with data to business users and other stakeholders then it doesn't matter what the underlying methodology being used is.
+
 ## Facts
+
 Facts represent quantitative & measurable pieces of data about business events or processes.
+
 - Facts can be linked to dimensions through Foreign Keys to create relationships between the two.
 - Typically Fact Tables have lots of rows with few columns
 - Examples include Sales or Order data
 
 ## Dimensions
+
 Dimensions are business descriptive attributes related to the contents in the Fact Tables.
+
 - Describes the who, what, where, when, and why.
 - Typically don't change very often
 - Typically Dimensions Tables have more columns and fewer rows than Fact Tables
 - Examples include Product, Customer, Geography based attributes
 
 Cons
+
 - More up-front work needed to get set everything up
 
 ## Local Dev
+
 `asdf local python 3.11.5`
 `poetry install`
 `dbt init` type in your project name and then cut out all of the files it creates and paste them in root directory
-
 
 https://www.getdbt.com/blog/track-data-changes-with-dbt-snapshots
 https://github.com/dbt-labs/dbt-core/issues/3878
@@ -33,15 +41,15 @@ https://github.com/dbt-labs/dbt-core/issues/3878
 use scd2 when you need to reflect historical truth at point in time.
 
 ## Elementary
+
 [Quickstart](https://docs.elementary-data.com/quickstart)
 [Docs](https://docs.elementary-data.com/quickstart-cli)
 `dbt run-operation elementary.generate_elementary_cli_profile`
-- Copy & Paste this to Profiles.yml
 
+- Copy & Paste this to Profiles.yml
 
 `edr report`
 `edr send-report --slack-token <SLACK_TOKEN> --slack-channel-name <CHANNEL_NAME>`
-
 
 `dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select state:modified --state ./target/`
 `dbt build --target dev --profiles-dir profiles/ --profile dbt_ci --select state:modified --state ./target/`
@@ -49,10 +57,10 @@ use scd2 when you need to reflect historical truth at point in time.
 `dbt build --select incremental_pk_tester --target dev --profiles-dir profiles/`
 `dbt build --select incremental_pk_tester_merge_only --target dev --profiles-dir profiles/`
 
-
 dbt state modified vs state deferred
 
 State Deferred is for building dbt Resources in one environment while telling it to use parent models from another environment
+
 - The purpose of this is to save time and computational resources.
 - `dbt run --select my_model+ --defer --state my_stg_state_file`
 - [More Complex Documentation](https://docs.getdbt.com/reference/node-selection/defer)
@@ -61,11 +69,11 @@ State modified is for building only changed dbt Resources based on the last know
 
 [Link](https://paulfry999.medium.com/v0-4-pre-chatgpt-how-to-create-ci-cd-pipelines-for-dbt-core-88e68ab506dd)
 
-`dbt ls --select state:modified+ --defer --state=prod-run-artifacts`  # list the modified dbt models
-        
+`dbt ls --select state:modified+ --defer --state=prod-run-artifacts` # list the modified dbt models
+
 `dbt run --select state:modified+ --defer --state=prod-run-artifacts` # run modified dbt models only
 
-``` sh
+```sh
 # list the modified dbt models
 dbt ls --select state:modified+ --defer --state=prod-run-artifacts
 
@@ -79,13 +87,11 @@ dbt run --select state:modified+ --target prod --state=./
 dbt ls --select state:modified+ --state=./
 ```
 
-
 `SELECT slot_name, plugin, slot_type, database, active, restart_lsn, confirmed_flush_lsn FROM pg_replication_slots;`
 
 ## SCD2
 
 Example in `/models/dim/dim_customers.sql`
-
 
 ## General
 
@@ -97,11 +103,11 @@ Example in `/models/dim/dim_customers.sql`
 
 [Example Repo](https://github.com/pgoslatara/dbt-beyond-the-basics)
 
-``` sh
+```sh
 c
 ```
 
-``` sh
+```sh
 $ cd jaffle_shop
 $ dbt run  # Materialize models
 $ dbt docs generate  # Generate catalog.json and manifest.json
@@ -142,7 +148,7 @@ Total                                                 14/38     36.8%
 
 Comparison
 
-``` sh
+```sh
 $ dbt-coverage compare coverage-after.json coverage-before.json
 
 # Coverage delta summary
@@ -168,14 +174,11 @@ Catalog                         15/38   (39.47%)  ->    15/39   (38.46%)
 dbt-coverage compare coverage-doc.json coverage-prod.json
 ```
 
-
 [Profiles YAML example](https://github.com/RealSelf/dbt-source/blob/development/sample.profiles.yml)
-
 
 [dbt Unit Tests Snowflake Fail Thread](https://github.com/dbt-labs/dbt-snowflake/issues/1160)
 
-
-``` sql
+```sql
 -- by default, every mdoel uses an x small
 {% if is_incremental() %}
 {{ swap_warehouse('DBT_L_WH') }} -- incremental
@@ -187,7 +190,7 @@ dbt-coverage compare coverage-doc.json coverage-prod.json
 
 # Troubleshooting
 
-``` sh
+```sh
 dbt build --debug
 dbt run-operation send_alert_on_failure --debug
 
@@ -204,7 +207,7 @@ dbt docs serve --port 8000 --host 0.0.0.0
 
 - Works, but requires
 
-``` sh
+```sh
 dbterd run
 
 dbterd run -t mermaid
@@ -234,7 +237,7 @@ dbdocs build "target/output.dbml"
 
 ## tbls
 
-``` sh
+```sh
 
 tbls doc postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
 
@@ -243,8 +246,7 @@ tbls doc --force
 rm -f tbls/schema.json
 ```
 
-
-``` go
+```go
 const (
 	ZeroOrOne          Cardinality = "zero_or_one"
 	ExactlyOne         Cardinality = "exactly_one"
@@ -255,20 +257,18 @@ const (
 
 ```
 
-
 ## Large Data Model Backfills
-
 
 This `is_incremental()` block loads data 1 month at a time. The filters work as follows:
 
 - It only grabs rows w/ a timestamp greater than what's already in the table
 - And it will only grab rows that are 1 month greater than the max timestamp that's already in the table
 - This lets you process it 1 month at a time until you're all caught up
-- Once you're all caught up, that 1 month filter is still fine. 
-	- If it's August 15 and we run it, we'll only have data from August 15th so even though our query will try to grab everything between August 15 and September 15, we only have 1 day of data to load
+- Once you're all caught up, that 1 month filter is still fine.
+  - If it's August 15 and we run it, we'll only have data from August 15th so even though our query will try to grab everything between August 15 and September 15, we only have 1 day of data to load
 - Downside is for initial runs, we have to run this repeatedly dozens of times until we're caught up
 
-``` sql
+```sql
 {{ config(
     materialized='incremental'
 ) }}
@@ -280,12 +280,12 @@ with source_data as (
 
     {% if is_incremental() %}
     -- Incremental run: load 1-month block after max date in table
-    where 
+    where
 		date >= (select max(date) from {{ this }} )
       	and date < dateadd('month', 1, (select max(date) from {{ this }} ))
     {% else %}
     -- Full-refresh / first run: only load January 2021
-    where 
+    where
 		date >= '2021-01-01' and date < '2021-02-01'
     {% endif %}
 
@@ -297,13 +297,13 @@ from source_data
 
 - Can use `swap_warehouse` macro on large dbt models to use a bigger warehouse for the initial full refresh
 
-``` sql
+```sql
 -- only swap on full refreshess
 {% if not is_incremental() %}
     {{ swap_warehouse('dbt_warehouse_2xl_prod') }} -- only swap on full refresh
 {% endif %}
 
--- or do this 
+-- or do this
 -- on a bigger model, swap to a large warehouse for incremental runs, or 2xl for full refreshes
 {% if is_incremental() %}
 {{ swap_warehouse('dbt_warehouse_large_prod') }} -- incremental
@@ -322,10 +322,10 @@ from source_data
 }}
 
 ```
+
 - You can do this too, but you'll be using the same warehouse on full refreshes as well as incremental runs
 
-
-``` sql
+```sql
 -- BEFORE
 config(
  ...
@@ -343,13 +343,12 @@ config(
 
 ## Vars
 
-
 - `dbt build --full-refresh --vars '{"my_var": "value"}'`
 - `var` has to be defined in `dbt_project.yml`
 - `env_var` does not have to be defined as long as you provide an inline default value for it
 - Setting dynamic env vars with Airflow is possible but could be a bit tricky
 
-``` sql
+```sql
     '{{ var("my_var") }}' as dbt_var,         -- HAS to be defined in dbt_project.yml which is where the default comes from
     '{{ env_var("MY_ENV_VAR", "yikesv2") }}' as env_var, -- doesn't have to be defined in dbt_project.yml
 
@@ -362,7 +361,7 @@ Microbatch basically automatically applies timestamp filters for backfilling lar
 - For the source or ref table you query from in the microbatch dbt model, that parent model must have a `config` `event_time` block set for the timestamp to use in order for microbatch to work as expected
 - The actual microbatch model has no `incremental_block`, it's handled for you
 
-``` sql
+```sql
 {{ config(
     materialized='incremental',
     incremental_strategy='microbatch',
@@ -373,13 +372,13 @@ Microbatch basically automatically applies timestamp filters for backfilling lar
 ) }}
 ```
 
-``` yml
-      - name: user_sessions
-        config:
-          event_time: session_end
+```yml
+- name: user_sessions
+  config:
+    event_time: session_end
 ```
 
-``` sql
+```sql
 -- the page_sessions_microbatch_2020-01-01.sql run which covers jan 1 2020 between jan 31 2020
 with user_sessions_detailed as (
     select
@@ -434,7 +433,7 @@ Merge
 - Not so performant on large tables
 - Large table scans and many small writes - not great
 - `incremental_predicates` allow the merge to basically have a filter condition incase you expect to only have to update data with a certain condition (like last 7 days etc)
-- `incremental_predicates: ["DBT_INTERNAL_DEST.session_start > dateadd(day, -7, current_date)"]` 
+- `incremental_predicates: ["DBT_INTERNAL_DEST.session_start > dateadd(day, -7, current_date)"]`
 
 Insert Overwrite
 
@@ -443,7 +442,6 @@ Insert Overwrite
 - High complexity, can generate duplicates if you're not setting things up right.
 - But, can be much more performant at large scale
 - It's ideal for tables partitioned by date or another key and useful for refreshing recent or corrected data without full table rebuilds.
-
 
 Delete + Insert
 
@@ -455,7 +453,7 @@ Delete + Insert
 
 [Post](https://medium.com/@wuppschlandermuller/dbt-incremental-models-advanced-examples-part-1-6e8dac724153)
 
-``` sql
+```sql
 with table_b as (
   select *
   from {{ ref('table_b') }}
@@ -496,10 +494,9 @@ select * from final
 - The idea is you have a 1:1 mapping between 2 tables, but perhaps only 1 of the tables has a new key coming in.
 - So you always grab new IDs in `table_b`, and then the `table_a` CTE always pulls either new records in its source table, or any existing records w/ IDs that are new in that `table_b` CTE
 
-
 `backfill_var_test.sql`
 
-``` sh
+```sh
 
 dbt build --select backfill_var_test
 dbt build --select backfill_var_test --vars '{BACKFILL_FROM_DATE: "2020-01-01", BACKFILL_TO_DATE: "2022-01-01"}'
@@ -517,7 +514,7 @@ dbt Unit tests are great but there's some dogshit defaults set to them. By defau
 - You can also set an Environment Variable as a workaround in production
 - So in CI or Dev, they'll run automatically but be skipped in production builds
 
-``` sh
+```sh
 # by default, unit tests run during dbt build
 # so in slim ci just run dbt build and let it do its thing
 # in prod run this with the exclude unit test flag
@@ -529,7 +526,6 @@ export DBT_EXCLUDE_RESOURCE_TYPES=unit_test
 
 ```
 
-
 ### LLM Template
 
 Please generate dbt unit tests in this YML Format given this table ddl
@@ -537,26 +533,23 @@ Please generate dbt unit tests in this YML Format given this table ddl
 - There should be 1 for `is_incremental` set to true, and 1 for false
 - Only 5 rows are needed
 
-``` md
+```md
 unit_tests:
-  - name: <model_name>_<test_case>
-    description: "<short description of the behavior being tested>"
-    model: <model_name>
-    overrides:
-      macros:
-        is_incremental: <true|false>
-    given:
-      - input: <dbt source_or_ref>
-        rows:
-          - { <col1>: <val1>, <col2>: <val2>, ... }
-          - { ... }
+
+- name: <model*name>*<test_case>
+  description: "<short description of the behavior being tested>"
+  model: <model_name>
+  overrides:
+  macros:
+  is_incremental: <true|false>
+  given:
+  - input: <dbt source_or_ref>
+    rows: - { <col1>: <val1>, <col2>: <val2>, ... } - { ... }
     expect:
-      rows:
-        - { <col1>: <val1>, <col2>: <val2>, ... }
-        - { ... }
+    rows: - { <col1>: <val1>, <col2>: <val2>, ... } - { ... }
 ```
 
-``` sql
+```sql
 create table application_db.user_sessions (
   session_id int,
   user_id int,
@@ -567,3 +560,91 @@ create table application_db.user_sessions (
 );
 
 ```
+
+## Optimizing dbt Runs with `source_status:fresher+`
+
+The `source_status:fresher+` selector allows you to build only the models where source data has actually changed, saving processing time and costs. This requires defining `freshness` with `loaded_at_field` for your source tables in your `sources.yml`.
+
+### How It Works
+
+1. Check Source Freshness: Run `dbt source freshness` to generate a `sources.json` file containing freshness metadata
+2. Upload State: Store the `sources.json` file in S3 for persistence across container runs
+3. Build Fresh Models: Download the state and run `dbt build --select source_status:fresher+ --state /dbt/target` to build only models with fresh sources
+
+### Implementation
+
+#### Dockerfile
+
+```dockerfile
+FROM python:3.13-slim
+
+# Install dbt and AWS CLI
+RUN apt-get update && apt-get install -y awscli && \
+    pip install dbt-core dbt-snowflake && \
+    apt-get clean
+
+COPY . /dbt
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+WORKDIR /dbt
+
+ENTRYPOINT ["/entrypoint.sh"]
+```
+
+#### Entrypoint Wrapper
+
+The `entrypoint.sh` script handles three command types:
+
+- `source-freshness`: Runs `dbt source freshness` and uploads `sources.json` to S3
+- `build-fresh`: Downloads state from S3, then runs `dbt build --select source_status:fresher+ --state /dbt/target` (plus any additional selectors you pass)
+- `build`: Runs standard `dbt build` commands without state management
+
+This in theory can be used in GHA as well as long as you install dbt environment, but I didn't explore it yet
+
+#### Airflow DAG Example
+
+```python
+# Task 1: Check source freshness and save state
+check_freshness = EcsRunTaskOperator(
+    task_id='check_source_freshness',
+    overrides={
+        'containerOverrides': [{
+            'name': 'dbt',
+            'command': ['source-freshness']
+        }]
+    }
+)
+
+# Task 2: Build finance models where sources are fresh
+build_finance_fresh = EcsRunTaskOperator(
+    task_id='build_finance_fresh',
+    overrides={
+        'containerOverrides': [{
+            'name': 'dbt',
+            'command': ['build-fresh', '--select', 'tag:finance,source_status:fresher+']
+        }]
+    }
+)
+
+# Task 3: Build marketing models (standard build, no freshness check)
+build_marketing = EcsRunTaskOperator(
+    task_id='build_marketing',
+    overrides={
+        'containerOverrides': [{
+            'name': 'dbt',
+            'command': ['build', '--select', 'tag:marketing']
+        }]
+    }
+)
+
+# Run freshness check first, then build tasks in parallel
+check_freshness >> [build_finance_fresh, build_marketing]
+```
+
+### Benefits
+
+- Reduced Costs: Only process data that has actually changed
+- Faster Runs: Skip unnecessary transformations
+- Flexible: Mix freshness-aware and standard builds in the same DAG
+- Portable: State management is handled by the container, not Airflow

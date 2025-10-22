@@ -72,5 +72,3 @@ models:
     marts:
       +materialized: table
       +schema: marts
-    experimental:
-      +materialized: table

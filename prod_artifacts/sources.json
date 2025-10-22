@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/sources/v3.json",
+    "dbt_version": "1.9.1",
+    "generated_at": "2025-10-22T17:59:19.320954Z",
+    "invocation_id": "b5e02299-7c27-42a2-8046-d7b5c914e1ec",
+    "env": {}
+  },
+  "results": [
+    {
+      "unique_id": "source.jyablonski_kimball_example.application_db.emails",
+      "max_loaded_at": "2025-10-22T17:59:16.903521+00:00",
+      "snapshotted_at": "2025-10-22T17:59:19.306114+00:00",
+      "max_loaded_at_time_ago_in_s": 2.402593,
+      "status": "pass",
+      "criteria": {
+        "warn_after": { "count": 12, "period": "hour" },
+        "error_after": { "count": 24, "period": "hour" },
+        "filter": null
+      },
+      "adapter_response": {
+        "_message": "SELECT 1",
+        "code": "SELECT",
+        "rows_affected": 1
+      },
+      "timing": [
+        {
+          "name": "compile",
+          "started_at": "2025-10-22T17:59:19.291523Z",
+          "completed_at": "2025-10-22T17:59:19.291527Z"
+        },
+        {
+          "name": "execute",
+          "started_at": "2025-10-22T17:59:19.291858Z",
+          "completed_at": "2025-10-22T17:59:19.309396Z"
+        }
+      ],
+      "thread_id": "Thread-1 (worker)",
+      "execution_time": 0.018746376037597656
+    }
+  ],
+  "elapsed_time": 0.12037825584411621
+}
